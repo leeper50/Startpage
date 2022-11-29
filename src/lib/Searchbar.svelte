@@ -18,8 +18,8 @@
   };
 </script>
 
-<div class="container">
-  <div class="textbox">
+<div class="container border">
+  <div style="display: flex">
     <span class="blue">user</span>
     <span class="gray">@</span>
     <span class="violet">internet</span>
@@ -46,13 +46,9 @@
     font-family: Arial, monospace;
     font-size: 1.5rem;
     font-weight: bold;
-    border: 4px solid #444;
     padding: 8px;
     display: flex;
     gap: 12px;
-  }
-  .textbox {
-    display: flex;
   }
   input {
     background: none;
@@ -60,5 +56,12 @@
     font-size: inherit;
     font-weight: inherit;
     width: 100%;
+    &:hover,
+    &:focus {
+      outline-color: #444;
+      outline-style: solid;
+      outline-width: 1px;
+      border-radius: 2px;
+    }
   }
 </style>

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import data from "./Websites.json";
+  import {data} from './Websites'
 </script>
 
 <div class="container">
   {#each data as { id, list }}
-    <div class="box">
+    <div class="box border">
       <div style="display: flex">
         <span class="magenta space">~</span>
         <span class="blue space">$</span>
@@ -24,7 +24,7 @@
 <style lang="scss">
   .container {
     display: flex;
-    flex-direction: row;
+    flex-flow: wrap;
     font-family: Arial, monospace;
     font-size: 1.5rem;
     font-weight: bold;
@@ -33,7 +33,6 @@
     width: 100%;
   }
   .box {
-    border: 4px solid #444;
     padding: 8px;
     flex: 1 1 200px;
   }
