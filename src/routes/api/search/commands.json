@@ -1,0 +1,66 @@
+{
+  "-4": {
+    "url": "https://boards.4chan.org/",
+    "searchable": true
+  },
+  "-e": {
+    "url": "https://e621.net/posts?tags=",
+    "searchable": true
+  },
+  "-g": {
+    "url": "https://www.google.com/search?q=",
+    "searchable": true
+  },
+  "-p": {
+    "url": "https://www.pornhub.com/video/search?search=",
+    "searchable": true
+  },
+  "-r": {
+    "url": "https://www.reddit.com/r/",
+    "searchable": true
+  },
+  "-t": {
+    "url": "https://translate.google.com/#view=home&op=translate&sl=auto&tl=en&text=",
+    "searchable": true
+  },
+  "-w": {
+    "url": "https://www.wolframalpha.com/input/?i=",
+    "searchable": true
+  },
+  "-x": {
+    "url": "https://rule34.xxx/index.php?page=post&s=list&tags=",
+    "searchable": true
+  },
+  "-xg": {
+    "url": "https://gelbooru.com/index.php?page=post&s=list&tags=",
+    "searchable": true
+  },
+  "-xgay": {
+    "url": "https://rule34.xxx/index.php?page=post&s=list&tags=( femboy ~ girly ~ trap ~ crossdressing ~ sissy )",
+    "searchable": true
+  },
+  "-xh": {
+    "url": "https://www.xhamster.com/search/",
+    "searchable": true
+  },
+  "-xv": {
+    "url": "https://www.xvideos.com/?k=",
+    "searchable": true
+  },
+  "-y": {
+    "url": "https://www.youtube.com/results?search_query=",
+    "searchable": true
+  },
+  "-fur": {
+    "url": "https://www.pornhub.com/video/search?search=",
+    "searchable": false
+  },
+  "-pcp": {
+    "url": "https://pcpartpicker.com/",
+    "searchable": false
+  },
+  "-pix": {
+    "url": "https://www.pornhub.com/video/search?search=",
+    "searchable": false
+  }
+}
