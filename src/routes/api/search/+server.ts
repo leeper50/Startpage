@@ -1,23 +1,32 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import data from './commands.json'
+import data from "./commands.json";
 
 /* takes user input as string
  * returns a url combined with a string if url is searchable
  */
-
+interface SearchRequest {
+  text: string;
+}
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    let {text} = await request.json();
+    let { text }: SearchRequest = await request.json();
+    const logReturn = (url: string) => {
+      const returnText = url !== "" ? url : "empty string";
+      console.log(`Returned ${returnText}`);
+      return json(url);
+    };
     text = text.trim();
 
     if (text === "-") {
-      return json("");
+      return logReturn("");
     }
 
     // return regular search if no command provided
     if (!text.startsWith("-")) {
-      return json("https://duckduckgo.com/?t=ffab&q=" + encodeURIComponent(text));
+      return logReturn(
+        "https://duckduckgo.com/?t=ffab&q=" + encodeURIComponent(text)
+      );
     }
 
     let keyText: string = "";
@@ -32,30 +41,29 @@ export const POST: RequestHandler = async ({ request }) => {
     keyText = keyText.toLowerCase();
 
     if (data[keyText] === undefined) {
-      return json("");
+      return logReturn("");
     }
     const { url, searchable } = data[keyText];
 
     // returns url if command is not searchable
     if (searchable == false) {
-      return json(url);
+      return logReturn(url);
     }
 
     // returns cleaned url if no searchtext is provided
     if (searchText.trim() === "") {
-      const search_params = ["/r/", "/input", "/results"];
+      const searchParams = ["/r/", "/input", "/results"];
       let temp = url;
-      search_params.forEach((item) => {
+      searchParams.forEach((item) => {
         temp = temp.split(item)[0];
       });
-      return json(temp);
+      return logReturn(temp);
     }
+
     // return url with search
-    // res.status(200).send(url + encodeURIComponent(searchText));
-    return json(url + encodeURIComponent(searchText));
+    return logReturn(url + encodeURIComponent(searchText));
   } catch (e) {
     console.warn(e);
-    // res.status(500).send("Something went wrong.");
     return json("Something went wrong");
   }
 };

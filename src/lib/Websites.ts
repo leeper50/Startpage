@@ -1,4 +1,4 @@
-[
+export const data = [
   {
     "id": "general",
     "list": [
@@ -74,10 +74,6 @@
     "id": "work",
     "list": [
       {
-        "url": "https://github.com/",
-        "ident": "github"
-      },
-      {
         "url": "https://app.joinhandshake.com/",
         "ident": "handshake"
       },
@@ -111,8 +107,8 @@
         "ident": "files"
       },
       {
-        "url": "https://next.dellhplaptop.xyz/",
-        "ident": "nextcloud"
+        "url": "https://github.com/",
+        "ident": "github"
       },
       {
         "url": "https://cloud.oracle.com/",
