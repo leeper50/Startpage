@@ -9,6 +9,6 @@ RUN yarn build
 
 FROM node:19.1-alpine as main
 WORKDIR /app
-COPY --from=build /app/build .
+COPY --from=build /app /app
 EXPOSE 3000
-CMD ["node", "index.js"]
+CMD ["node", "build/index.js"]
