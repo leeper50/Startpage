@@ -8,6 +8,7 @@ RUN yarn install
 RUN yarn build
 
 FROM node:19.1-alpine as main
-COPY --from=build /app /
+WORKDIR /app
+COPY --from=build /app/build .
 EXPOSE 3000
-CMD ["node", "build/index.js"]
+CMD ["node", "index.js"]
