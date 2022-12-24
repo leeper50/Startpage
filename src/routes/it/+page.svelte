@@ -6,7 +6,7 @@
     <a href="files/packages.json" download>scoop packages</a>
     - this is the scoop package file
     <br />
-    <a href="files/My Macros.ahk" download>autohotkey scripts</a>
+    <a href="files/MyMacros.ahk" download>autohotkey scripts</a>
     - all my silly little shortcuts
   </div>
 </body>
