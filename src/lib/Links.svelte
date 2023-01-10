@@ -96,10 +96,6 @@
       id: "cloud",
       list: [
         {
-          url: "https://aws.amazon.com/",
-          ident: "aws",
-        },
-        {
           url: "https://dash.cloudflare.com/",
           ident: "cloudflare",
         },
@@ -114,6 +110,10 @@
         {
           url: "https://cloud.oracle.com/",
           ident: "oracle",
+        },
+        {
+          url: "https://login.tailscale.com/admin/machines",
+          ident: "tailscale",
         },
       ],
     },
