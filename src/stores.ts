@@ -1,4 +1,6 @@
-{
+import { writable } from "svelte/store";
+
+export const commands = writable({
   "-4": {
     "url": "https://boards.4channel.org/",
     "searchable": true
@@ -27,4 +29,4 @@
     "url": "https://pcpartpicker.com/",
     "searchable": false
   }
-}
+});

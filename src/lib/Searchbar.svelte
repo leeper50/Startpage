@@ -1,6 +1,6 @@
 <script lang="ts">
   let text: string = "";
-  const search = async (e: KeyboardEvent) => {
+  async function search(e: KeyboardEvent) {
     if (e.key === "Enter") {
       const response = await fetch("/api/search", {
         method: "POST",
@@ -22,7 +22,7 @@
   <div style="display: flex">
     <span class="blue">user</span>
     <span class="gray">@</span>
-    <span class="violet">internet</span>
+    <span class="blue">internet</span>
     <span class="magenta">~</span>
     <span class="blue">$</span>
   </div>

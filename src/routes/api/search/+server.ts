@@ -1,6 +1,7 @@
 import { json } from "@sveltejs/kit";
-import type { RequestHandler } from "./$types";
-import data from "./commands.json";
+import { commands } from "../../../stores";
+let data: { [id: string]: { url: any; searchable: any } };
+const subscribeData = commands.subscribe((value) => (data = value));
 
 /* takes user input as string
  * returns a url combined with a string if url is searchable
@@ -8,7 +9,8 @@ import data from "./commands.json";
 interface SearchRequest {
   text: string;
 }
-export const POST: RequestHandler = async ({ request }) => {
+
+export async function POST({ request }) {
   try {
     let { text }: SearchRequest = await request.json();
     const logReturn = (url: string) => {
@@ -66,4 +68,4 @@ export const POST: RequestHandler = async ({ request }) => {
     console.warn(e);
     return json("Something went wrong");
   }
-};
+}
