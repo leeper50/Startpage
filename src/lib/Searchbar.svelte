@@ -1,21 +1,63 @@
 <script lang="ts">
+  import { commands } from "../stores";
   let text: string = "";
-  async function search(e: KeyboardEvent) {
+  function keypress(e: KeyboardEvent) {
     if (e.key === "Enter") {
-      const response = await fetch("/api/search", {
-        method: "POST",
-        body: JSON.stringify({ text }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      response.text().then((e) => {
-        e = e.replaceAll('"', "");
-        if (e !== "") document.location.href = e;
-        else alert("Command not valid");
-      });
+      let url: string = parse();
+      url.replaceAll('"', "");
+      if (url !== "") document.location.href = url;
+      else alert("Command not valid");
     }
-  };
+  }
+  // Takes in possible command and returns url
+  // Will alert if command is invalid
+  function parse() {
+    text = text.trim();
+
+    if (text === "-") {
+      return "";
+    }
+
+    // return regular search if no command provided
+    if (!text.startsWith("-")) {
+      return;
+      "https://duckduckgo.com/?t=ffab&q=" + encodeURIComponent(text);
+    }
+
+    let keyText: string = "";
+    let searchText: string = "";
+
+    if (text.includes(" ")) {
+      keyText = text.substring(0, text.indexOf(" "));
+      searchText = text.substring(text.indexOf(" ") + 1);
+    } else {
+      keyText = text;
+    }
+    keyText = keyText.toLowerCase();
+
+    if ($commands[keyText] === undefined) {
+      return "";
+    }
+    const { url, searchable } = $commands[keyText];
+
+    // returns url if command is not searchable
+    if (searchable == false) {
+      return url;
+    }
+
+    // returns cleaned url if no searchtext is provided
+    if (searchText.trim() === "") {
+      const searchParams = ["/r/", "/input", "/results"];
+      let temp = url;
+      searchParams.forEach((item) => {
+        temp = temp.split(item)[0];
+      });
+      return temp;
+    }
+
+    // return url with search
+    return url + encodeURIComponent(searchText);
+  }
 </script>
 
 <div class="container border">
@@ -36,7 +78,7 @@
       autocorrect="off"
       spellcheck="false"
       bind:value={text}
-      on:keypress={search}
+      on:keypress={keypress}
     />
   </div>
 </div>
