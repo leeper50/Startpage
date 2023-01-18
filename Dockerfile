@@ -4,8 +4,8 @@ COPY package.json .
 COPY *config* .
 COPY src/ src/
 COPY static/ static/
-RUN yarn install
-RUN yarn build
+RUN npm install
+RUN npm run build
 
 FROM node:19.1-alpine as main
 WORKDIR /app
