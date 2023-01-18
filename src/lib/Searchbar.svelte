@@ -20,8 +20,7 @@
 
     // return regular search if no command provided
     if (!text.startsWith("-")) {
-      return;
-      "https://duckduckgo.com/?t=ffab&q=" + encodeURIComponent(text);
+      return "https://duckduckgo.com/?t=ffab&q=" + encodeURIComponent(text);
     }
 
     let keyText: string = "";
