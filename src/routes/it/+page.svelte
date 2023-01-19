@@ -1,5 +1,4 @@
 <body class="blue">
-  <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css" />
   <div class="main">
     <h1>Da configs 😳</h1>
     <hr />
