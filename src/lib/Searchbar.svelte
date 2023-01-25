@@ -1,10 +1,9 @@
 <script lang="ts">
   import { commands } from "../stores";
-  let text: string = "";
+  let search: string = "";
   function keypress(e: KeyboardEvent) {
     if (e.key === "Enter") {
       let url: string = parse();
-      url.replaceAll('"', "");
       if (url !== "") document.location.href = url;
       else alert("Command not valid");
     }
@@ -12,16 +11,13 @@
   // Takes in possible command and returns url
   // Will alert if command is invalid
   function parse() {
-    text = text.trim();
+    let text: string = search.trim();
 
-    if (text === "-") {
-      return "";
-    }
+    if (text === "-") return "";
 
     // return regular search if no command provided
-    if (!text.startsWith("-")) {
+    if (!text.startsWith("-"))
       return "https://duckduckgo.com/?t=ffab&q=" + encodeURIComponent(text);
-    }
 
     let keyText: string = "";
     let searchText: string = "";
@@ -34,15 +30,12 @@
     }
     keyText = keyText.toLowerCase();
 
-    if ($commands[keyText] === undefined) {
-      return "";
-    }
+    if ($commands[keyText] === undefined) return "";
+
     const { url, searchable } = $commands[keyText];
 
     // returns url if command is not searchable
-    if (searchable == false) {
-      return url;
-    }
+    if (searchable == false) return url;
 
     // returns cleaned url if no searchtext is provided
     if (searchText.trim() === "") {
@@ -76,7 +69,7 @@
       autocomplete="off"
       autocorrect="off"
       spellcheck="false"
-      bind:value={text}
+      bind:value={search}
       on:keypress={keypress}
     />
   </div>
