@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-export const commands = writable({
+export let commands = writable({
   "-4": {
     "url": "https://boards.4channel.org/",
     "searchable": true
