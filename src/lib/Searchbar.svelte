@@ -1,54 +1,18 @@
 <script lang="ts">
-  import { commands } from "../stores";
   let search: string = "";
-  function keypress(e: KeyboardEvent) {
+  async function keypress(e: KeyboardEvent) {
     if (e.key === "Enter") {
-      let url: string = parse();
-      if (url !== "") document.location.href = url;
-      else alert("Command not valid");
-    }
-  }
-  // Takes in possible command and returns url
-  // Will alert if command is invalid
-  function parse() {
-    let text: string = search.trim();
-
-    if (text === "-") return "";
-
-    // return regular search if no command provided
-    if (!text.startsWith("-"))
-      return "https://duckduckgo.com/?t=ffab&q=" + encodeURIComponent(text);
-
-    let keyText: string = "";
-    let searchText: string = "";
-
-    if (text.includes(" ")) {
-      keyText = text.substring(0, text.indexOf(" "));
-      searchText = text.substring(text.indexOf(" ") + 1);
-    } else {
-      keyText = text;
-    }
-    keyText = keyText.toLowerCase();
-
-    if ($commands[keyText] === undefined) return "";
-
-    const { url, searchable } = $commands[keyText];
-
-    // returns url if command is not searchable
-    if (searchable == false) return url;
-
-    // returns cleaned url if no searchtext is provided
-    if (searchText.trim() === "") {
-      const searchParams = ["/r/", "/input", "/results"];
-      let temp = url;
-      searchParams.forEach((item) => {
-        temp = temp.split(item)[0];
+      let res = await fetch("/api/search", {
+        method: "POST",
+        body: JSON.stringify({
+          text: search,
+        }),
       });
-      return temp;
+      res.text().then((temp) => {
+        if (temp !== "") document.location.href = temp;
+        else alert("Command not valid");
+      });
     }
-
-    // return url with search
-    return url + encodeURIComponent(searchText);
   }
 </script>
 
