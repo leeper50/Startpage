@@ -19,10 +19,6 @@
           url: "https://www.twitch.tv/directory/following/",
           ident: "twitch",
         },
-        {
-          url: "https://twitter.com/home/",
-          ident: "twitter",
-        },
       ],
     },
     {
