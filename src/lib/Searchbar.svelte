@@ -1,22 +1,24 @@
 <script lang="ts">
   let search: string = "";
-  async function keypress(e: KeyboardEvent) {
-    if (e.key === "Enter") {
-      let res = await fetch("/api/search", {
-        method: "POST",
-        body: JSON.stringify({
-          text: search,
-        }),
+  const submitHandler = () => {
+    fetch("/api/search", {
+      method: "POST",
+      body: JSON.stringify({
+        text: search,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.text())
+      .then((res) => {
+        if (res !== "") document.location.href = res;
+        else alert("Command not valid!");
       });
-      res.text().then((temp) => {
-        if (temp !== "") document.location.href = temp;
-        else alert("Command not valid");
-      });
-    }
-  }
+  };
 </script>
 
-<div class="container border">
+<form class="container border" on:submit|preventDefault={submitHandler}>
   <div style="display: flex">
     <span class="blue">user</span>
     <span class="gray">@</span>
@@ -34,10 +36,9 @@
       autocorrect="off"
       spellcheck="false"
       bind:value={search}
-      on:keypress={keypress}
     />
   </div>
-</div>
+</form>
 
 <style lang="scss">
   .container {
@@ -47,6 +48,7 @@
     padding: 8px;
     display: flex;
     gap: 12px;
+    margin: 0px;
   }
   input {
     background: none;
