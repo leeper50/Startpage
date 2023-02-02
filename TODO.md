@@ -4,10 +4,10 @@
 
 # ~~use cookie to save and load search engine choice~~ used localStorage instead
 
-# add authentication for put/del on search api
+# ~~add authentication for put/del on search api~~ should make .env available as environment var in docker
 
-# add status codes in api
+# ~~add status codes in api~~
 
-# add api tests
+# add api tests 
 
-# maybe do component testing
+# maybe do component testing (probably setup vitest)

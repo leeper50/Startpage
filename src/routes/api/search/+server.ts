@@ -1,4 +1,5 @@
 import { error } from "@sveltejs/kit";
+import { API_KEY } from "$env/static/private";
 
 let data = {
   "-4": {
@@ -37,19 +38,35 @@ function isString(value: unknown): value is string {
 function isBool(value: unknown): value is boolean {
   return typeof value == "boolean";
 }
+function checkApiKey(request) {
+  if (!request.headers.get("api_key")) {
+    const message = "No api key in header";
+    console.log(message);
+    return { message: message, valid: false };
+  } else if (request.headers.get("api_key") != API_KEY) {
+    const message = "Invalid api key";
+    console.log(message);
+    return { message: message, valid: false };
+  } else return { message: "Valid api check", valid: true };
+}
 
-function logResponse(method: string, message: string, request: string) {
+function logResponse(
+  method: string,
+  message: string,
+  request: string,
+  status: number
+) {
   let requestPresent = request != "" ? true : false;
   if (requestPresent) request = " from " + request;
   if (message === "")
     console.log(`${method.toUpperCase()} - Returned empty string${request}`);
   else console.log(`${method.toUpperCase()} - Returned ${message}${request}`);
-  return new Response(message);
+  return new Response(message, { status: status });
 }
 
 // retrieve all commands
 export function GET() {
-  return new Response(JSON.stringify(data));
+  return new Response(JSON.stringify(data), { status: 200 });
 }
 
 // perform a search
@@ -60,11 +77,11 @@ export async function POST({ request }) {
   const logText = text;
   text = text.trim();
 
-  if (text === "-") return logResponse("post", "", logText);
+  if (text === "-") return logResponse("post", "", logText, 400);
 
   // return regular search if no command provided
   if (!text.startsWith("-"))
-    return logResponse("post", engine + encodeURIComponent(text), logText);
+    return logResponse("post", engine + encodeURIComponent(text), logText, 200);
 
   let keyText: string = "";
   let searchText: string = "";
@@ -77,12 +94,12 @@ export async function POST({ request }) {
   }
   keyText = keyText.toLowerCase();
 
-  if (data[keyText] === undefined) return logResponse("post", "", logText);
+  if (data[keyText] === undefined) return logResponse("post", "", logText, 400);
 
   const { url, searchable } = data[keyText];
 
   // returns url if command is not searchable
-  if (searchable == false) return logResponse("post", url, logText);
+  if (searchable == false) return logResponse("post", url, logText, 200);
 
   // returns cleaned url if no searchtext is provided
   if (searchText.trim() === "") {
@@ -91,15 +108,22 @@ export async function POST({ request }) {
     searchParams.forEach((item) => {
       temp = temp.split(item)[0];
     });
-    return logResponse("post", temp, logText);
+    return logResponse("post", temp, logText, 200);
   }
 
   // return url with search
-  return logResponse("post", url + encodeURIComponent(searchText), logText);
+  return logResponse(
+    "post",
+    url + encodeURIComponent(searchText),
+    logText,
+    200
+  );
 }
 
 // may add many commands at once
 export async function PUT({ request }) {
+  const authCheck = checkApiKey(request);
+  if (!authCheck.valid) return new Response(authCheck.message, { status: 400 });
   let input: {};
   let keys: string[];
 
@@ -130,11 +154,13 @@ export async function PUT({ request }) {
       return;
     }
   });
-  return new Response(JSON.stringify(data));
+  return new Response(JSON.stringify(data), { status: 200 });
 }
 
 // may delete 1 key at a time
 export async function DELETE({ request }) {
+  const authCheck = checkApiKey(request);
+  if (!authCheck.valid) return new Response(authCheck.message, { status: 400 });
   let input: { id: string };
   try {
     input = await request.json();
@@ -143,11 +169,11 @@ export async function DELETE({ request }) {
       throw error(400, "invalid json");
     // check if key exists
     if (!data.hasOwnProperty(input.id))
-      return logResponse("delete", `${input.id} was not present`, "");
+      return logResponse("delete", `${input.id} was not present`, "", 200);
     // ensure key/record is completely removed
     const deletedData = data[input.id];
     delete data[input.id];
-    return logResponse("delete", JSON.stringify(deletedData), "");
+    return logResponse("delete", JSON.stringify(deletedData), "", 200);
   } catch (_) {
     throw error(400, "invalid json");
   }
