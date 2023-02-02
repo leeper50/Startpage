@@ -54,8 +54,9 @@ export function GET() {
 
 // perform a search
 export async function POST({ request }) {
-  let input: { text: string } = await request.json();
-  let { text } = input;
+  let input: { text: string; engine: string } = await request.json();
+  let { text, engine } = input;
+  if (!engine) engine = "https://duckduckgo.com/?t=ffab&q=";
   const logText = text;
   text = text.trim();
 
@@ -63,11 +64,7 @@ export async function POST({ request }) {
 
   // return regular search if no command provided
   if (!text.startsWith("-"))
-    return logResponse(
-      "post",
-      "https://duckduckgo.com/?t=ffab&q=" + encodeURIComponent(text),
-      logText
-    );
+    return logResponse("post", engine + encodeURIComponent(text), logText);
 
   let keyText: string = "";
   let searchText: string = "";
@@ -126,7 +123,8 @@ export async function PUT({ request }) {
       // maybe check if url is valid
       const keyExist = k in data ? true : false;
       data[k] = { url: url, searchable: searchable };
-      if (!keyExist) console.log(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
+      if (!keyExist)
+        console.log(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
       else console.log(`PUT - Updated: ${k}: ${JSON.stringify(data[k])}`);
     } catch (_) {
       return;
