@@ -8,10 +8,10 @@
 
 <body>
   <header>
-    <button on:click={() => (visible = !visible)}>
-      <div class="border" />
-      <div class="border" />
-      <div class="border" />
+    <button id="nav-button" on:click={() => (visible = !visible)}>
+      <div />
+      <div />
+      <div />
     </button>
   </header>
   <main>
@@ -26,10 +26,6 @@
 </body>
 
 <style lang="scss">
-  #sidebar {
-    position: absolute;
-    right: 8px;
-  }
   body {
     height: 100vh;
     width: 100vw;
@@ -42,8 +38,6 @@
     display: flex;
     flex-direction: column;
     font-family: Arial, monospace;
-    font-size: 1.5rem;
-    font-weight: bold;
     width: 75%;
     gap: 4px;
     margin: 12px;
@@ -53,7 +47,7 @@
     top: 0px;
     width: 100%;
   }
-  button {
+  #nav-button {
     padding: 0;
     margin: 12px;
     background-color: inherit;
@@ -64,10 +58,14 @@
     &:hover {
       cursor: pointer;
     }
+    div {
+      width: 24px;
+      border: 2px solid #888;
+      border-radius: 4px;
+    }
   }
-  .border {
-    width: 24px;
-    border: 2px solid #888;
-    border-radius: 4px;
+  #sidebar {
+    position: absolute;
+    right: 8px;
   }
 </style>

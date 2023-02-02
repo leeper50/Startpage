@@ -45,14 +45,20 @@
     height: 98vh;
     border: 4px solid #444;
     border-radius: 4px 0 0 4px;
-    background-color: rgba(22, 22, 22, 0.25);
+    background-color: rgba(22, 22, 22, 0.75);
+    font-family: "Fira sans";
     width: fit-content;
-    font-family: Arial;
   }
   h2 {
+    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
   }
-  .tab {
-    padding-left: 12px;
+  ul {
+    list-style-type: none;
+    padding: 12px;
+    gap: 12px;
+  }
+  li {
+    margin: 10px 0;
   }
 </style>

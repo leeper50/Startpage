@@ -139,7 +139,6 @@
   .container {
     display: flex;
     flex-flow: wrap;
-    font-family: Arial, monospace;
     font-size: 1.5rem;
     font-weight: bold;
     gap: 4px;
