@@ -1,5 +1,8 @@
 import { error } from "@sveltejs/kit";
-import { API_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
+import crypto from "node:crypto";
+const API_KEY = env.api_key ?? crypto.randomBytes(32).toString("hex");
+console.log(API_KEY);
 
 let data = {
   "-4": {
