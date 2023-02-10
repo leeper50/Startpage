@@ -60,8 +60,7 @@ function logResponse(
   request: string,
   status: number
 ) {
-  let requestPresent = request != "" ? true : false;
-  if (requestPresent) request = " from " + request;
+  if (request != "") request = " from " + request;
   if (message === "")
     console.log(`${method.toUpperCase()} - Returned empty string${request}`);
   else console.log(`${method.toUpperCase()} - Returned ${message}${request}`);
@@ -190,7 +189,7 @@ export async function DELETE({ request }) {
   } catch (_) {
     throw error(400, "invalid json");
   }
-  let logAccum: string[] = [];
+  const logAccum: string[] = [];
   keys.forEach((key) => {
     // check if request is valid
     if (!isString(key) || key.charAt(0) !== "-")
