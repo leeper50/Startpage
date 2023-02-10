@@ -4,7 +4,7 @@ import crypto from "node:crypto";
 const API_KEY = env.api_key ?? crypto.randomBytes(32).toString("hex");
 console.log(API_KEY);
 
-let data = {
+const data = {
   "-4": {
     url: "https://boards.4channel.org/",
     searchable: true,
@@ -18,7 +18,7 @@ let data = {
     searchable: true,
   },
   "-t": {
-    url: "https://lt.dellhplaptop.xyz/?source=auto&target=en&q=",
+    url: "https://translate.google.com/?sl=auto&tl=en&text=",
     searchable: true,
   },
   "-w": {
@@ -74,7 +74,7 @@ export function GET() {
 
 // perform a search
 export async function POST({ request }) {
-  let input: { text: string; engine: string } = await request.json();
+  const input: { text: string; engine: string } = await request.json();
   let { text, engine } = input;
   if (!engine) engine = "https://duckduckgo.com/?t=ffab&q=";
   const logText = text;
@@ -127,7 +127,7 @@ export async function POST({ request }) {
 export async function PUT({ request }) {
   const authCheck = checkApiKey(request);
   if (!authCheck.valid) return new Response(authCheck.message, { status: 400 });
-  let input: {};
+  let input: object;
   let keys: string[];
 
   // validate json format
@@ -138,46 +138,64 @@ export async function PUT({ request }) {
     throw error(400, "invalid json");
   }
 
-  // validate keys (contain -)
-  keys = keys.filter((k) => k.charAt(0) === "-" && k.charAt(1) !== "-");
-
+  let logAccum: string[] = [];
   keys.forEach((k) => {
     // validate url and searchable
     try {
-      let url: string = input[k].url;
-      let searchable: boolean = input[k].searchable;
-      if (!isString(url) || !isBool(searchable)) return;
+      const url: string = input[k].url;
+      const searchable: boolean = input[k].searchable;
+      const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
+      if (!isString(url) || !isBool(searchable) || !isDashed) {
+        logAccum.push(`PUT - ${k} was not added`);
+        console.log(`PUT - Not added: ${k}`);
+        return;
+      }
       // maybe check if url is valid
       const keyExist = k in data ? true : false;
       data[k] = { url: url, searchable: searchable };
-      if (!keyExist)
+      if (!keyExist) {
+        logAccum.push(`PUT - Added: ${k}`);
         console.log(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
-      else console.log(`PUT - Updated: ${k}: ${JSON.stringify(data[k])}`);
+      } else {
+        logAccum.push(`PUT - Updated: ${k}`);
+        console.log(`PUT - Updated: ${k}: ${JSON.stringify(data[k])}`);
+      }
     } catch (_) {
       return;
     }
   });
-  return new Response(JSON.stringify(data), { status: 200 });
+  return new Response(logAccum.join("\n"), { status: 200 });
 }
 
-// may delete 1 key at a time
+// may delete multiple keys at once
 export async function DELETE({ request }) {
   const authCheck = checkApiKey(request);
   if (!authCheck.valid) return new Response(authCheck.message, { status: 400 });
-  let input: { id: string };
+  let input: { id: string[] };
+  let keys: string[];
   try {
     input = await request.json();
-    // check if request is valid
-    if (!isString(input.id) || input.id.charAt(0) !== "-")
-      throw error(400, "invalid json");
-    // check if key exists
-    if (!data.hasOwnProperty(input.id))
-      return logResponse("delete", `${input.id} was not present`, "", 200);
-    // ensure key/record is completely removed
-    const deletedData = data[input.id];
-    delete data[input.id];
-    return logResponse("delete", JSON.stringify(deletedData), "", 200);
+    keys = input.id;
   } catch (_) {
     throw error(400, "invalid json");
   }
+  let logAccum: string[] = [];
+  keys.forEach((key) => {
+    // check if request is valid
+    if (!isString(key) || key.charAt(0) !== "-")
+      throw error(400, "invalid json");
+    // check if key exists
+    if (!data.hasOwnProperty(key)) {
+      const notPresentMsg = `DELETE - ${key} was not present`;
+      console.log(notPresentMsg);
+      logAccum.push(notPresentMsg);
+      return;
+    }
+    // ensure key/record is completely removed
+    delete data[key];
+    const notPresentMsg = `DELETE - ${key} was removed`;
+    console.log(notPresentMsg);
+    logAccum.push(notPresentMsg);
+  });
+  return new Response(logAccum.join("\n"), { status: 200 });
 }
