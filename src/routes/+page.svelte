@@ -19,7 +19,7 @@
     <Links />
   </main>
   {#if visible}
-    <div id="sidebar" transition:fade={{ duration: 250 }}>
+    <div id="sidebar" class="magenta" transition:fade={{ duration: 250 }}>
       <CommandList />
     </div>
   {/if}
@@ -67,5 +67,12 @@
   #sidebar {
     position: absolute;
     right: 8px;
+    height: 98vh;
+    border: 4px solid #444;
+    border-radius: 4px;
+    background-color: rgba(22, 22, 22, 0.95);
+    font-family: "Fira Sans";
+    font-weight: 400;
+    width: fit-content;
   }
 </style>
