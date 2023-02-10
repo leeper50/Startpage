@@ -61,9 +61,11 @@ function logResponse(
   status: number
 ) {
   if (request != "") request = " from " + request;
-  if (message === "")
+  if (method === "POST" && message === "")
     console.log(`${method.toUpperCase()} - Returned empty string${request}`);
-  else console.log(`${method.toUpperCase()} - Returned ${message}${request}`);
+  else if (method === "POST")
+    console.log(`${method.toUpperCase()} - Returned ${message}${request}`);
+  else console.log(message);
   return new Response(message, { status: status });
 }
 
@@ -125,8 +127,8 @@ export async function POST({ request }) {
 
 // may add many commands at once
 export async function PUT({ request }) {
-  const authCheck = checkApiKey(request);
-  if (!authCheck.valid) return new Response(authCheck.message, { status: 400 });
+  const { message, valid } = checkApiKey(request);
+  if (!valid) return new Response(message, { status: 400 });
   let input: object;
   let keys: string[];
 
@@ -149,7 +151,6 @@ export async function PUT({ request }) {
         !isDashed
       ) {
         logAccum.push(`PUT - ${k} was not added`);
-        console.log(`PUT - Not added: ${k}`);
         return;
       }
 
@@ -157,30 +158,27 @@ export async function PUT({ request }) {
       const updatedData = input[k];
       if (!exists) {
         data[k] = updatedData;
-        logAccum.push(`PUT - Added: ${k}`);
-        console.log(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
+        logAccum.push(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
       } else if (
         data[k].url !== updatedData.url ||
         data[k].searchable !== updatedData.searchable
       ) {
         data[k] = updatedData;
-        logAccum.push(`PUT - Updated: ${k}`);
-        console.log(`PUT - Updated: ${k}: ${JSON.stringify(data[k])}`);
+        logAccum.push(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
       } else {
         logAccum.push(`PUT - Unchanged: ${k}`);
-        console.log(`PUT - Unchanged: ${k}`);
       }
     } catch (_) {
       return logAccum.push(`Error - Input was ${k}`);
     }
   });
-  return new Response(logAccum.join("\n"), { status: 200 });
+  return logResponse("put", logAccum.join("\n"), "", 200);
 }
 
 // may delete multiple keys at once
 export async function DELETE({ request }) {
-  const authCheck = checkApiKey(request);
-  if (!authCheck.valid) return new Response(authCheck.message, { status: 400 });
+  const { message, valid } = checkApiKey(request);
+  if (!valid) return new Response(message, { status: 400 });
   let input: { id: string[] };
   let keys: string[];
   try {
@@ -196,16 +194,12 @@ export async function DELETE({ request }) {
       throw error(400, "invalid json");
     // check if key exists
     if (!data.hasOwnProperty(key)) {
-      const notPresentMsg = `DELETE - ${key} was not present`;
-      console.log(notPresentMsg);
-      logAccum.push(notPresentMsg);
+      logAccum.push(`DELETE - ${key} was not present`);
       return;
     }
     // ensure key/record is completely removed
     delete data[key];
-    const notPresentMsg = `DELETE - ${key} was removed`;
-    console.log(notPresentMsg);
-    logAccum.push(notPresentMsg);
+    logAccum.push(`DELETE - ${key} was removed`);
   });
-  return new Response(logAccum.join("\n"), { status: 200 });
+  return logResponse("delete", logAccum.join("\n"), "", 200);
 }
