@@ -1,8 +1,8 @@
 import { error } from "@sveltejs/kit";
 import { env } from "$env/dynamic/private";
 import crypto from "node:crypto";
-export const API_KEY = env.api_key ?? crypto.randomBytes(32).toString("hex");
-console.log(API_KEY);
+export const _API_KEY = env.api_key ?? crypto.randomBytes(32).toString("hex");
+console.log(_API_KEY);
 
 const data = {
   "-4": {
@@ -47,7 +47,7 @@ function checkApiKey(request) {
     const message = "No api key in header";
     console.log(message);
     return { message: message, valid: false };
-  } else if (request.headers.get("api_key") != API_KEY) {
+  } else if (request.headers.get("api_key") != _API_KEY) {
     const message = "Invalid api key";
     console.log(message);
     return { message: message, valid: false };

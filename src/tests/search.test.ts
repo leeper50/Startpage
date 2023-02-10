@@ -1,4 +1,4 @@
-import { API_KEY, DELETE, POST, PUT } from "../routes/api/search/+server";
+import { _API_KEY, DELETE, POST, PUT } from "../routes/api/search/+server";
 import { expect, test } from "vitest";
 
 test("Post - (no engine)", async () => {
@@ -118,7 +118,7 @@ test("Put", async () => {
       request: {
         headers: {
           get: () => {
-            return API_KEY;
+            return _API_KEY;
           },
         },
         json: () => {
@@ -141,7 +141,7 @@ test("Delete", async () => {
       request: {
         headers: {
           get: () => {
-            return API_KEY;
+            return _API_KEY;
           },
         },
         json: () => {
