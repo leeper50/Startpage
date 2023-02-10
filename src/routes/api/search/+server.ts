@@ -1,7 +1,7 @@
 import { error } from "@sveltejs/kit";
 import { env } from "$env/dynamic/private";
 import crypto from "node:crypto";
-const API_KEY = env.api_key ?? crypto.randomBytes(32).toString("hex");
+export const API_KEY = env.api_key ?? crypto.randomBytes(32).toString("hex");
 console.log(API_KEY);
 
 const data = {
@@ -70,12 +70,12 @@ function logResponse(
 }
 
 // retrieve all commands
-export function GET() {
+export function GET(): Response {
   return new Response(JSON.stringify(data), { status: 200 });
 }
 
 // perform a search
-export async function POST({ request }) {
+export async function POST({ request }): Promise<Response> {
   const input: { text: string; engine: string } = await request.json();
   let { text, engine } = input;
   if (!engine) engine = "https://duckduckgo.com/?t=ffab&q=";
@@ -126,7 +126,7 @@ export async function POST({ request }) {
 }
 
 // may add many commands at once
-export async function PUT({ request }) {
+export async function PUT({ request }): Promise<Response> {
   const { message, valid } = checkApiKey(request);
   if (!valid) return new Response(message, { status: 400 });
   let input: object;
@@ -176,7 +176,7 @@ export async function PUT({ request }) {
 }
 
 // may delete multiple keys at once
-export async function DELETE({ request }) {
+export async function DELETE({ request }): Promise<Response> {
   const { message, valid } = checkApiKey(request);
   if (!valid) return new Response(message, { status: 400 });
   let input: { id: string[] };
