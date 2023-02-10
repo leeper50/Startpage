@@ -35,12 +35,13 @@ const data = {
   },
 };
 
-function isString(value: unknown): value is string {
-  return typeof value == "string";
-}
 function isBool(value: unknown): value is boolean {
   return typeof value == "boolean";
 }
+function isString(value: unknown): value is string {
+  return typeof value == "string";
+}
+
 function checkApiKey(request) {
   if (!request.headers.get("api_key")) {
     const message = "No api key in header";
@@ -138,30 +139,40 @@ export async function PUT({ request }) {
     throw error(400, "invalid json");
   }
 
-  let logAccum: string[] = [];
+  const logAccum: string[] = [];
   keys.forEach((k) => {
     // validate url and searchable
     try {
-      const url: string = input[k].url;
-      const searchable: boolean = input[k].searchable;
       const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
-      if (!isString(url) || !isBool(searchable) || !isDashed) {
+      if (
+        !isString(input[k].url) ||
+        !isBool(input[k].searchable) ||
+        !isDashed
+      ) {
         logAccum.push(`PUT - ${k} was not added`);
         console.log(`PUT - Not added: ${k}`);
         return;
       }
-      // maybe check if url is valid
-      const keyExist = k in data ? true : false;
-      data[k] = { url: url, searchable: searchable };
-      if (!keyExist) {
+
+      const exists = k in data;
+      const updatedData = input[k];
+      if (!exists) {
+        data[k] = updatedData;
         logAccum.push(`PUT - Added: ${k}`);
         console.log(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
-      } else {
+      } else if (
+        data[k].url !== updatedData.url ||
+        data[k].searchable !== updatedData.searchable
+      ) {
+        data[k] = updatedData;
         logAccum.push(`PUT - Updated: ${k}`);
         console.log(`PUT - Updated: ${k}: ${JSON.stringify(data[k])}`);
+      } else {
+        logAccum.push(`PUT - Unchanged: ${k}`);
+        console.log(`PUT - Unchanged: ${k}`);
       }
     } catch (_) {
-      return;
+      return logAccum.push(`Error - Input was ${k}`);
     }
   });
   return new Response(logAccum.join("\n"), { status: 200 });
