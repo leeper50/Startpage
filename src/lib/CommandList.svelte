@@ -45,8 +45,9 @@
     height: 98vh;
     border: 4px solid #444;
     border-radius: 4px 0 0 4px;
-    background-color: rgba(22, 22, 22, 0.75);
-    font-family: "Fira sans";
+    background-color: rgba(22, 22, 22, 0.95);
+    font-family: "Fira Sans";
+    font-weight: 400;
     width: fit-content;
   }
   h2 {

@@ -8,6 +8,10 @@
           ident: "amazon",
         },
         {
+          url: "./it",
+          ident: "files",
+        },
+        {
           url: "https://dash.dellhplaptop.xyz",
           ident: "heimdall",
         },
@@ -96,12 +100,12 @@
           ident: "cloudflare",
         },
         {
-          url: "./it",
-          ident: "files",
-        },
-        {
           url: "https://github.com/",
           ident: "github",
+        },
+        {
+          url: "https://gitlab.com/",
+          ident: "gitlab",
         },
         {
           url: "https://cloud.oracle.com/",

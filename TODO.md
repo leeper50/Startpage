@@ -8,6 +8,12 @@
 
 # ~~add status codes in api~~
 
+# ~~font still not loaded correctly~~ it loads but i hate it
+
 # add api tests 
 
 # maybe do component testing (probably setup vitest)
+
+# ~~specify in put method which were accepted and which were declined~~ actually working alright
+
+# ~~allow multiple deletions~~
