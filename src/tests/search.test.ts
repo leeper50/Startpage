@@ -2,7 +2,7 @@ import { _API_KEY, DELETE, POST, PUT } from "../routes/api/search/+server";
 import { expect, test } from "vitest";
 
 test("Post - (no engine)", async () => {
-  const queries = new Map<String, String>([
+  const queries = new Map<string, string>([
     ["test", "https://duckduckgo.com/?t=ffab&q=test"],
     ["-g", "https://www.google.com/search?q="],
     ["-g e", "https://www.google.com/search?q=e"],
@@ -31,7 +31,7 @@ test("Post - (no engine)", async () => {
 });
 
 test("Post - (engine provided)", async () => {
-  const queries = new Map<String, String>([
+  const queries = new Map<string, string>([
     ["test", "https://www.google.com/search?q=test"],
     ["-g", "https://www.google.com/search?q="],
     ["-g e", "https://www.google.com/search?q=e"],
@@ -61,7 +61,7 @@ test("Post - (engine provided)", async () => {
 });
 
 test("Put", async () => {
-  const queries = new Map<string, Object>([
+  const queries = new Map<string, { url?: any; searchable?: any }>([
     [
       "-test1",
       {
@@ -132,7 +132,7 @@ test("Put", async () => {
 });
 
 test("Delete", async () => {
-  const queries = new Map<String, String>([
+  const queries = new Map<string, string>([
     ["-pcp", "DELETE - -pcp was removed"],
     ["-NOTAREALCOMMAND", "DELETE - -NOTAREALCOMMAND was not present"],
   ]);
