@@ -30,8 +30,8 @@ const data = {
     searchable: true,
   },
   "-pcp": {
-    url: "https://pcpartpicker.com/",
-    searchable: false,
+    url: "https://pcpartpicker.com/search/?q=",
+    searchable: true,
   },
 };
 
@@ -41,7 +41,6 @@ function isBool(value: unknown): value is boolean {
 function isString(value: unknown): value is string {
   return typeof value == "string";
 }
-
 function checkApiKey(request) {
   if (!request.headers.get("api_key")) {
     const message = "No api key in header";
@@ -82,11 +81,9 @@ export async function POST({ request }): Promise<Response> {
   const logText = text;
   text = text.trim();
 
-  if (text === "-") return logResponse("post", "", logText, 400);
-
   // return regular search if no command provided
   if (!text.startsWith("-"))
-    return logResponse("post", engine + encodeURIComponent(text), logText, 200);
+    return logResponse("POST", engine + encodeURIComponent(text), logText, 200);
 
   let keyText: string = "";
   let searchText: string = "";
@@ -99,26 +96,26 @@ export async function POST({ request }): Promise<Response> {
   }
   keyText = keyText.toLowerCase();
 
-  if (data[keyText] === undefined) return logResponse("post", "", logText, 400);
+  if (!(keyText in data)) return logResponse("POST", "", logText, 400);
 
   const { url, searchable } = data[keyText];
 
   // returns url if command is not searchable
-  if (searchable == false) return logResponse("post", url, logText, 200);
+  if (searchable == false) return logResponse("POST", url, logText, 200);
 
   // returns cleaned url if no searchtext is provided
   if (searchText.trim() === "") {
-    const searchParams = ["/r/", "/input", "/results"];
+    const searchParams = ["/r/", "/input", "/results", "/search"];
     let temp = url;
     searchParams.forEach((item) => {
       temp = temp.split(item)[0];
     });
-    return logResponse("post", temp, logText, 200);
+    return logResponse("POST", temp, logText, 200);
   }
 
   // return url with search
   return logResponse(
-    "post",
+    "POST",
     url + encodeURIComponent(searchText),
     logText,
     200
@@ -172,7 +169,7 @@ export async function PUT({ request }): Promise<Response> {
       return logAccum.push(`Error - Input was ${k}`);
     }
   });
-  return logResponse("put", logAccum.join("\n"), "", 200);
+  return logResponse("PUT", logAccum.join("\n"), "", 200);
 }
 
 // may delete multiple keys at once
@@ -201,5 +198,5 @@ export async function DELETE({ request }): Promise<Response> {
     delete data[key];
     logAccum.push(`DELETE - ${key} was removed`);
   });
-  return logResponse("delete", logAccum.join("\n"), "", 200);
+  return logResponse("DELETE", logAccum.join("\n"), "", 200);
 }

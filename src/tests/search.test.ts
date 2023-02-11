@@ -4,10 +4,10 @@ import { expect, test } from "vitest";
 test("Post - (no engine)", async () => {
   const queries = new Map<string, string>([
     ["test", "https://duckduckgo.com/?t=ffab&q=test"],
-    ["-g", "https://www.google.com/search?q="],
+    ["-g", "https://www.google.com"],
     ["-g e", "https://www.google.com/search?q=e"],
-    ["-pcp", "https://pcpartpicker.com/"],
-    ["-pcp e", "https://pcpartpicker.com/"],
+    ["-pcp", "https://pcpartpicker.com"],
+    ["-pcp e", "https://pcpartpicker.com/search/?q=e"],
     ["-y", "https://www.youtube.com"],
     ["-y test", "https://www.youtube.com/results?search_query=test"],
     ["", "https://duckduckgo.com/?t=ffab&q="],
@@ -33,10 +33,10 @@ test("Post - (no engine)", async () => {
 test("Post - (engine provided)", async () => {
   const queries = new Map<string, string>([
     ["test", "https://www.google.com/search?q=test"],
-    ["-g", "https://www.google.com/search?q="],
+    ["-g", "https://www.google.com"],
     ["-g e", "https://www.google.com/search?q=e"],
-    ["-pcp", "https://pcpartpicker.com/"],
-    ["-pcp e", "https://pcpartpicker.com/"],
+    ["-pcp", "https://pcpartpicker.com"],
+    ["-pcp e", "https://pcpartpicker.com/search/?q=e"],
     ["-y", "https://www.youtube.com"],
     ["-y test", "https://www.youtube.com/results?search_query=test"],
     ["", "https://www.google.com/search?q="],
