@@ -38,7 +38,7 @@
     <button on:click={submitHandler} class="blue border">Submit</button>
   </header>
   <body>
-    <div id="submit" class="blue border">
+    <form id="submit" class="blue border">
       {#if isPut}
         <p>Put</p>
         <label for="url">Ident: </label>
@@ -59,7 +59,7 @@
         <label for="api_key">Api key pls</label>
         <input type="password" bind:value={api_key} class="border" />
       </div>
-    </div>
+    </form>
     <div class="magenta commands">
       {#key refresh}
         <CommandList />

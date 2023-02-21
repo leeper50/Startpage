@@ -71,6 +71,7 @@
     font-weight: bold;
     padding: 8px;
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     margin: 0px;
     div {
@@ -82,7 +83,8 @@
     border: none;
     font-size: inherit;
     font-weight: inherit;
-    width: 100%;
+    min-width: 200px;
+    flex-grow: 1;
     &:hover,
     &:focus {
       outline-color: #444;
