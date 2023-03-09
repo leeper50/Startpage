@@ -1,77 +1,167 @@
 <script lang="ts">
-  import CommandList from "$lib/CommandList.svelte";
-  import Links from "$lib/Links.svelte";
-  import Searchbar from "$lib/Searchbar.svelte";
-  import { fade } from "svelte/transition";
-  let visible = false;
+  import { onMount } from "svelte";
+  import { data } from "$lib/linkData";
+  import background from "$lib/images/background.webp";
+  import magnify from "$lib/images/magnify.webp";
+  import signal from "$lib/images/signal.webp";
+  let badImages = ["Handshake", "Files", "Heimdall"];
+  let ip = "",
+    search = "";
+  onMount(async () => {
+    ip = await (await fetch("https://icanhazip.com")).text();
+    let res = await (await fetch(`https://ipapi.co/${ip}/json`)).json();
+    ip = ip + ` ${res.city}`;
+  });
+  function submitHandler() {
+    fetch("/api/search", {
+      method: "POST",
+      body: JSON.stringify({
+        text: search,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.text())
+      .then((text) => {
+        if (text !== "") document.location.href = text;
+        else alert("Command not valid!");
+      });
+  }
 </script>
 
-<body>
-  <header>
-    <button id="nav-button" on:click={() => (visible = !visible)}>
-      <div />
-      <div />
-      <div />
-    </button>
-  </header>
+<div class="content" style="background-image: url('{background}')">
   <main>
-    <Searchbar />
-    <Links />
-  </main>
-  {#if visible}
-    <div id="sidebar" class="magenta" transition:fade={{ duration: 250 }}>
-      <CommandList />
+    <form on:submit|preventDefault={submitHandler}>
+      <img src={magnify} alt="Magnifying Glass" />
+      <!-- svelte-ignore a11y-autofocus -->
+      <input
+        type="text"
+        autofocus={true}
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
+        bind:value={search}
+        placeholder="Search"
+      />
+    </form>
+    <div id="links">
+      {#each data as { id, list }}
+        <div id="link-box">
+          <p>{id}</p>
+          {#each list as { url, ident }}
+            <span style="display: flex;">
+              <a href={url}>
+                {#if badImages.includes(ident)}
+                  <img alt="{ident} icon" src={`/icons/${ident}.ico`} />
+                {:else}
+                  <img
+                    alt=""
+                    src={"http://www.google.com/s2/favicons?sz=32&domain=" +
+                      url}
+                  />{/if}
+                {ident}
+              </a>
+            </span>
+          {/each}
+        </div>
+      {/each}
     </div>
-  {/if}
-</body>
+  </main>
+  <footer>
+    <img src={signal} alt="Signal icon" />
+    {ip}
+  </footer>
+</div>
 
 <style lang="scss">
-  body {
-    width: 100%;
+  @media (min-width: 768px) and (min-aspect-ratio: 1) {
+    .content {
+      height: 100%;
+    }
+  }
+  .content {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "Fira Sans";
+    font-size: 24px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    background-color: #222;
+    justify-content: center;
+    color: #d4d4d3;
   }
   main {
     display: flex;
     flex-direction: column;
-    font-family: Arial, monospace;
-    width: 75%;
-    gap: 4px;
-    margin: 12px;
+    justify-content: center;
+    margin-top: auto;
+    gap: 0px;
   }
-  header {
-    position: absolute;
-    top: 0px;
-    width: 100%;
+  form {
+    display: flex;
+    gap: 12px;
+    margin: 0;
+    img {
+      filter: invert(85%);
+      height: 32px;
+    }
+    input[type="text"] {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: #939391;
+      font-family: inherit;
+      font-size: 24px;
+      width: 25%;
+      &::placeholder {
+        font-weight: 600;
+      }
+    }
   }
-  #nav-button {
-    padding: 0;
-    margin: 12px;
-    background-color: inherit;
-    border: 0;
+  #links {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px 200px;
+    font-weight: 600;
+  }
+  #link-box {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    &:hover {
-      cursor: pointer;
+    gap: 20px;
+    font-weight: 300;
+  }
+  footer {
+    width: 100%;
+    display: flex;
+    margin-top: auto;
+    gap: 8px;
+    min-height: 34px;
+    img {
+      filter: invert(80%);
     }
-    div {
-      width: 24px;
-      border: 2px solid #888;
+  }
+  a {
+    margin-left: 5px;
+    color: inherit;
+    text-transform: capitalize;
+    text-decoration: none;
+    display: flex;
+    gap: 8px;
+    &:hover {
+      color: #939391;
+    }
+    img {
+      filter: grayscale(60%);
+      height: 32px;
       border-radius: 4px;
     }
   }
-  #sidebar {
-    position: absolute;
-    right: 8px;
-    height: 98vh;
-    border: 4px solid #444;
-    border-radius: 4px;
-    background-color: rgba(22, 22, 22, 0.95);
-    font-family: "Fira Sans";
-    font-weight: 400;
-    width: fit-content;
+  p {
+    color: #939391;
+    letter-spacing: 5px;
+    text-transform: uppercase;
   }
 </style>

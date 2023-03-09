@@ -35,6 +35,13 @@ const data = {
   },
 };
 
+const engineMap = new Map([
+  ["Brave", "https://search.brave.com/search?q="],
+  ["Duck", "https://duckduckgo.com/?q="],
+  ["Google", "https://www.google.com/search?q="],
+  ["Searx", "https://searx.be/search?q="]
+]);
+
 function isBool(value: unknown): value is boolean {
   return typeof value == "boolean";
 }
@@ -77,7 +84,7 @@ export function GET(): Response {
 export async function POST({ request }): Promise<Response> {
   const input: { text: string; engine: string } = await request.json();
   let { text, engine } = input;
-  if (!engine) engine = "https://duckduckgo.com/?t=ffab&q=";
+  engine = engineMap.get(engine) ?? "https://duckduckgo.com/?t=ffab&q="
   const logText = text;
   text = text.trim();
 

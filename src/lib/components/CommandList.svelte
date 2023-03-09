@@ -26,13 +26,15 @@
       <li>
         {id}
         <span> &rightarrow;</span>
-        {#if param.searchable}
-          {param.url} <br />
-          <span class="tab">Searachble: True</span>
-        {:else}
-          {param.url} <br />
-          <span class="tab">Searachble: False</span>
-        {/if}
+        {param.url} <br />
+        <span class="tab">
+          Searachble:
+          {#if param.searchable}
+            True
+          {:else}
+            False
+          {/if}
+        </span>
       </li>
     {/each}
   </ul>

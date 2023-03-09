@@ -1,5 +1,5 @@
 <script lang="ts">
-  import CommandList from "$lib/CommandList.svelte";
+  import CommandList from "$lib/components/CommandList.svelte";
 
   let ident: string = "";
   let url: string = "";
