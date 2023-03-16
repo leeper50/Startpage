@@ -1,3 +1,7 @@
+<script lang="ts">
+  import "@fontsource/fira-sans/200.css";
+</script>
+
 <body class="blue">
   <div class="main">
     <h1>Da configs 😳</h1>

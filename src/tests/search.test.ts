@@ -50,7 +50,7 @@ test("Post - (engine provided)", async () => {
         json: () => {
           return {
             text: search,
-            engine: "https://www.google.com/search?q=",
+            engine: "Google",
           };
         },
       },

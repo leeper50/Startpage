@@ -1,4 +1,4 @@
-FROM node:19.1 as build
+FROM node:current as build
 WORKDIR /app
 COPY package.json .
 COPY *config* .
@@ -7,10 +7,12 @@ COPY static/ static/
 RUN npm install
 RUN npm run build
 
-FROM node:19.1-alpine as main
+FROM node:current-alpine as main
 WORKDIR /app
 COPY package.json .
 COPY --from=build /app/build .
-ARG api_key
+ARG search_api_key
+ARG rss_api_key
+ARG rss_url
 EXPOSE 3000
 CMD ["node", "index.js"]

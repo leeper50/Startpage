@@ -1,0 +1,54 @@
+- title: Office
+  list:
+    - url: https://mail.google.com/mail/u/0/
+      id: Gmail
+    - url: https://app.joinhandshake.com/
+      id: Handshake
+    - url: https://www.indeed.com/
+      id: Indeed
+    - url: https://www.linkedin.com/
+      id: Linkedin
+    - url: https://www.outlook.com/
+      id: Outlook
+    - url: https://mail.protonmail.com/inbox/
+      id: Protonmail
+    - url: https://mail.tutanota.com/
+      id: Tutanota
+    - url: https://careers.utpb.edu/
+      id: Utpb Career
+- title: Media
+  list:
+    - url: https://mastodon.world
+      id: Mastodon
+    - url: https://messages.google.com/web/conversations
+      id: Messages
+    - url: https://bin.dellhplaptop.xyz/
+      id: Paste
+    - url: https://www.reddit.com/
+      id: Reddit
+    - url: https://www.reddit.com/r/buildapcsales/new
+      id: R/Buildapcsales
+    - url: https://rss.dellhplaptop.xyz/
+      id: Rss
+    - url: https://send.dellhplaptop.xyz/
+      id: Send
+    - url: https://tech.lgbt
+      id: Techstodon
+    - url: https://www.twitch.tv/directory/following/
+      id: Twitch
+    - url: https://music.youtube.com/
+      id: Youtube Music
+- title: Hobby
+  list:
+    - url: https://smile.amazon.com/
+      id: Amazon
+    - url: https://dash.cloudflare.com/
+      id: Cloudflare
+    - url: https://github.com/
+      id: Github
+    - url: https://gitlab.com/
+      id: Gitlab
+    - url: https://cloud.oracle.com/
+      id: Oracle
+    - url: https://login.tailscale.com/admin/machines
+      id: Tailscale

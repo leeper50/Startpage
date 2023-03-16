@@ -1,12 +1,16 @@
 import { error } from "@sveltejs/kit";
 import { env } from "$env/dynamic/private";
 import crypto from "node:crypto";
-export const _API_KEY = env.api_key ?? crypto.randomBytes(32).toString("hex");
+export const _API_KEY = env.search_api_key ?? crypto.randomBytes(32).toString("hex");
 console.log(_API_KEY);
 
 const data = {
   "-4": {
     url: "https://boards.4channel.org/",
+    searchable: true,
+  },
+  "-d": {
+    url: "https://hub.docker.com/search?q=",
     searchable: true,
   },
   "-g": {
@@ -22,6 +26,10 @@ const data = {
     searchable: true,
   },
   "-w": {
+    url: "https://en.wikipedia.org/wiki/",
+    searchable: true,
+  },
+  "-wa": {
     url: "https://www.wolframalpha.com/input/?i=",
     searchable: true,
   },
@@ -76,9 +84,9 @@ function logResponse(
 }
 
 // retrieve all commands
-export function GET(): Response {
-  return new Response(JSON.stringify(data), { status: 200 });
-}
+// export function GET(): Response {
+//   return new Response(JSON.stringify(data), { status: 200 });
+// }
 
 // perform a search
 export async function POST({ request }): Promise<Response> {
@@ -112,7 +120,7 @@ export async function POST({ request }): Promise<Response> {
 
   // returns cleaned url if no searchtext is provided
   if (searchText.trim() === "") {
-    const searchParams = ["/r/", "/input", "/results", "/search"];
+    const searchParams = ["/r/", "/input", "/results", "/search", "/wiki"];
     let temp = url;
     searchParams.forEach((item) => {
       temp = temp.split(item)[0];

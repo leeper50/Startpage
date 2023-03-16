@@ -1,5 +1,6 @@
 <script lang="ts">
-  import CommandList from "$lib/components/CommandList.svelte";
+  import "@fontsource/fira-sans/400.css";
+  // import CommandList from "$lib/components/CommandList.svelte";
 
   let ident: string = "";
   let url: string = "";
@@ -61,9 +62,9 @@
       </div>
     </form>
     <div class="magenta commands">
-      {#key refresh}
+      <!-- {#key refresh}
         <CommandList />
-      {/key}
+      {/key} -->
     </div>
   </body>
 </html>
