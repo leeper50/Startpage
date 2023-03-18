@@ -68,18 +68,17 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    // gap: 20px 200px;
+    gap: 0px 32px;
     font-weight: 600;
   }
   .link-box {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    flex: 1 0 0px;
     font-weight: 300;
   }
   .rss {
-    min-width: 64px;
+    min-width: 128px;
     max-width: 1024px;
     flex: 4 0 0px;
   }
