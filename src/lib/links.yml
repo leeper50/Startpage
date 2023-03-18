@@ -48,6 +48,8 @@
       id: Amazon
     - url: https://dash.cloudflare.com/
       id: Cloudflare
+    - url: https://www.duolingo.com/
+      id: Duolingo
     - url: https://github.com/
       id: Github
     - url: https://gitlab.com/
