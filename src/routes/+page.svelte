@@ -80,8 +80,8 @@
   }
   .rss {
     min-width: 64px;
-    max-width: 720px;
-    flex: 3 0 0px;
+    max-width: 1024px;
+    flex: 4 0 0px;
   }
   a {
     margin-left: 5px;

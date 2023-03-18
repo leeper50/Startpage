@@ -18,6 +18,10 @@
       id: Utpb Career
 - title: Media
   list:
+    - url: ./it
+      id: Files
+    - url: https://dash.dellhplaptop.xyz
+      id: Heimdall
     - url: https://mastodon.world
       id: Mastodon
     - url: https://messages.google.com/web/conversations
