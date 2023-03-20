@@ -6,7 +6,15 @@
   import Rss from "$lib/components/Rss.svelte";
   import type { PageData } from "./$types";
   export let data: PageData;
-  let badImages = ["Handshake", "Files", "Heimdall", "Paste", "Rss", "Send"];
+  let badImages = [
+    "Handshake",
+    "Files",
+    "Heimdall",
+    "Paste",
+    "Rss",
+    "Send",
+    "Gitea",
+  ];
   function get_image(url: string, id: string) {
     if (badImages.includes(id)) return `/icons/${id}.png`;
     else return `https://www.google.com/s2/favicons?sz=32&domain=${url}`;
@@ -40,7 +48,7 @@
 </div>
 
 <style lang="scss">
-  @media (min-width: 529px) or (min-aspect-ratio: 8/9) {
+  @media (min-width: 1022px) {
     .content {
       height: 100%;
     }

@@ -17,6 +17,10 @@ const data = {
     url: "https://www.google.com/search?q=",
     searchable: true,
   },
+  "-q": {
+    url: "https://quay.io/search?q=",
+    searchable: true,
+  },
   "-r": {
     url: "https://www.reddit.com/r/",
     searchable: true,
