@@ -54,8 +54,6 @@
       id: Github
     - url: https://gitlab.com/
       id: Gitlab
-    - url: https://git.dellhplaptop.xyz/
-      id: Gitea
     - url: https://cloud.oracle.com/
       id: Oracle
     - url: https://login.tailscale.com/admin/machines

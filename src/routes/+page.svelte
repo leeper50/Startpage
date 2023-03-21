@@ -6,15 +6,7 @@
   import Rss from "$lib/components/Rss.svelte";
   import type { PageData } from "./$types";
   export let data: PageData;
-  let badImages = [
-    "Handshake",
-    "Files",
-    "Heimdall",
-    "Paste",
-    "Rss",
-    "Send",
-    "Gitea",
-  ];
+  let badImages = ["Handshake", "Files", "Heimdall", "Paste", "Rss", "Send"];
   function get_image(url: string, id: string) {
     if (badImages.includes(id)) return `/icons/${id}.png`;
     else return `https://www.google.com/s2/favicons?sz=32&domain=${url}`;
