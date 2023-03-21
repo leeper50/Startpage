@@ -28,7 +28,9 @@
           {#each list as { url, id }}
             <span style="display: flex;">
               <a href={url}>
-                <img alt="{id} icon" src={get_image(url, id)} />
+                <div class="image">
+                  <img alt="{id} icon" src={get_image(url, id)} />
+                </div>
                 {id}
               </a>
             </span>
@@ -40,7 +42,7 @@
 </div>
 
 <style lang="scss">
-  @media (min-width: 1022px) {
+  @media (min-width: 1003px) {
     .content {
       height: 100%;
     }
@@ -76,6 +78,11 @@
     flex-direction: column;
     gap: 20px;
     font-weight: 300;
+  }
+  .image {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
   }
   .rss {
     min-width: 128px;

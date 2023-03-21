@@ -5,10 +5,12 @@
 <p>News</p>
 {#each data as { title, url }}
   <a href={url} {title}>
-    <img
-      alt=""
-      src={`https://www.google.com/s2/favicons?sz=32&domain=${url}`}
-    />
+    <span class="image">
+      <img
+        alt=""
+        src={`https://www.google.com/s2/favicons?sz=32&domain=${url}`}
+      />
+    </span>
     {title}
   </a>
 {/each}
@@ -25,15 +27,20 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     text-decoration: none;
+    margin: 0;
+    padding: 0;
     &:hover {
       color: #939391;
     }
   }
+  .image {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    vertical-align: middle;
+  }
   img {
     filter: grayscale(60%);
-    max-height: 32px;
-    max-width: 32px;
     border-radius: 4px;
-    vertical-align: middle;
   }
 </style>
