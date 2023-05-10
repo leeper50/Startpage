@@ -34,8 +34,8 @@
       id: R/Buildapcsales
     - url: https://rss.dellhplaptop.xyz/
       id: Rss
-    - url: https://send.dellhplaptop.xyz/
-      id: Send
+    - url: https://www.swisstransfer.com/en-us
+      id: File Transfer
     - url: https://tech.lgbt
       id: Techstodon
     - url: https://www.twitch.tv/directory/following/
