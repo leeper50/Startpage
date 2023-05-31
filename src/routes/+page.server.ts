@@ -40,7 +40,7 @@ export const load = (async ({ params }) => {
       if (!res.ok) console.log("Problem with RSS config");
       valid = false;
     });
-    // Object will have at least 1 member
-    // @ts-ignore
-    return {valid: valid, items: data}
+  // Object will have at least 1 member
+  // @ts-ignore
+  return { valid: valid, items: data };
 }) satisfies PageServerLoad;
