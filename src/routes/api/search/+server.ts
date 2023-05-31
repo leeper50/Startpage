@@ -1,7 +1,8 @@
 import { error } from "@sveltejs/kit";
 import { env } from "$env/dynamic/private";
 import crypto from "node:crypto";
-export const _API_KEY = env.search_api_key ?? crypto.randomBytes(32).toString("hex");
+export const _API_KEY =
+  env.search_api_key ?? crypto.randomBytes(32).toString("hex");
 console.log(_API_KEY);
 
 const data = {
@@ -55,7 +56,7 @@ const engineMap = new Map([
   ["Brave", "https://search.brave.com/search?q="],
   ["Duck", "https://duckduckgo.com/?q="],
   ["Google", "https://www.google.com/search?q="],
-  ["Searx", "https://searx.be/search?q="]
+  ["Searx", "https://searx.be/search?q="],
 ]);
 
 function isBool(value: unknown): value is boolean {
@@ -92,15 +93,15 @@ function logResponse(
 }
 
 // retrieve all commands
-// export function GET(): Response {
-//   return new Response(JSON.stringify(data), { status: 200 });
-// }
+export function GET(): Response {
+  return new Response(JSON.stringify(data), { status: 200 });
+}
 
 // perform a search
 export async function POST({ request }): Promise<Response> {
   const input: { text: string; engine: string } = await request.json();
   let { text, engine } = input;
-  engine = engineMap.get(engine) ?? "https://duckduckgo.com/?t=ffab&q="
+  engine = engineMap.get(engine) ?? "https://duckduckgo.com/?t=ffab&q=";
   const logText = text;
   text = text.trim();
 
@@ -128,7 +129,14 @@ export async function POST({ request }): Promise<Response> {
 
   // returns cleaned url if no searchtext is provided
   if (searchText.trim() === "") {
-    const searchParams = ["/r/", "/input", "/results", "/search", "/wiki", "/c/"];
+    const searchParams = [
+      "/r/",
+      "/input",
+      "/results",
+      "/search",
+      "/wiki",
+      "/c/",
+    ];
     let temp = url;
     searchParams.forEach((item) => {
       temp = temp.split(item)[0];

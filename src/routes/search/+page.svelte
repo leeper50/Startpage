@@ -1,6 +1,6 @@
 <script lang="ts">
   import "@fontsource/fira-sans/400.css";
-  // import CommandList from "$lib/components/CommandList.svelte";
+  import CommandList from "$lib/components/CommandList.svelte";
 
   let ident: string = "";
   let url: string = "";
@@ -30,7 +30,7 @@
     url = "";
     searchable = true;
     isPut = !isPut;
-  }
+  };
 </script>
 
 <html lang="en">
@@ -62,9 +62,9 @@
       </div>
     </form>
     <div class="magenta commands">
-      <!-- {#key refresh}
+      {#key refresh}
         <CommandList />
-      {/key} -->
+      {/key}
     </div>
   </body>
 </html>
@@ -133,11 +133,11 @@
     background-color: #ccc;
     -webkit-transition: 0.4s;
     transition: 0.4s;
-      border-radius: 34px;
+    border-radius: 34px;
     &:before {
       position: absolute;
       content: "";
-        border-radius: 50%;
+      border-radius: 50%;
       height: 26px;
       width: 26px;
       left: 4px;

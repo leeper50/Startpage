@@ -1,12 +1,12 @@
 <script lang="ts">
   import "@fontsource/fira-sans/600.css";
-  // import CommandList from "$lib/components/CommandList.svelte";
-  // import { fade } from "svelte/transition";
+  import CommandList from "$lib/components/CommandList.svelte";
+  import { fade } from "svelte/transition";
   import { engine } from "$lib/stores";
   import { data } from "$lib/linkData";
-  // let visible = false;
+  let visible = false;
   let search: string = "";
-  const searchEngines = ["Brave", "Duck", "Google", "Searx"]
+  const searchEngines = ["Brave", "Duck", "Google", "Searx"];
   const submitHandler = () => {
     fetch("/api/search", {
       method: "POST",
@@ -27,7 +27,7 @@
 </script>
 
 <body>
-  <!-- <header>
+  <header>
     <button id="nav-button" on:click={() => (visible = !visible)}>
       <div />
       <div />
@@ -38,7 +38,7 @@
     <div id="sidebar" class="magenta" transition:fade={{ duration: 250 }}>
       <CommandList />
     </div>
-  {/if} -->
+  {/if}
   <main>
     <!-- SearchBox -->
     <form class="border" on:submit|preventDefault={submitHandler}>
