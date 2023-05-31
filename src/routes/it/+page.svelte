@@ -6,8 +6,8 @@
   <div class="main">
     <h1>Da configs 😳</h1>
     <hr />
-    <a href="files/packages.json" download>scoop packages</a>
-    - this is the scoop package file
+    <a href="files/Packages.zip" download>windows packages</a>
+    - this is a list of windows packages
     <br />
     <a href="files/MyMacros.ahk" download>autohotkey scripts</a>
     - all my silly little shortcuts
