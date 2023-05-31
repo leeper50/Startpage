@@ -17,6 +17,10 @@ const data = {
     url: "https://www.google.com/search?q=",
     searchable: true,
   },
+  "-l": {
+    url: "https://lemmy.ml/c/",
+    searchable: true,
+  },
   "-q": {
     url: "https://quay.io/search?q=",
     searchable: true,
@@ -124,7 +128,7 @@ export async function POST({ request }): Promise<Response> {
 
   // returns cleaned url if no searchtext is provided
   if (searchText.trim() === "") {
-    const searchParams = ["/r/", "/input", "/results", "/search", "/wiki"];
+    const searchParams = ["/r/", "/input", "/results", "/search", "/wiki", "/c/"];
     let temp = url;
     searchParams.forEach((item) => {
       temp = temp.split(item)[0];

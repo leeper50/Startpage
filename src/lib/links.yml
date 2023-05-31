@@ -20,8 +20,12 @@
   list:
     - url: ./it
       id: Files
+    - url: https://www.swisstransfer.com/en-us
+      id: File Transfer
     - url: https://dash.dellhplaptop.xyz
       id: Heimdall
+    - url: https://lemmy.ml
+      id: Lemmy
     - url: https://mastodon.world
       id: Mastodon
     - url: https://messages.google.com/web/conversations
@@ -34,8 +38,6 @@
       id: R/Buildapcsales
     - url: https://rss.dellhplaptop.xyz/
       id: Rss
-    - url: https://www.swisstransfer.com/en-us
-      id: File Transfer
     - url: https://tech.lgbt
       id: Techstodon
     - url: https://www.twitch.tv/directory/following/
