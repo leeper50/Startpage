@@ -10,6 +10,7 @@
     "Handshake",
     "Files",
     "Heimdall",
+    "Homepage",
     "Linkedin",
     "Paste",
     "Rss",

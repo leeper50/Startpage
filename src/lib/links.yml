@@ -22,8 +22,8 @@
       id: Files
     - url: https://www.swisstransfer.com/en-us
       id: File Transfer
-    - url: https://dash.dellhplaptop.xyz
-      id: Heimdall
+    - url: https://home.dellhplaptop.xyz
+      id: Homepage
     - url: https://lemmy.ml
       id: Lemmy
     - url: https://mastodon.world
