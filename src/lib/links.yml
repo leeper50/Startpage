@@ -32,10 +32,6 @@
       id: Messages
     - url: https://bin.dellhplaptop.xyz/
       id: Paste
-    - url: https://www.reddit.com/
-      id: Reddit
-    - url: https://www.reddit.com/r/buildapcsales/new
-      id: R/Buildapcsales
     - url: https://rss.dellhplaptop.xyz/
       id: Rss
     - url: https://tech.lgbt

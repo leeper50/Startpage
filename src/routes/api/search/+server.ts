@@ -26,10 +26,6 @@ const data = {
     url: "https://quay.io/search?q=",
     searchable: true,
   },
-  "-r": {
-    url: "https://www.reddit.com/r/",
-    searchable: true,
-  },
   "-t": {
     url: "https://translate.google.com/?sl=auto&tl=en&text=",
     searchable: true,
@@ -130,7 +126,6 @@ export async function POST({ request }): Promise<Response> {
   // returns cleaned url if no searchtext is provided
   if (searchText.trim() === "") {
     const searchParams = [
-      "/r/",
       "/input",
       "/results",
       "/search",
