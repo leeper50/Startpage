@@ -9,6 +9,7 @@
   let badImages = [
     "Handshake",
     "Files",
+    "Gitea",
     "Heimdall",
     "Homepage",
     "Linkedin",

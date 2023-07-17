@@ -22,9 +22,11 @@
       id: Files
     - url: https://www.swisstransfer.com/en-us
       id: File Transfer
+    - url: https://git.dellhplaptop.xyz
+      id: Gitea
     - url: https://home.dellhplaptop.xyz
       id: Homepage
-    - url: https://lemmy.world
+    - url: https://sopuli.xyz/
       id: Lemmy
     - url: https://mastodon.world
       id: Mastodon
