@@ -18,14 +18,8 @@
       id: Utpb Career
 - title: Media
   list:
-    - url: ./it
-      id: Files
     - url: https://www.swisstransfer.com/en-us
       id: File Transfer
-    - url: https://git.dellhplaptop.xyz
-      id: Gitea
-    - url: https://home.dellhplaptop.xyz
-      id: Homepage
     - url: https://sopuli.xyz/
       id: Lemmy
     - url: https://mastodon.world
@@ -50,10 +44,16 @@
       id: Cloudflare
     - url: https://www.duolingo.com/
       id: Duolingo
+    - url: ./it
+      id: Files
+    - url: https://git.dellhplaptop.xyz
+      id: Gitea
     - url: https://github.com/
       id: Github
     - url: https://gitlab.com/
       id: Gitlab
+    - url: https://home.dellhplaptop.xyz
+      id: Homepage
     - url: https://cloud.oracle.com/
       id: Oracle
     - url: https://login.tailscale.com/admin/machines
