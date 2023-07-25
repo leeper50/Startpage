@@ -2,7 +2,6 @@ import type { PageServerLoad } from "./$types";
 import { env } from "$env/dynamic/private";
 export const _RSS_API_KEY = env.rss_api_key ?? "";
 export const _RSS_URL = env.rss_url ?? "";
-export const prerender = true;
 
 export const load = (async ({ params }) => {
   if (!_RSS_API_KEY || !_RSS_URL) return { valid: false };
