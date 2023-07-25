@@ -22,7 +22,7 @@
       id: File Transfer
     - url: https://sopuli.xyz/
       id: Lemmy
-    - url: https://mastodon.world
+    - url: https://mastodon.world/
       id: Mastodon
     - url: https://messages.google.com/web/conversations
       id: Messages
@@ -30,7 +30,7 @@
       id: Paste
     - url: https://rss.dellhplaptop.xyz/
       id: Rss
-    - url: https://tech.lgbt
+    - url: https://tech.lgbt/
       id: Techstodon
     - url: https://www.twitch.tv/directory/following/
       id: Twitch
@@ -46,13 +46,13 @@
       id: Duolingo
     - url: ./it
       id: Files
-    - url: https://git.dellhplaptop.xyz
+    - url: https://git.dellhplaptop.xyz/
       id: Gitea
     - url: https://github.com/
       id: Github
     - url: https://gitlab.com/
       id: Gitlab
-    - url: https://home.dellhplaptop.xyz
+    - url: https://home.dellhplaptop.xyz/
       id: Homepage
     - url: https://cloud.oracle.com/
       id: Oracle

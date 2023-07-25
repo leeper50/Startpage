@@ -10,16 +10,14 @@
     "Handshake",
     "Files",
     "Gitea",
-    "Heimdall",
+    "Gmail",
     "Homepage",
-    "Linkedin",
     "Paste",
     "Rss",
-    "Send",
   ];
   function get_image(url: string, id: string) {
     if (badImages.includes(id)) return `/icons/${id}.png`;
-    else return `https://www.google.com/s2/favicons?sz=32&domain=${url}`;
+    else return `/images/${url.slice(8, url.indexOf("/", 9))}`;
   }
 </script>
 
