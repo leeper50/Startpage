@@ -13,6 +13,7 @@
     "Gmail",
     "Homepage",
     "Paste",
+    "Paycom",
     "Rss",
   ];
   function get_image(url: string, id: string) {
