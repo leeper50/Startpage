@@ -18,12 +18,24 @@ const data = {
     url: "https://www.google.com/search?q=",
     searchable: true,
   },
+  "-i": {
+    url: "https://icanhazip.com",
+    searchable: true,
+  },
   "-l": {
-    url: "https://lemmy.ml/c/",
+    url: "https://sopuli.xyz/search?type=Communities&listingType=All&page=1&sort=TopAll&q=",
+    searchable: true,
+  },
+  "-pcp": {
+    url: "https://pcpartpicker.com/search/?q=",
     searchable: true,
   },
   "-q": {
     url: "https://quay.io/search?q=",
+    searchable: true,
+  },
+  "-r": {
+    url: "https://old.reddit.com/r/",
     searchable: true,
   },
   "-t": {
@@ -42,10 +54,6 @@ const data = {
     url: "https://www.youtube.com/results?search_query=",
     searchable: true,
   },
-  "-pcp": {
-    url: "https://pcpartpicker.com/search/?q=",
-    searchable: true,
-  },
 };
 
 const engineMap = new Map([
@@ -61,7 +69,7 @@ function isBool(value: unknown): value is boolean {
 function isString(value: unknown): value is string {
   return typeof value == "string";
 }
-function checkApiKey(request) {
+function checkApiKey(request: Request) {
   if (!request.headers.get("api_key")) {
     const message = "No api key in header";
     console.log(message);
