@@ -56,7 +56,7 @@
       id: Homepage
     - url: https://cloud.oracle.com/
       id: Oracle
-    - url: https://www.paycomonline.net/v4/ats/web.php/application/MyApplications
+    - url: https://www.paycomonline.net/v4/ee/web.php/app/1
       id: Paycom
     - url: https://login.tailscale.com/admin/machines
       id: Tailscale
