@@ -4,6 +4,7 @@ import { Fallback } from "./fallback";
 import type { RedisClientType } from "@redis/client";
 export const _REDIS_HOST = env.redis_host ?? "redis";
 export const _REDIS_PORT = env.redis_port ?? "6379";
+export const _REDIS_PASS = env.redis_pass ?? "";
 
 export let client: RedisClientType | Fallback;
 
@@ -63,6 +64,7 @@ try {
       host: _REDIS_HOST,
       port: parseInt(_REDIS_PORT),
     },
+    password: _REDIS_PASS
   });
   await client.connect();
   Object.entries(starting_data).forEach((e) => {
