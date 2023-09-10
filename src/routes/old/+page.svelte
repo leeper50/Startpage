@@ -1,19 +1,10 @@
 <script lang="ts">
   import "@fontsource/fira-sans/600.css";
-  import CommandList from "$lib/components/CommandList.svelte";
-  import { fade } from "svelte/transition";
-  import { engine } from "$lib/stores";
   import { data } from "$lib/linkData";
-  let visible = false;
   let search: string = "";
-  const searchEngines = ["Brave", "Duck", "Google", "Searx"];
   const submitHandler = () => {
-    fetch("/api/search", {
-      method: "POST",
-      body: JSON.stringify({
-        text: search,
-        engine: $engine,
-      }),
+    fetch(`/api/search/${search}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -27,18 +18,6 @@
 </script>
 
 <body>
-  <header>
-    <button id="nav-button" on:click={() => (visible = !visible)}>
-      <div />
-      <div />
-      <div />
-    </button>
-  </header>
-  {#if visible}
-    <div id="sidebar" class="magenta" transition:fade={{ duration: 250 }}>
-      <CommandList />
-    </div>
-  {/if}
   <main>
     <!-- SearchBox -->
     <form class="border" on:submit|preventDefault={submitHandler}>
@@ -59,11 +38,6 @@
         spellcheck="false"
         bind:value={search}
       />
-      <select bind:value={$engine} class="blue border">
-        {#each searchEngines as engine}
-          <option value={engine}>{engine}</option>
-        {/each}
-      </select>
     </form>
     <!-- LinkBox -->
     <div class="container">
@@ -105,11 +79,6 @@
     gap: 4px;
     margin: 12px;
   }
-  header {
-    position: absolute;
-    top: 0px;
-    width: 100%;
-  }
   // ------------ SearchBox ------------
   form {
     font-size: 1.5rem;
@@ -138,11 +107,6 @@
       border-radius: 2px;
     }
   }
-  select {
-    background-color: inherit;
-    font-family: inherit;
-    font-size: 1rem;
-  }
   // ------------ LinkBox ------------
   .container {
     display: flex;
@@ -170,42 +134,6 @@
     text-decoration: none;
     &:hover {
       color: #dc322f;
-    }
-  }
-  // ------------ NavButton ------------
-  #nav-button {
-    padding: 0;
-    margin: 12px;
-    background-color: inherit;
-    border: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    &:hover {
-      cursor: pointer;
-    }
-    div {
-      width: 24px;
-      border: 2px solid #888;
-      border-radius: 4px;
-    }
-  }
-  #sidebar {
-    position: absolute;
-    right: 0.5em;
-    top: 0.5em;
-    border: 4px solid #444;
-    border-radius: 4px;
-    background-color: rgba(22, 22, 22, 0.95);
-    font-family: "Fira Sans";
-    font-weight: 400;
-    width: fit-content;
-  }
-  @media (max-aspect-ratio: 1/1) {
-    #sidebar {
-      top: 30%;
-      height: auto;
-      right: auto;
     }
   }
 </style>
