@@ -104,17 +104,22 @@ export async function PUT({ request }): Promise<Response> {
         logAccum.push(`PUT - ${k} was not added`);
       }
 
-      const exists = client.exists(k);
+      const exists = await client.exists(k);
       const updatedData = {
         url: input[k].url,
         searchable: input[k].searchable.toString(),
       };
-      if (await exists) {
-        client.hSet(k, updatedData);
-        logAccum.push(`PUT - Changed: ${k}: ${JSON.stringify(updatedData)}`);
-      } else {
-        logAccum.push(`PUT - Not Added: ${k}`);
+      if (!exists) {
+        logAccum.push(`PUT - Not Present: ${k}`);
+        continue;
       }
+      let presentData = await client.hGetAll(k);
+      if (JSON.stringify(presentData) === JSON.stringify(updatedData)) {
+        logAccum.push(`PUT - Unchanged: ${k}: ${JSON.stringify(updatedData)}`);
+        continue;
+      }
+      client.hSet(k, updatedData);
+      logAccum.push(`PUT - Changed: ${k}: ${JSON.stringify(updatedData)}`);
     } catch (_) {
       logAccum.push(`Error - Input was ${k}`);
     }
