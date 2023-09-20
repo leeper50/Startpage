@@ -13,7 +13,7 @@ function logResponse(message: string, request: string, status: number) {
 // perform a search
 export async function GET({ params }): Promise<Response> {
   let text = params.q;
-  let engine = "https://duckduckgo.com/?t=ffab&q=";
+  const engine = "https://duckduckgo.com/?t=ffab&q=";
   const logText = text;
   text = text.trim();
 

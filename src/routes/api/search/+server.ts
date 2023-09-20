@@ -52,7 +52,7 @@ export async function GET(): Promise<Response> {
 
 // add commands
 export async function POST({ request }): Promise<Response> {
-  let { keys, input } = await validateInput(request);
+  const { keys, input } = await validateInput(request);
 
   const logAccum: string[] = [];
   for (const i in keys) {
@@ -88,7 +88,7 @@ export async function POST({ request }): Promise<Response> {
 
 // update commands
 export async function PUT({ request }): Promise<Response> {
-  let { keys, input } = await validateInput(request);
+  const { keys, input } = await validateInput(request);
 
   const logAccum: string[] = [];
   for (const i in keys) {
@@ -113,7 +113,7 @@ export async function PUT({ request }): Promise<Response> {
         logAccum.push(`PUT - Not Present: ${k}`);
         continue;
       }
-      let presentData = await client.hGetAll(k);
+      const presentData = await client.hGetAll(k);
       if (JSON.stringify(presentData) === JSON.stringify(updatedData)) {
         logAccum.push(`PUT - Unchanged: ${k}: ${JSON.stringify(updatedData)}`);
         continue;
@@ -129,7 +129,7 @@ export async function PUT({ request }): Promise<Response> {
 
 // delete commands
 export async function DELETE({ request }): Promise<Response> {
-  let { input } = await validateInput(request);
+  const { input } = await validateInput(request);
   const logAccum: string[] = [];
   for (const i in input["id"]) {
     const key = input["id"][i];
