@@ -1,47 +1,46 @@
 <script lang="ts">
   import "@fontsource/fira-sans/400.css";
-  import Radio from "$lib/components/Radio.svelte";
-  import { api_key } from "./stores";
-  const options = ["Post", "Put", "Delete"];
-  let method = "Post";
+
   let ident: string = "";
   let url: string = "";
   let searchable: boolean = true;
-  let response = "";
+  let isPut: boolean = true;
+  let refresh = {};
+  let api_key = "";
 
   function submitHandler() {
     let body = {};
-    if (method !== "Delete") body[ident] = { url: url, searchable: searchable };
+    if (isPut) body[ident] = { url: url, searchable: searchable };
     else body = { id: [ident] };
-    if (ident !== "")
-      fetch("/api/search", {
-        method: method,
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-          api_key: $api_key,
-        },
-      })
-        .then((res) => res.text())
-        .then((text) => (response = text));
+    const method = isPut ? "PUT" : "DELETE";
+    fetch("/api/search", {
+      method: method,
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+        api_key: api_key,
+      },
+    });
+    refresh = {};
   }
   const toggleSearchable = () => (searchable = !searchable);
+  const toggleHttpVerb = () => {
+    ident = "";
+    url = "";
+    searchable = true;
+    isPut = !isPut;
+  };
 </script>
 
-<body>
-  <content>
-    <header class="blue border">
-      <Radio
-        {options}
-        legend="Select an operation"
-        fontSize={36}
-        bind:userSelected={method}
-      />
-      <button on:click={submitHandler} class="blue border">Submit</button>
-    </header>
-    <form class="blue border">
-      {#if method !== "Delete"}
-        <p>{method}</p>
+<html lang="en">
+  <header>
+    <button on:click={toggleHttpVerb} class="blue border">Put or Delete</button>
+    <button on:click={submitHandler} class="blue border">Submit</button>
+  </header>
+  <body>
+    <form id="submit" class="blue border">
+      {#if isPut}
+        <p>Put</p>
         <label for="url">Ident: </label>
         <input type="text" bind:value={ident} class="border" />
         <label for="ident">Url: </label>
@@ -57,43 +56,35 @@
         <input type="text" bind:value={ident} class="border" />
       {/if}
       <div style="margin: 12px 12px 0px 12px;">
-        <label for="api_key">Api key</label>
-        <input type="password" bind:value={$api_key} class="border" />
+        <label for="api_key">Api key pls</label>
+        <input type="password" bind:value={api_key} class="border" />
       </div>
     </form>
-    <div class="blue border response">
-      {response}
-    </div>
-  </content>
-</body>
+  </body>
+</html>
 
 <style lang="scss">
-  body {
+  html {
     background-color: #222;
     font-family: "Fira Sans";
-  }
-  content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1em;
-    font-size: 36px;
+    gap: 12px;
+    font-size: 1.5em;
+    margin-top: 12px;
   }
-  header {
-    margin-top: 0.5em;
+  body {
     display: flex;
-    gap: 4em;
-    align-items: end;
-    padding: 4px;
+    flex-direction: column;
+    align-items: center;
   }
-  form {
+  #submit {
+    height: fit-content;
     gap: 12px;
     text-align: center;
     padding: 4px;
-    height: fit-content;
     max-width: fit-content;
-    margin: auto;
-    margin-bottom: 1em;
   }
   p {
     margin: 0;
@@ -109,14 +100,6 @@
     font-size: 1em;
     height: fit-content;
     background-color: #222;
-    cursor: pointer;
-  }
-  .response {
-    min-width: 75%;
-    min-height: 4em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   /* All the slider stuff */
