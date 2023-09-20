@@ -1,31 +1,73 @@
 import { error } from "@sveltejs/kit";
 import { env } from "$env/dynamic/private";
-import { client } from "$lib/db.js";
 import crypto from "node:crypto";
 export const _API_KEY =
   env.search_api_key ?? crypto.randomBytes(32).toString("hex");
 console.log(_API_KEY);
+
+const data = {
+  "-4": {
+    url: "https://boards.4channel.org/",
+    searchable: true,
+  },
+  "-d": {
+    url: "https://hub.docker.com/search?q=",
+    searchable: true,
+  },
+  "-g": {
+    url: "https://www.google.com/search?q=",
+    searchable: true,
+  },
+  "-i": {
+    url: "https://icanhazip.com",
+    searchable: true,
+  },
+  "-l": {
+    url: "https://sopuli.xyz/search?type=Communities&listingType=All&page=1&sort=TopAll&q=",
+    searchable: true,
+  },
+  "-pcp": {
+    url: "https://pcpartpicker.com/search/?q=",
+    searchable: true,
+  },
+  "-q": {
+    url: "https://quay.io/search?q=",
+    searchable: true,
+  },
+  "-r": {
+    url: "https://old.reddit.com/r/",
+    searchable: true,
+  },
+  "-t": {
+    url: "https://translate.google.com/?sl=auto&tl=en&text=",
+    searchable: true,
+  },
+  "-w": {
+    url: "https://en.wikipedia.org/wiki/",
+    searchable: true,
+  },
+  "-wa": {
+    url: "https://www.wolframalpha.com/input/?i=",
+    searchable: true,
+  },
+  "-y": {
+    url: "https://www.youtube.com/results?search_query=",
+    searchable: true,
+  },
+};
+
+const engineMap = new Map([
+  ["Brave", "https://search.brave.com/search?q="],
+  ["Duck", "https://duckduckgo.com/?q="],
+  ["Google", "https://www.google.com/search?q="],
+  ["Searx", "https://searx.be/search?q="],
+]);
 
 function isBool(value: unknown): value is boolean {
   return typeof value == "boolean";
 }
 function isString(value: unknown): value is string {
   return typeof value == "string";
-}
-async function validateInput(
-  request: Request
-): Promise<{ keys: string[]; input: object }> {
-  const { message, valid } = checkApiKey(request);
-  if (!valid) throw error(400, message);
-  let input: object;
-  let keys: string[];
-  try {
-    input = await request.json();
-    keys = Object.keys(input);
-  } catch (_) {
-    throw error(400, "invalid json");
-  }
-  return { keys, input };
 }
 function checkApiKey(request: Request) {
   if (!request.headers.get("api_key")) {
@@ -38,61 +80,99 @@ function checkApiKey(request: Request) {
     return { message: message, valid: false };
   } else return { message: "Valid api check", valid: true };
 }
-function logResponse(message: string, request: string, status: number) {
+
+function logResponse(
+  method: string,
+  message: string,
+  request: string,
+  status: number
+) {
   if (request != "") request = " from " + request;
-  console.log(message);
+  if (method === "POST" && message === "")
+    console.log(`${method.toUpperCase()} - Returned empty string${request}`);
+  else if (method === "POST")
+    console.log(`${method.toUpperCase()} - Returned ${message}${request}`);
+  else console.log(message);
   return new Response(message, { status: status });
 }
 
-// default get
-export async function GET(): Promise<Response> {
-  console.log(`GET - Default get (empty string)`);
-  return new Response("https://www.duckduckgo.com", { status: 200 });
+// retrieve all commands
+export function GET(): Response {
+  return new Response(JSON.stringify(data), { status: 200 });
 }
 
-// add commands
+// perform a search
 export async function POST({ request }): Promise<Response> {
-  let { keys, input } = await validateInput(request);
+  const input: { text: string; engine: string } = await request.json();
+  let { text, engine } = input;
+  engine = engineMap.get(engine) ?? "https://duckduckgo.com/?t=ffab&q=";
+  const logText = text;
+  text = text.trim();
 
-  const logAccum: string[] = [];
-  for (const i in keys) {
-    const k = keys[i];
-    // validate url and searchable
-    try {
-      const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
-      if (
-        !isString(input[k].url) ||
-        !isBool(input[k].searchable) ||
-        !isDashed
-      ) {
-        logAccum.push(`POST - ${k} was not added`);
-      }
+  // return regular search if no command provided
+  if (!text.startsWith("-"))
+    return logResponse("POST", engine + encodeURIComponent(text), logText, 200);
 
-      const exists = client.exists(k);
-      const updatedData = {
-        url: input[k].url,
-        searchable: input[k].searchable.toString(),
-      };
-      if (!(await exists)) {
-        client.hSet(k, updatedData);
-        logAccum.push(`POST - Added: ${k}: ${JSON.stringify(updatedData)}`);
-      } else {
-        logAccum.push(`POST - Not Added: ${k}`);
-      }
-    } catch (_) {
-      logAccum.push(`Error - Input was ${k}`);
-    }
+  let keyText: string = "";
+  let searchText: string = "";
+
+  if (text.includes(" ")) {
+    keyText = text.substring(0, text.indexOf(" "));
+    searchText = text.substring(text.indexOf(" ") + 1);
+  } else {
+    keyText = text;
   }
-  return logResponse(logAccum.join("\n"), "", 200);
+  keyText = keyText.toLowerCase();
+
+  if (!(keyText in data)) return logResponse("POST", "", logText, 400);
+
+  const { url, searchable } = data[keyText];
+
+  // returns url if command is not searchable
+  if (searchable == false) return logResponse("POST", url, logText, 200);
+
+  // returns cleaned url if no searchtext is provided
+  if (searchText.trim() === "") {
+    const searchParams = [
+      "/input",
+      "/results",
+      "/search",
+      "/wiki",
+      "/c/",
+    ];
+    let temp = url;
+    searchParams.forEach((item) => {
+      temp = temp.split(item)[0];
+    });
+    return logResponse("POST", temp, logText, 200);
+  }
+
+  // return url with search
+  return logResponse(
+    "POST",
+    url + encodeURIComponent(searchText),
+    logText,
+    200
+  );
 }
 
-// update commands
+// may add many commands at once
 export async function PUT({ request }): Promise<Response> {
-  let { keys, input } = await validateInput(request);
+  const { message, valid } = checkApiKey(request);
+  if (!valid) return new Response(message, { status: 400 });
+  let input: object;
+  let keys: string[];
+
+  // validate json format
+  try {
+    input = await request.json();
+    keys = Object.keys(input);
+  } catch (e) {
+    throw error(400, "invalid json");
+  }
 
   const logAccum: string[] = [];
-  for (const i in keys) {
-    const k = keys[i];
+  keys.forEach((k) => {
     // validate url and searchable
     try {
       const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
@@ -102,43 +182,55 @@ export async function PUT({ request }): Promise<Response> {
         !isDashed
       ) {
         logAccum.push(`PUT - ${k} was not added`);
+        return;
       }
 
-      const exists = client.exists(k);
-      const updatedData = {
-        url: input[k].url,
-        searchable: input[k].searchable.toString(),
-      };
-      if (await exists) {
-        client.hSet(k, updatedData);
-        logAccum.push(`PUT - Changed: ${k}: ${JSON.stringify(updatedData)}`);
+      const exists = k in data;
+      const updatedData = input[k];
+      if (!exists) {
+        data[k] = updatedData;
+        logAccum.push(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
+      } else if (
+        data[k].url !== updatedData.url ||
+        data[k].searchable !== updatedData.searchable
+      ) {
+        data[k] = updatedData;
+        logAccum.push(`PUT - Added: ${k}: ${JSON.stringify(data[k])}`);
       } else {
-        logAccum.push(`PUT - Not Added: ${k}`);
+        logAccum.push(`PUT - Unchanged: ${k}`);
       }
     } catch (_) {
-      logAccum.push(`Error - Input was ${k}`);
+      return logAccum.push(`Error - Input was ${k}`);
     }
-  }
-  return logResponse(logAccum.join("\n"), "", 200);
+  });
+  return logResponse("PUT", logAccum.join("\n"), "", 200);
 }
 
-// delete commands
+// may delete multiple keys at once
 export async function DELETE({ request }): Promise<Response> {
-  let { input } = await validateInput(request);
+  const { message, valid } = checkApiKey(request);
+  if (!valid) return new Response(message, { status: 400 });
+  let input: { id: string[] };
+  let keys: string[];
+  try {
+    input = await request.json();
+    keys = input.id;
+  } catch (_) {
+    throw error(400, "invalid json");
+  }
   const logAccum: string[] = [];
-  for (const i in input["id"]) {
-    const key = input["id"][i];
+  keys.forEach((key) => {
     // check if request is valid
     if (!isString(key) || key.charAt(0) !== "-")
       throw error(400, "invalid json");
     // check if key exists
-    if (!(await client.exists(key))) {
+    if (!data.hasOwnProperty(key)) {
       logAccum.push(`DELETE - ${key} was not present`);
-      continue;
+      return;
     }
     // ensure key/record is completely removed
-    client.del(key);
+    delete data[key];
     logAccum.push(`DELETE - ${key} was removed`);
-  }
-  return logResponse(logAccum.join("\n"), "", 200);
+  });
+  return logResponse("DELETE", logAccum.join("\n"), "", 200);
 }

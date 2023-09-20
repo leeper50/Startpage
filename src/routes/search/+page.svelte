@@ -1,5 +1,6 @@
 <script lang="ts">
   import "@fontsource/fira-sans/400.css";
+  import CommandList from "$lib/components/CommandList.svelte";
 
   let ident: string = "";
   let url: string = "";
@@ -60,6 +61,11 @@
         <input type="password" bind:value={api_key} class="border" />
       </div>
     </form>
+    <div class="magenta commands">
+      {#key refresh}
+        <CommandList />
+      {/key}
+    </div>
   </body>
 </html>
 
@@ -100,6 +106,9 @@
     font-size: 1em;
     height: fit-content;
     background-color: #222;
+  }
+  .commands {
+    font-size: 0.5em;
   }
 
   /* All the slider stuff */
