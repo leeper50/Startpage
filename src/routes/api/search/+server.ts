@@ -6,9 +6,6 @@ export const _API_KEY =
   env.search_api_key ?? crypto.randomBytes(32).toString("hex");
 console.log(_API_KEY);
 
-function isBool(value: unknown): value is boolean {
-  return typeof value == "boolean";
-}
 function isString(value: unknown): value is string {
   return typeof value == "string";
 }
@@ -47,7 +44,7 @@ function logResponse(message: string, request: string, status: number) {
 // default get
 export async function GET(): Promise<Response> {
   console.log(`GET - Default get (empty string)`);
-  return new Response("https://www.duckduckgo.com", { status: 200 });
+  return new Response("https://duckduckgo.com", { status: 200 });
 }
 
 // add commands
@@ -62,10 +59,11 @@ export async function POST({ request }): Promise<Response> {
       const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
       if (
         !isString(input[k].url) ||
-        !isBool(input[k].searchable) ||
+        !isString(input[k].searchable) ||
         !isDashed
       ) {
         logAccum.push(`POST - ${k} was not added`);
+        continue
       }
 
       const exists = client.exists(k);
@@ -98,7 +96,7 @@ export async function PUT({ request }): Promise<Response> {
       const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
       if (
         !isString(input[k].url) ||
-        !isBool(input[k].searchable) ||
+        !isString(input[k].searchable) ||
         !isDashed
       ) {
         logAccum.push(`PUT - ${k} was not added`);
