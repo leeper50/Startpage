@@ -16,6 +16,5 @@ ARG rss_api_key
 ARG rss_url
 ARG redis_host
 ARG redis_port
-ARG redis_pass
 EXPOSE 3000
 CMD ["node", "index.js"]
