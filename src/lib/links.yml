@@ -44,7 +44,7 @@
       id: Cloudflare
     - url: https://www.duolingo.com/
       id: Duolingo
-    - url: ./it
+    - url: /it
       id: Files
     - url: https://git.dellhplaptop.xyz/
       id: Gitea
@@ -56,7 +56,7 @@
       id: Homepage
     - url: https://cloud.oracle.com/
       id: Oracle
-    - url: https://www.paycomonline.net/v4/ats/web.php/application/MyApplications
-      id: Paycom
+    - url: /search
+      id: Search Manager
     - url: https://login.tailscale.com/admin/machines
       id: Tailscale

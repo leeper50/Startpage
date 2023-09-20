@@ -1,11 +1,8 @@
 <script lang="ts">
   let search = "";
   function submitHandler() {
-    fetch("/api/search", {
-      method: "POST",
-      body: JSON.stringify({
-        text: search,
-      }),
+    fetch(`/api/search/${search}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
