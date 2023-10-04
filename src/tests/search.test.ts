@@ -1,6 +1,7 @@
 import * as Server from "../routes/api/search/+server";
 import * as SlugGet from "../routes/api/search/[q]/+server";
 import { expect, test } from "vitest";
+type InputType = string | boolean | number | object;
 
 test("Get with empty string", async () => {
   const res = await Server.GET();
@@ -31,7 +32,7 @@ test("Get", async () => {
 });
 
 test("Post", async () => {
-  const queries = new Map<string, { url?: any; searchable?: any }>([
+  const queries = new Map<string, { url?: InputType; searchable?: InputType }>([
     [
       "-test1",
       {
@@ -105,7 +106,7 @@ test("Post", async () => {
 });
 
 test("Put", async () => {
-  const queries = new Map<string, { url?: any; searchable?: any }>([
+  const queries = new Map<string, { url?: InputType; searchable?: InputType }>([
     [
       "-g",
       {

@@ -9,6 +9,15 @@ console.log(_API_KEY);
 function isString(value: unknown): value is string {
   return typeof value == "string";
 }
+function isBooleanLike(value: unknown): boolean {
+  if (typeof value == "boolean")
+    return true
+  if (!isString(value))
+    return false
+  if (value.toLowerCase() === "true" || value.toLowerCase() === "false")
+    return true
+  return false
+}
 async function validateInput(
   request: Request
 ): Promise<{ keys: string[]; input: object }> {
@@ -59,7 +68,7 @@ export async function POST({ request }): Promise<Response> {
       const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
       if (
         !isString(input[k].url) ||
-        !isString(input[k].searchable) ||
+        !isBooleanLike(input[k].searchable) ||
         !isDashed
       ) {
         logAccum.push(`POST - ${k} was not added`);
@@ -96,7 +105,7 @@ export async function PUT({ request }): Promise<Response> {
       const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
       if (
         !isString(input[k].url) ||
-        !isString(input[k].searchable) ||
+        !isBooleanLike(input[k].searchable) ||
         !isDashed
       ) {
         logAccum.push(`PUT - ${k} was not added`);
