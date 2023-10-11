@@ -4,19 +4,17 @@ import { client } from "$lib/db.js";
 import crypto from "node:crypto";
 export const _API_KEY =
   env.search_api_key ?? crypto.randomBytes(32).toString("hex");
-console.log(_API_KEY);
+if (!env.search_api_key) console.log(_API_KEY);
 
 function isString(value: unknown): value is string {
   return typeof value == "string";
 }
 function isBooleanLike(value: unknown): boolean {
-  if (typeof value == "boolean")
-    return true
-  if (!isString(value))
-    return false
+  if (typeof value == "boolean") return true;
+  if (!isString(value)) return false;
   if (value.toLowerCase() === "true" || value.toLowerCase() === "false")
-    return true
-  return false
+    return true;
+  return false;
 }
 async function validateInput(
   request: Request
@@ -72,7 +70,7 @@ export async function POST({ request }): Promise<Response> {
         !isDashed
       ) {
         logAccum.push(`POST - ${k} was not added`);
-        continue
+        continue;
       }
 
       const exists = client.exists(k);

@@ -52,7 +52,7 @@
       id: Github
     - url: https://gitlab.com/
       id: Gitlab
-    - url: https://home.dellhplaptop.xyz/
+    - url: https://home.box.dellhplaptop.xyz/
       id: Homepage
     - url: https://cloud.oracle.com/
       id: Oracle

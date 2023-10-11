@@ -6,4 +6,4 @@ This version is built with [Sveltekit](https://kit.svelte.dev/) and deployed as 
 
 Little button that gives me dopamine
 
-[![CodeFactor](https://www.codefactor.io/repository/github/leeper50/startpage/badge)](https://www.codefactor.io/repository/github/leeper50/startpage)
+![CodeFactor](https://www.codefactor.io/repository/github/leeper50/startpage/badge)
