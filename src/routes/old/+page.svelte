@@ -1,6 +1,6 @@
 <script lang="ts">
   import "@fontsource/fira-sans/600.css";
-  import { data } from "$lib/linkData";
+  import linkData from "./links.yml";
   let search: string = "";
   const submitHandler = () => {
     fetch(`/api/search/${search}`, {
@@ -41,18 +41,18 @@
     </form>
     <!-- LinkBox -->
     <div class="container">
-      {#each data as { id, list }}
+      {#each linkData as { title, list }}
         <div class="box border">
           <div style="display: flex">
             <span class="magenta space">~</span>
             <span class="blue space">$</span>
             <span class="orange space">cd</span>
             <span class="gray">~/</span>
-            <span class="green">{id}</span>
+            <span class="green">{title}</span>
           </div>
           <div class="content">
-            {#each list as { url, ident }}
-              <a href={url} class="cyan">{ident.toLowerCase()}</a>
+            {#each list as { url, id }}
+              <a href={url} class="cyan">{id.toLowerCase()}</a>
             {/each}
           </div>
         </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import linkData from "$lib/links.yml";
+  import linkData from "./links.yml";
   import "@fontsource/fira-sans/200.css";
   import background from "$lib/images/background.webp";
   import Searchbar from "$lib/components/Searchbar.svelte";
