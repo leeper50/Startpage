@@ -64,13 +64,13 @@ try {
       host: _REDIS_HOST,
       port: parseInt(_REDIS_PORT),
     },
-    password: _REDIS_PASS
+    password: _REDIS_PASS,
   });
   await client.connect();
   Object.entries(starting_data).forEach((e) => {
     client.hSet(e[0], e[1]);
   });
-  console.log("Redis connection established!");  
+  console.log("Redis connection established!");
 } catch (_) {
   console.log("Could not connect to redis, using fallback");
   client = new Fallback(starting_data);
