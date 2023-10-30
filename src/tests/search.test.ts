@@ -1,5 +1,5 @@
 import * as Server from "../routes/api/search/+server";
-import * as SlugGet from "../routes/api/search/[q]/+server";
+import * as SlugGet from "../routes/api/search/[...q]/+server";
 import { expect, test } from "vitest";
 type InputType = string | boolean | number | object;
 
@@ -13,6 +13,8 @@ test("Get", async () => {
   const queries = new Map<string, string>([
     ["test", "https://duckduckgo.com/?t=ffab&q=test"],
     ["c#", "https://duckduckgo.com/?t=ffab&q=c%23"],
+    ["testwith/aslash", "https://duckduckgo.com/?t=ffab&q=testwith%2Faslash"],
+    ["-r news/new", "https://old.reddit.com/r/news%2Fnew"],
     ["-g", "https://www.google.com"],
     ["-g e", "https://www.google.com/search?q=e"],
     ["-pcp", "https://pcpartpicker.com"],
