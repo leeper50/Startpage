@@ -7,6 +7,9 @@
   body {
     padding-top: 2em;
     background-color: #222;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
   }

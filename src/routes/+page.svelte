@@ -1,5 +1,4 @@
 <script lang="ts">
-  import linkData from "./links.yml";
   import "@fontsource/fira-sans/200.css";
   import background from "$lib/images/background.webp";
   import Searchbar from "$lib/components/Searchbar.svelte";
@@ -15,6 +14,9 @@
 </script>
 
 <div class="content" style="background-image: url('{background}')">
+  <div class="settings">
+    <a href="/upload">⚙️</a>
+  </div>
   <main>
     <Searchbar />
     <div id="links">
@@ -23,7 +25,7 @@
           <Rss data={data.items} />
         </div>
       {/if}
-      {#each linkData as { title, list }}
+      {#each data.page as { title, list }}
         <div class="link-box">
           <p>{title}</p>
           {#each list as { url, id }}
@@ -67,11 +69,17 @@
     gap: 0px;
     width: 75%;
   }
+  .settings {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
   #links {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0px 32px;
+    text-align: left;
     font-weight: 600;
   }
   .link-box {

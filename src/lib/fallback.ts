@@ -3,21 +3,27 @@ export class Fallback {
   constructor(starting_data: object) {
     this.data = starting_data;
   }
-  hSet(k: string, v: MyURL) {
+  hSet(k: string, v: MyURL | string) {
     this.data[k] = v;
   }
-  hGetAll(key: string): Promise<MyURL> {
-    return this.data[key];
+  hGetAll(k: string): Promise<MyURL | string> {
+    return this.data[k];
   }
-  del(key: string) {
-    delete this.data[key];
+  set(k: string, v: string) {
+    this.data[k] = v;
   }
-  exists(key: string) {
-    return key in this.data;
+  get(k: string): string {
+    return this.data[k];
+  }
+  del(k: string) {
+    delete this.data[k];
+  }
+  exists(k: string) {
+    return k in this.data;
   }
 }
 
 export interface MyURL {
-    url: string,
-    searchable: string
+  url: string;
+  searchable: string;
 }
