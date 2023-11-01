@@ -78,12 +78,12 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 0px 32px;
     text-align: left;
     font-weight: 600;
   }
   .link-box {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 20px;
     font-weight: 300;

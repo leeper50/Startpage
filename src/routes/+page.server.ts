@@ -14,7 +14,7 @@ export async function load({ cookies }) {
     const content: string | null = await client.get(id);
     if (content) linkData = YAML.parse(content);
   }
-  let test = await getNews();
+  const test = await getNews();
   return Object.assign(test, { page: linkData });
 }
 

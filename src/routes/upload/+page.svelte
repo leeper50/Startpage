@@ -15,7 +15,7 @@
 
 <body>
   <main class="blue">
-    <p>Upload a valid yaml file with to customize your landing page.</p>
+    <p>Upload a valid yaml file to customize your landing page.</p>
     <p>Here is an example of a valid yaml file.</p>
     <pre>
 - title: group1
