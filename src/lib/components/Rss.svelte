@@ -40,6 +40,8 @@
     vertical-align: middle;
   }
   img {
+    width: 32px;
+    height: 32px;
     filter: grayscale(60%);
     border-radius: 4px;
   }
