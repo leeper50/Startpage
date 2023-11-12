@@ -1,14 +1,14 @@
 <script lang="ts">
-  export let data = [{ title: "", url: "" }];
+  export let data = [{ title: "", url: "", site: "" }];
 </script>
 
 <p>News</p>
-{#each data as { title, url }}
+{#each data as { title, url, site }}
   <a href={url} {title}>
     <span class="image">
       <img
         alt=""
-        src={`https://www.google.com/s2/favicons?sz=32&domain=${url}`}
+        src={`https://www.google.com/s2/favicons?sz=32&domain=${site}`}
       />
     </span>
     {title}
