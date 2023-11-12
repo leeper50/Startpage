@@ -10,8 +10,12 @@ export async function getNews(
     return { valid: false };
   }
   let data: NewsItem[] = [{ title: "", url: "", site: "" }];
-  const rssurl = `https://${url}/api/greader.php/reader/api/0/stream/contents/?n=12`;
-
+  const exp =
+    /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+  const regex = new RegExp(exp);
+  let rssurl = `${url}/api/greader.php/reader/api/0/stream/contents/?n=12`;
+  if (regex.test(url)) rssurl = `https://${rssurl}`;
+  else rssurl = `http://${rssurl}`;
   const res = await fetch(rssurl, {
     method: "POST",
     headers: {
