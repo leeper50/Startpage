@@ -1,5 +1,6 @@
 import { env } from "$env/dynamic/private";
 import { client } from "$lib/db.js";
+import type { MyURL } from "$lib/fallback.js";
 export const _REDIS_HOST = env.redis_host ?? "localhost";
 export const _REDIS_PORT = env.redis_port ?? "6379";
 
@@ -34,7 +35,7 @@ export async function GET({ params }): Promise<Response> {
 
   if (!(await client.exists(keyText))) return logResponse("", logText, 400);
 
-  const { url, searchable } = await client.hGetAll(keyText);
+  const { url, searchable } = await client.hGetAll(keyText) as MyURL;
 
   // returns url if command is not searchable
   if (searchable === "false") return logResponse(url, logText, 200);

@@ -1,4 +1,4 @@
-export const prerender = 'auto';
+export const prerender = "auto";
 
 export async function GET({ params }) {
   const { url } = params;
