@@ -54,6 +54,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: #091118;
     font-family: "Fira Sans";
     font-size: 24px;
     display: flex;

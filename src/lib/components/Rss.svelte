@@ -8,7 +8,7 @@
     <span class="image">
       <img
         alt=""
-        src={`https://www.google.com/s2/favicons?sz=32&domain=${site}`}
+        src={`/images/${site.slice(8, site.indexOf("/", 9))}`}
       />
     </span>
     {title}
