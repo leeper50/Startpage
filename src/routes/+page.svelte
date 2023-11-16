@@ -1,6 +1,5 @@
 <script lang="ts">
   import "@fontsource/fira-sans/200.css";
-  import background from "$lib/images/background.webp";
   import Searchbar from "$lib/components/Searchbar.svelte";
   import Rss from "$lib/components/Rss.svelte";
   import type { PageData } from "./$types";
@@ -13,11 +12,11 @@
   }
 </script>
 
-<div class="content" style="background-image: url('{background}')">
+<main>
   <div class="settings">
     <a href="/upload">⚙️</a>
   </div>
-  <main>
+  <div class="content">
     <Searchbar />
     <div id="links">
       {#if data.valid}
@@ -41,20 +40,20 @@
         </div>
       {/each}
     </div>
-  </main>
-</div>
+  </div>
+</main>
 
 <style lang="scss">
-  @media (min-width: 1003px) {
-    .content {
+  @media (min-width: 824px) {
+    main {
       height: 100%;
     }
   }
-  .content {
+  main {
+    background-image: url("/background.webp");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-color: #091118;
     font-family: "Fira Sans";
     font-size: 24px;
     display: flex;
@@ -63,7 +62,7 @@
     justify-content: center;
     color: #d4d4d3;
   }
-  main {
+  .content {
     display: flex;
     flex-direction: column;
     justify-content: center;
