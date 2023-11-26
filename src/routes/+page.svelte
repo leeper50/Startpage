@@ -50,6 +50,7 @@
     }
   }
   main {
+    background-color: #081118;
     background-image: url("/background.webp");
     background-position: center;
     background-repeat: no-repeat;
