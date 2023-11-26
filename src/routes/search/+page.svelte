@@ -42,27 +42,37 @@
     <form class="blue border">
       {#if method !== "Delete"}
         <p>{method}</p>
-        <label for="url">Ident: </label>
-        <input type="text" bind:value={ident} class="border" />
-        <label for="ident">Url: </label>
-        <input type="text" bind:value={url} class="border" />
-        <label for="searchable">Searchable: </label>
-        <label class="switch" style="top: 4px">
-          <input type="checkbox" on:click={toggleSearchable} checked />
-          <span class="slider" />
-        </label>
+        <div>
+          <label for="url">Ident: </label>
+          <input type="text" bind:value={ident} class="border" />
+        </div>
+        <div>
+          <label for="ident">Url:</label>
+          <input type="text" bind:value={url} class="border" />
+        </div>
+        <div>
+          <label for="searchable">Searchable:</label>
+          <label class="switch" style="top: 4px">
+            <input type="checkbox" on:click={toggleSearchable} checked />
+            <span class="slider" />
+          </label>
+        </div>
       {:else}
         <p>Delete</p>
-        <label for="url">Ident: </label>
-        <input type="text" bind:value={ident} class="border" />
+        <div>
+          <label for="url">Ident:</label>
+          <input type="text" bind:value={ident} class="border" />
+        </div>
       {/if}
-      <div style="margin: 12px 12px 0px 12px;">
-        <label for="api_key">Api key</label>
+      <div>
+        <label for="api_key">Api key:</label>
         <input type="password" bind:value={$api_key} class="border" />
       </div>
     </form>
     <div class="blue border response">
-      {response}
+      <code>
+        {response}
+      </code>
     </div>
   </content>
 </body>
@@ -73,29 +83,36 @@
     height: 100%;
     background-color: #222;
     font-family: "Fira Sans";
-  }
-  content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1em;
+  }
+  content {
+    width: 50%;
+    margin-top: 0.5em;
+    display: flexbox;
+    flex-direction: column;
+    align-items: center;
     font-size: 36px;
   }
   header {
-    margin-top: 0.5em;
     display: flex;
-    gap: 4em;
     align-items: end;
+    justify-content: space-between;
     padding: 4px;
   }
   form {
     gap: 12px;
     text-align: center;
     padding: 4px;
-    height: fit-content;
-    max-width: fit-content;
-    margin: auto;
-    margin-bottom: 1em;
+    margin: 12px 0 12px 0;
+    display: flex;
+    flex-direction: column;
+    > div {
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+    }
   }
   p {
     margin: 0;
@@ -107,18 +124,17 @@
     height: fit-content;
   }
   button {
-    padding: 8px;
     font-size: 1em;
     height: fit-content;
     background-color: #222;
     cursor: pointer;
   }
   .response {
-    min-width: 75%;
     min-height: 4em;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-wrap: wrap;
+    // justify-content: center;
+    // align-items: center;
   }
 
   /* All the slider stuff */

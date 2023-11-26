@@ -42,7 +42,7 @@ export async function GET({ params }): Promise<Response> {
 
   // returns cleaned url if no searchtext is provided
   if (searchText.trim() === "") {
-    const searchParams = ["/input", "/results", "/search", "/wiki", "/c/"];
+    const searchParams = ["/input", "/results", "/search", "/wiki", "/c/", "/r"];
     let temp = url;
     searchParams.forEach((item) => {
       temp = temp.split(item)[0];

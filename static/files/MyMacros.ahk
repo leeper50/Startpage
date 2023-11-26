@@ -9,7 +9,26 @@ Toggle := False
 *^F9::
   {
     ; MouseClick, "right", 400, 450
-    Click 400, 450, "Right"
+    Click 400, 650, "Right"
+    Sleep 25
+    Send "i"
+    Sleep 25
+    Send "{Control down}"
+    Send "w"
+    Sleep 25
+    Send "{Tab}"
+    Sleep 25
+    Send "{Control up}"
+  }
+
+; Control + F10
+; Open image in new tab + Go to next tab
+*^F10::
+  {
+    WinGetPos &X, &Y, &W, &H, "A"
+    X := W * 0.45
+    Y := H * 0.5
+    Click X, Y, "Right"
     Sleep 25
     Send "i"
     Sleep 25
@@ -25,7 +44,6 @@ Toggle := False
 ; Control + Mouse5
 ; Auto Miner
 *^F13::
-*^XButton2::
   {
     global Toggle := !Toggle
     if (Toggle) {
