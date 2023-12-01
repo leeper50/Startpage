@@ -36,11 +36,12 @@ Here is an example of a valid yaml file.
       id: Foobar
     </pre>
     <a href="links.yml" download="links.yml">
-      <button>Get template</button>
+      <button class="border gray">Get template</button>
     </a>
     <form method="post" enctype="multipart/form-data">
-      <div class="group">
-        <label for="file" class="file-upload">Upload file o' links</label>
+      <div>
+        <label for="file" class="gray file-upload border">Upload file o' links</label
+        >
         <input
           type="file"
           id="file"
@@ -50,8 +51,8 @@ Here is an example of a valid yaml file.
         />
       </div>
       <span class="button-bar">
-        <button type="submit">Submit</button>
-        <button on:click={reset} type="reset">Reset</button>
+        <button type="submit" class="border gray">Submit</button>
+        <button on:click={reset} type="reset" class="border gray">Reset</button>
       </span>
     </form>
   </main>
@@ -59,11 +60,7 @@ Here is an example of a valid yaml file.
 
 <style lang="scss">
   body {
-    display: flex;
     justify-content: center;
-    padding: 0;
-    margin: 0;
-    background-color: #222;
   }
   main {
     display: flex;
@@ -73,7 +70,6 @@ Here is an example of a valid yaml file.
   .main-font {
     font-family: "Fira Sans";
     font-size: 1.5rem;
-    font-family: "Fira Sans";
     font-weight: normal;
   }
   form {
@@ -86,11 +82,8 @@ Here is an example of a valid yaml file.
   button {
     font-family: "Fira Sans";
     font-size: 1em;
-    background-color: #222;
-    border: 2px solid #444;
-    border-radius: 2px;
     padding: 4px;
-    color: grey;
+    background-color: inherit;
     min-width: fit-content;
     max-width: 64px;
     cursor: pointer;

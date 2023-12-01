@@ -12,7 +12,7 @@
   }
 </script>
 
-<main>
+<body>
   <div class="settings">
     <a href="/upload">⚙️</a>
   </div>
@@ -41,15 +41,15 @@
       {/each}
     </div>
   </div>
-</main>
+</body>
 
 <style lang="scss">
   @media (min-width: 824px) {
-    main {
+    body {
       height: 100%;
     }
   }
-  main {
+  body {
     background-color: #081118;
     background-image: url("/background.webp");
     background-position: center;

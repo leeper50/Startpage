@@ -16,8 +16,6 @@
 
 <style lang="scss">
   body {
-    background-color: #222;
-    display: flex;
     justify-content: center;
     width: 100%;
   }
