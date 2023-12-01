@@ -14,9 +14,11 @@
 </script>
 
 <body>
-  <main class="blue">
-    <p>Upload a valid yaml file to customize your landing page.</p>
-    <p>Here is an example of a valid yaml file.</p>
+  <main class="blue main-font">
+    <pre class="main-font">
+Upload a valid yaml file to customize your landing page. 
+Here is an example of a valid yaml file.
+    </pre>
     <pre>
 - title: group1
   list:
@@ -33,9 +35,12 @@
     - url: https://bing.com/
       id: Foobar
     </pre>
+    <a href="links.yml" download="links.yml">
+      <button>Get template</button>
+    </a>
     <form method="post" enctype="multipart/form-data">
       <div class="group">
-        <label for="file">Upload your file o' links</label>
+        <label for="file" class="file-upload">Upload file o' links</label>
         <input
           type="file"
           id="file"
@@ -44,19 +49,17 @@
           required
         />
       </div>
-      <button type="submit">Submit</button>
+      <span class="button-bar">
+        <button type="submit">Submit</button>
+        <button on:click={reset} type="reset">Reset</button>
+      </span>
     </form>
-    <button on:click={reset} type="reset">Reset</button>
   </main>
 </body>
 
 <style lang="scss">
   body {
-    width: 100%;
-    height: 100%;
     display: flex;
-    font-size: 1.5rem;
-    font-family: "Fira Sans";
     justify-content: center;
     padding: 0;
     margin: 0;
@@ -65,20 +68,38 @@
   main {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin: 12px;
+    gap: 12px;
+  }
+  .main-font {
+    font-family: "Fira Sans";
+    font-size: 1.5rem;
+    font-family: "Fira Sans";
+    font-weight: normal;
   }
   form {
-    font-weight: bold;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     gap: 12px;
-    margin: 0px;
   }
-  input,
+  .file-upload,
   button {
+    font-family: "Fira Sans";
+    font-size: 1em;
+    background-color: #222;
+    border: 2px solid #444;
+    border-radius: 2px;
+    padding: 4px;
+    color: grey;
     min-width: fit-content;
     max-width: 64px;
+    cursor: pointer;
+  }
+  input[type="file"] {
+    display: none;
+  }
+  .button-bar {
+    display: flex;
+    justify-content: space-between;
   }
 </style>

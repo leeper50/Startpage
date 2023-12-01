@@ -1,5 +1,5 @@
 import { client } from "$lib/db.js";
-import data from "./links.yml";
+import data from "/static/links.yml";
 import YAML from "yaml";
 import * as uuid from "uuid";
 import { getNews } from "$lib/rss";
