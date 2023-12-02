@@ -12,7 +12,7 @@
   }
 </script>
 
-<body>
+<body class="background-img">
   <div class="settings">
     <a href="/upload">⚙️</a>
   </div>
@@ -44,25 +44,25 @@
 </body>
 
 <style lang="scss">
-  @media (min-width: 824px) {
+  @media (max-width: 824px) {
     body {
-      height: 100%;
+      height: auto !important;
     }
   }
   body {
     width: 100%;
+    font-family: "Fira Sans";
+    font-size: 24px;
+    flex-direction: column;
+    align-items: center;
+    color: #d4d4d3;
+  }
+  .background-img {
     background-color: #081118;
     background-image: url("/background.webp");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    font-family: "Fira Sans";
-    font-size: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #d4d4d3;
   }
   .content {
     display: flex;

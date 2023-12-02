@@ -15,10 +15,6 @@
 </body>
 
 <style lang="scss">
-  body {
-    justify-content: center;
-    width: 100%;
-  }
   a {
     color: #268bd2;
     &:hover {

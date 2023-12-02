@@ -59,9 +59,6 @@ Here is an example of a valid yaml file.
 </body>
 
 <style lang="scss">
-  body {
-    justify-content: center;
-  }
   main {
     display: flex;
     flex-direction: column;
