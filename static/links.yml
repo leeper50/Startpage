@@ -15,11 +15,11 @@
     - url: https://mail.tutanota.com/
       id: Tutanota
     - url: https://careers.utpb.edu/
-      id: Utpb Career
+      id: Utpb
 - title: Media
   list:
     - url: https://www.swisstransfer.com/en-us
-      id: File Transfer
+      id: File
     - url: https://sopuli.xyz/
       id: Lemmy
     - url: https://mastodon.world/
@@ -35,7 +35,7 @@
     - url: https://www.twitch.tv/directory/following/
       id: Twitch
     - url: https://music.youtube.com/
-      id: Youtube Music
+      id: Music
 - title: Hobby
   list:
     - url: https://smile.amazon.com/
@@ -57,6 +57,6 @@
     - url: https://cloud.oracle.com/
       id: Oracle
     - url: /search
-      id: Search Manager
+      id: Search
     - url: https://login.tailscale.com/admin/machines
       id: Tailscale
