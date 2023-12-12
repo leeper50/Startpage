@@ -12,7 +12,7 @@
   }
 </script>
 
-<body class="background-img">
+<body class="background-img" data-sveltekit-reload>
   <div class="settings">
     <a href="/upload">⚙️</a>
   </div>
