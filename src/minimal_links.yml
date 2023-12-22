@@ -16,11 +16,11 @@
       id: Outlook
     - url: https://mail.protonmail.com/inbox/
       id: Protonmail
-    - url: https://mail.tutanota.com/
+    - url: https://app.tuta.com
       id: Tutanota
 - title: stuff
   list:
-    - url: https://smile.amazon.com/
+    - url: https://www.amazon.com/
       id: Amazon
     - url: https://mastodon.world
       id: Mastodon
@@ -40,5 +40,5 @@
       id: Github
     - url: https://home.box.dellhplaptop.xyz/
       id: Homepage
-    - url: ./search
-      id: Search
+    - url: https://login.tailscale.com/admin/machines
+      id: Tailscale

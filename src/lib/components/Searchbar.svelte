@@ -1,4 +1,5 @@
 <script lang="ts">
+  export let placeholder = "";
   let search = "";
   function submitHandler() {
     fetch(`/api/search/${search}`, {
@@ -24,7 +25,7 @@
     autocorrect="off"
     spellcheck="false"
     bind:value={search}
-    placeholder="Search..."
+    placeholder={placeholder}
   />
 </form>
 
@@ -37,14 +38,11 @@
       background-color: transparent;
       border: none;
       outline: none;
-      color: #939391;
+      color: inherit;
       font-family: inherit;
-      font-size: 1.5em;
+      font-size: inherit;
+      font-weight: inherit;
       width: 100%;
-      &::placeholder {
-        opacity: 80%;
-        font-weight: 200;
-      }
     }
   }
 </style>
