@@ -14,7 +14,7 @@
 
 <body class="background-img" data-sveltekit-reload>
   <div class="settings">
-    <a href="/upload">⚙️</a>
+    <a href="/settings">⚙️</a>
   </div>
   <div class="content">
     <Searchbar />

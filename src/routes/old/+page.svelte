@@ -19,7 +19,9 @@
 
 <body>
   <main>
-    <!-- SearchBox -->
+    <div class="settings">
+      <a href="/settings">⚙️</a>
+    </div>
     <form class="border" on:submit|preventDefault={submitHandler}>
       <div>
         <span class="blue">user</span>
@@ -39,7 +41,6 @@
         bind:value={search}
       />
     </form>
-    <!-- LinkBox -->
     <div class="container">
       {#each linkData as { title, list }}
         <div class="box border">
@@ -62,12 +63,17 @@
 </body>
 
 <style lang="scss">
-  // ------------ HTML ------------
   body {
     width: 100%;
     height: 100%;
     justify-content: center;
     align-items: center;
+  }
+  .settings {
+    position: absolute;
+    font-size: 1.5em;
+    top: 12px;
+    right: 12px;
   }
   main {
     display: flex;
@@ -77,7 +83,6 @@
     gap: 4px;
     margin: 12px;
   }
-  // ------------ SearchBox ------------
   form {
     font-size: 1.5rem;
     font-weight: bold;
@@ -105,7 +110,6 @@
       border-radius: 2px;
     }
   }
-  // ------------ LinkBox ------------
   .container {
     display: flex;
     flex-flow: wrap;
@@ -125,13 +129,15 @@
   .content {
     display: flex;
     flex-direction: column;
+    a {
+      display: block;
+      padding-top: 4px;
+      &:hover {
+        color: #dc322f;
+      }
+    }
   }
   a {
-    display: block;
-    padding-top: 4px;
     text-decoration: none;
-    &:hover {
-      color: #dc322f;
-    }
   }
 </style>

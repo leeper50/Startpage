@@ -1,38 +1,4 @@
-- title: general
-  list:
-    - url: https://smile.amazon.com/
-      id: Amazon
-    - url: ./it
-      id: Files
-    - url: https://dash.dellhplaptop.xyz
-      id: Heimdall
-    - url: https://mastodon.world
-      id: Mastodon
-    - url: https://www.twitch.tv/directory/following/
-      id: Twitch
-- title: mail
-  list:
-    - url: https://www.outlook.com/
-      id: Outlook
-    - url: https://mail.google.com/mail/u/0/
-      id: Gmail
-    - url: https://mail.tutanota.com/
-      id: Tutanota
-    - url: https://mail.protonmail.com/inbox/
-      id: Protonmail
-- title: reddit
-  list:
-    - url: https://www.reddit.com/
-      id: Home
-    - url: https://www.reddit.com/r/baseball/
-      id: R/Baseball
-    - url: https://www.reddit.com/r/buildapcsales/new/
-      id: R/Buildapcsales
-    - url: https://www.reddit.com/r/homelab/
-      id: R/Homelab
-    - url: https://www.reddit.com/r/linux/
-      id: R/Linux
-- title: work
+- title: jobs
   list:
     - url: https://app.joinhandshake.com/
       id: Handshake
@@ -42,15 +8,37 @@
       id: Linkedin
     - url: https://careers.utpb.edu/
       id: Utpb Career
-- title: cloud
+- title: email
+  list:
+    - url: https://mail.google.com/mail/u/0/
+      id: Gmail
+    - url: https://www.outlook.com/
+      id: Outlook
+    - url: https://mail.protonmail.com/inbox/
+      id: Protonmail
+    - url: https://mail.tutanota.com/
+      id: Tutanota
+- title: stuff
+  list:
+    - url: https://smile.amazon.com/
+      id: Amazon
+    - url: https://mastodon.world
+      id: Mastodon
+    - url: https://rss.dellhplaptop.xyz
+      id: Rss
+    - url: https://tech.lgbt
+      id: Techstodon
+    - url: https://www.twitch.tv/directory/following/
+      id: Twitch
+- title: hobby
   list:
     - url: https://dash.cloudflare.com/
       id: Cloudflare
+    - url: /files
+      id: Files
     - url: https://github.com/
       id: Github
-    - url: https://gitlab.com/
-      id: Gitlab
-    - url: https://cloud.oracle.com/
-      id: Oracle
-    - url: https://login.tailscale.com/admin/machines
-      id: Tailscale
+    - url: https://home.box.dellhplaptop.xyz/
+      id: Homepage
+    - url: ./search
+      id: Search

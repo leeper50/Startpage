@@ -44,7 +44,7 @@
       id: Cloudflare
     - url: https://www.duolingo.com/
       id: Duolingo
-    - url: /it
+    - url: /files
       id: Files
     - url: https://git.dellhplaptop.xyz/
       id: Gitea

@@ -1,10 +1,10 @@
-<body>
+<div class="main-error">
   <h1 class="blue">404</h1>
   <p class="cyan">Resource not found</p>
-</body>
+</div>
 
 <style>
-  body {
+  .main-error {
     padding-top: 2em;
     background-color: #222;
     height: 100%;
