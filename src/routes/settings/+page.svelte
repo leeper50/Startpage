@@ -3,8 +3,9 @@
   import "@fontsource/fira-sans/600.css";
   import Radio from "$lib/components/Radio.svelte";
   // STYLE
-  import { style } from "$lib/stores";
+  import { style, rss } from "$lib/stores";
   const style_options = ["Fancy", "Minimal"];
+  const toggleRSS = () => ($rss = String(!JSON.parse($rss)));
   // CONTENT
   import type { PageData } from "./$types";
   export let data: PageData;
@@ -52,9 +53,14 @@
       <Radio
         options={style_options}
         legend="Style Choices:"
-        fontSize={36}
+        fontSize={24}
         bind:userSelected={$style}
       />
+      <p>Toggle RSS visibility</p>      
+      <label class="switch" style="top: 4px">
+        <input type="checkbox" on:click={toggleRSS} checked />
+        <span class="slider" />
+      </label>
     </div>
     <div class="box border">
       <h1 class="blue">Homepage content</h1>
@@ -111,7 +117,7 @@
           <Radio
             options={method_options}
             legend="Select an operation"
-            fontSize={36}
+            fontSize={24}
             bind:userSelected={method}
           />
           <button on:click={submitHandler} class="blue border">Submit</button>
@@ -164,18 +170,18 @@
     margin-top: 8px;
     gap: 12px;
     > div {
-      min-width: 613px;
       flex: 1 0 0;
     }
   }
   h1,
   p,
   pre {
+    word-wrap: normal;
     margin: 0;
   }
   .main-font {
     font-family: "Fira Sans";
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: normal;
   }
   .box {
@@ -215,7 +221,7 @@
     display: flexbox;
     flex-direction: column;
     align-items: center;
-    font-size: 36px;
+    font-size: inherit;
   }
   .search {
     gap: 12px;
@@ -238,7 +244,7 @@
   }
   .response {
     min-height: 4em;
-    max-width: 589px;
+    width: 420px;
     word-break: break-all;
   }
   /* All the slider stuff */

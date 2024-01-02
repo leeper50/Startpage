@@ -3,7 +3,7 @@
   import "@fontsource/fira-sans/200.css";
   import "@fontsource/fira-sans/600.css";
   import Searchbar from "$lib/components/Searchbar.svelte";
-  import { style } from "$lib/stores";
+  import { style, rss } from "$lib/stores";
   // FANCY
   import Rss from "$lib/components/Rss.svelte";
   import type { PageData } from "./$types";
@@ -67,7 +67,7 @@
         <Searchbar placeholder="Search..." />
       </span>
       <div id="links">
-        {#if data.valid}
+        {#if JSON.parse($rss) && data.valid}
           <div class="link-box rss">
             <Rss data={data.items} />
           </div>

@@ -14,3 +14,10 @@ export const api_key = writable((browser && stored_key) || "api key");
 api_key.subscribe((v) => {
   if (browser) return localStorage.setItem("key", v.toString());
 });
+
+// Rss store
+const stored_rss = localStorage.getItem("rss");
+export const rss = writable((browser && stored_rss) || "true");
+rss.subscribe((v) => {
+  if (browser) return localStorage.setItem("rss", v.toString());
+});
