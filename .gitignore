@@ -13,3 +13,5 @@ pnpm-lock.yaml
 /coverage
 .vscode
 docker-compose.yml
+*.sqlite
+*.db
