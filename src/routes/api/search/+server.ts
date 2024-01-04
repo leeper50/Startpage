@@ -3,7 +3,7 @@ import { env } from "$env/dynamic/private";
 import { client } from "$lib/db.js";
 import crypto from "node:crypto";
 export const _API_KEY =
-  env.search_api_key ?? crypto.randomBytes(32).toString("hex");
+  env.search_api_key || crypto.randomBytes(32).toString("hex");
 if (!env.search_api_key) console.log(_API_KEY);
 
 function isString(value: unknown): value is string {
@@ -20,14 +20,14 @@ async function validateInput(
   request: Request
 ): Promise<{ keys: string[]; input: object }> {
   const { message, valid } = checkApiKey(request);
-  if (!valid) throw error(400, message);
+  if (!valid) error(400, message);
   let input: object;
   let keys: string[];
   try {
     input = await request.json();
     keys = Object.keys(input);
   } catch (_) {
-    throw error(400, "invalid json");
+    error(400, "invalid json");
   }
   return { keys, input };
 }
@@ -140,7 +140,7 @@ export async function DELETE({ request }): Promise<Response> {
     const key = input["id"][i];
     // check if request is valid
     if (!isString(key) || key.charAt(0) !== "-")
-      throw error(400, "invalid json");
+      error(400, "invalid json");
     // check if key exists
     if (!(await client.exists(key))) {
       logAccum.push(`DELETE - ${key} was not present`);

@@ -1,11 +1,12 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
+import { building } from "$app/environment";
 import { env } from "$env/dynamic/private";
 
-const host = env.POSTGRES_HOST || "localhost";
-const port = parseInt(env.POSTGRES_PORT) || 5432;
-const db = env.POSTGRES_DB || "postgres";
-const user = env.POSTGRES_USER || "postgres";
-const pass = env.POSTGRES_PASS || "postgres";
+const host = building ? "localhost" : env.POSTGRES_HOST || "localhost";
+const port = building ? 5432 : parseInt(env.POSTGRES_PORT) || 5432;
+const db = building ? "postgres" : env.POSTGRES_DB || "postgres";
+const user = building ? "postgres" : env.POSTGRES_USER || "postgres";
+const pass = building ? "postgres" : env.POSTGRES_PASS || "postgres";
 
 export let sequelize = new Sequelize({
   dialect: "postgres",
@@ -82,18 +83,17 @@ try {
   console.log("This one fails because no primary key");
 }
 
-let users = await User.findAll({
-});
+let users = await User.findAll({});
 console.log(JSON.stringify(users, null, 2));
 
 users = await User.findAll({
-  attributes: ['age']
+  attributes: ["age"],
 });
 console.log(JSON.stringify(users, null, 2));
 
 users = await User.findAll({
   where: {
-    age: 19
-  }
+    age: 19,
+  },
 });
 console.log(JSON.stringify(users, null, 2));

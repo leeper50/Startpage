@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 import * as rss from "$lib/rss";
 import { env } from "$env/dynamic/private";
-const key = env.rss_api_key ?? "";
-const url = env.rss_url ?? "";
+const key = env.rss_api_key || "";
+const url = env.rss_url || "";
 
 describe("Check rss working or not", () => {
   const fqdm = `https://${url}`;

@@ -1,10 +1,11 @@
+import { building } from "$app/environment";
 import { env } from "$env/dynamic/private";
 import { createClient } from "redis";
 import { Fallback } from "./fallback";
 import type { RedisClientType } from "@redis/client";
-export const _REDIS_HOST = env.redis_host ?? "redis";
-export const _REDIS_PORT = env.redis_port ?? "6379";
-export const _REDIS_PASS = env.redis_pass ?? "";
+export const _REDIS_HOST = building ? "redis" : env.redis_host || "redis";
+export const _REDIS_PORT = building ? "6379" : env.redis_port || "6379";
+export const _REDIS_PASS = building ? "" : env.redis_pass || "";
 
 export let client: RedisClientType | Fallback;
 
@@ -71,7 +72,8 @@ try {
     client.hSet(e[0], e[1]);
   });
   console.log("Redis connection established!");
-} catch (_) {
+} catch (e) {
   console.log("Could not connect to redis, using fallback");
+  console.log(e);
   client = new Fallback(starting_data);
 }

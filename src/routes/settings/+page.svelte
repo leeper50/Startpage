@@ -58,7 +58,7 @@
       />
       <p>Toggle RSS visibility</p>      
       <label class="switch" style="top: 4px">
-        <input type="checkbox" on:click={toggleRSS} checked />
+        <input type="checkbox" on:click={toggleRSS} checked={JSON.parse($rss)} />
         <span class="slider" />
       </label>
     </div>
@@ -85,7 +85,7 @@
       id: Foobar
       </pre>
       <div>
-        <a class="blue" href="links.yml" download="links.yml">
+        <a class="blue" href="fancy_links.yml" download="links.yml">
           <button class="border">Get template</button>
         </a>
       </div>

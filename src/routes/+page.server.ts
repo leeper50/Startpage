@@ -4,8 +4,8 @@ import YAML from "yaml";
 import * as uuid from "uuid";
 import { getNews } from "$lib/rss";
 import { env } from "$env/dynamic/private";
-const url = env.rss_url ?? "";
-const key = env.rss_api_key ?? "";
+const url = env.rss_url || "";
+const key = env.rss_api_key || "";
 
 export async function load({ cookies }) {
   const id = cookies.get("id");

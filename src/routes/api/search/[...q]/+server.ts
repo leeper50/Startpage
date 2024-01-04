@@ -1,8 +1,8 @@
 import { env } from "$env/dynamic/private";
 import { client } from "$lib/db.js";
 import type { MyURL } from "$lib/fallback.js";
-export const _REDIS_HOST = env.redis_host ?? "localhost";
-export const _REDIS_PORT = env.redis_port ?? "6379";
+export const _REDIS_HOST = env.redis_host || "localhost";
+export const _REDIS_PORT = env.redis_port || "6379";
 
 function logResponse(message: string, request: string, status: number) {
   if (request != "") request = " from " + request;
