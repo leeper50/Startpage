@@ -1,99 +1,37 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
-import { building } from "$app/environment";
+import type { Handle } from "@sveltejs/kit";
 import { env } from "$env/dynamic/private";
+import jwt from "jsonwebtoken";
 
-const host = building ? "localhost" : env.POSTGRES_HOST || "localhost";
-const port = building ? 5432 : parseInt(env.POSTGRES_PORT) || 5432;
-const db = building ? "postgres" : env.POSTGRES_DB || "postgres";
-const user = building ? "postgres" : env.POSTGRES_USER || "postgres";
-const pass = building ? "postgres" : env.POSTGRES_PASS || "postgres";
+import { db } from "$lib/db";
 
-export let sequelize = new Sequelize({
-  dialect: "postgres",
-  host: host,
-  port: port,
-  database: db,
-  username: user,
-  password: pass,
-});
+const handle: Handle = async ({ event, resolve }) => {
+  const authCookie = event.cookies.get("AuthorizationToken");
 
-let postgresFailed = false;
-try {
-  await sequelize.authenticate();
-  console.log("Postgres connection has been established successfully.");
-} catch (error) {
-  console.log(error);
-  console.log(`Check your variables: host =>`);
-  console.log("Using sqlite3 as fallback");
-  postgresFailed = true;
-}
+  if (authCookie) {
+    // Remove Bearer prefix
+    const token = authCookie.split(" ")[1];
 
-if (postgresFailed) {
-  sequelize = new Sequelize({
-    dialect: "sqlite",
-    storage: "test.sqlite",
-  });
-}
+    try {
+      const jwtUser = jwt.verify(token, env.JWT_ACCESS_SECRET);
+      if (typeof jwtUser === "string") {
+        throw new Error("Something went wrong");
+      }
 
-class User extends Model {
-  declare firstName: string;
-  declare lastName?: string;
-  declare age?: number;
-}
+      const user = await db.user.findUnique({
+        where: {
+          id: jwtUser.id,
+        },
+      });
 
-User.init(
-  {
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      primaryKey: true,
-    },
-    lastName: {
-      type: DataTypes.STRING,
-    },
-    age: {
-      type: DataTypes.INTEGER,
-    },
-  },
-  { sequelize }
-);
+      if (!user) {
+        throw new Error("User not found");
+      }
 
-// await User.sync();
-await sequelize.sync({ force: true });
-await User.create({ firstName: "A", age: 19 });
-const test = new User({ firstName: "B", age: 20 });
-test.save();
+      event.locals.user = user;
+    } catch (_) {}
+  }
 
-let t = await sequelize.transaction();
-try {
-  await User.create({ firstName: "C", age: 21 }, { transaction: t });
-  await User.create({ firstName: "D", age: 19 }, { transaction: t });
-  await t.commit();
-} catch (error) {
-  await t.rollback();
-}
+  return await resolve(event);
+};
 
-try {
-  const result = await sequelize.transaction(async (t) => {
-    await User.create({ firstName: "Some name", age: 23 }, { transaction: t });
-    await User.create({ age: 24 }, { transaction: t });
-    return user;
-  });
-} catch (error) {
-  console.log("This one fails because no primary key");
-}
-
-let users = await User.findAll({});
-console.log(JSON.stringify(users, null, 2));
-
-users = await User.findAll({
-  attributes: ["age"],
-});
-console.log(JSON.stringify(users, null, 2));
-
-users = await User.findAll({
-  where: {
-    age: 19,
-  },
-});
-console.log(JSON.stringify(users, null, 2));
+export { handle };

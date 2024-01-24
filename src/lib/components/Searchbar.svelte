@@ -25,7 +25,7 @@
     autocorrect="off"
     spellcheck="false"
     bind:value={search}
-    placeholder={placeholder}
+    {placeholder}
   />
 </form>
 

@@ -1,8 +1,5 @@
-import { env } from "$env/dynamic/private";
-import { client } from "$lib/db.js";
-import type { MyURL } from "$lib/fallback.js";
-export const _REDIS_HOST = env.redis_host || "localhost";
-export const _REDIS_PORT = env.redis_port || "6379";
+import { db } from "$lib/db";
+import { default_search } from "../default";
 
 function logResponse(message: string, request: string, status: number) {
   if (request != "") request = " from " + request;
@@ -12,7 +9,7 @@ function logResponse(message: string, request: string, status: number) {
 }
 
 // perform a search
-export async function GET({ params }): Promise<Response> {
+export async function GET({ params, locals }): Promise<Response> {
   let text = params.q;
   const engine = "https://duckduckgo.com/?t=ffab&q=";
   const logText = text;
@@ -22,8 +19,8 @@ export async function GET({ params }): Promise<Response> {
   if (!text.startsWith("-"))
     return logResponse(engine + encodeURIComponent(text), logText, 200);
 
-  let keyText: string = "";
-  let searchText: string = "";
+  let keyText = "";
+  let searchText = "";
 
   if (text.includes(" ")) {
     keyText = text.substring(0, text.indexOf(" "));
@@ -32,24 +29,51 @@ export async function GET({ params }): Promise<Response> {
     keyText = text;
   }
   keyText = keyText.toLowerCase();
-
-  if (!(await client.exists(keyText))) return logResponse("", logText, 400);
-
-  const { url, searchable } = await client.hGetAll(keyText) as MyURL;
-
-  // returns url if command is not searchable
-  if (searchable === "false") return logResponse(url, logText, 200);
-
-  // returns cleaned url if no searchtext is provided
-  if (searchText.trim() === "") {
-    const searchParams = ["/input", "/results", "/search", "/wiki", "/c/", "/r/"];
-    let temp = url;
-    searchParams.forEach((item) => {
-      temp = temp.split(item)[0];
-    });
-    return logResponse(temp, logText, 200);
+  function runSearch(url: string, searchable: boolean) {
+    // returns url if command is not searchable
+    if (searchable === false) return logResponse(url, logText, 200);
+    // returns cleaned url if no searchtext is provided
+    if (searchText.trim() === "") {
+      const searchParams = [
+        "/input",
+        "/results",
+        "/search",
+        "/wiki",
+        "/c/",
+        "/r/",
+      ];
+      let temp = url;
+      searchParams.forEach((item) => {
+        temp = temp.split(item)[0];
+      });
+      return logResponse(temp, logText, 200);
+    }
+    // return url with search
+    return logResponse(url + encodeURIComponent(searchText), logText, 200);
   }
-
-  // return url with search
-  return logResponse(url + encodeURIComponent(searchText), logText, 200);
+  // Check user's searches
+  if (locals.user) {
+    const resp = await db.search.findUnique({
+      select: {
+        key: true,
+        url: true,
+        searchable: true,
+      },
+      where: {
+        userId: locals.user.id,
+        key: keyText,
+      },
+    });
+    if (resp) {
+      return runSearch(resp.url, resp.searchable);
+    }
+  }
+  if (keyText in default_search) {
+    // Check default search
+    let { url, searchable } = default_search[keyText];
+    return runSearch(url, searchable);
+  } else {
+    // Command not present
+    return logResponse("", logText, 400);
+  }
 }

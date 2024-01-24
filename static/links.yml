@@ -56,7 +56,7 @@
       id: Homepage
     - url: https://cloud.oracle.com/
       id: Oracle
-    - url: /search
-      id: Search
+    - url: /settings
+      id: Settings
     - url: https://login.tailscale.com/admin/machines
       id: Tailscale

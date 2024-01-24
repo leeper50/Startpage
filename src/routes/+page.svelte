@@ -1,29 +1,33 @@
 <script lang="ts">
+  import type { PageData } from "./$types";
+  export let data: PageData;
+  let { user } = data;
   // MAIN
   import "@fontsource/fira-sans/200.css";
   import "@fontsource/fira-sans/600.css";
   import Searchbar from "$lib/components/Searchbar.svelte";
-  import { style, rss } from "$lib/stores";
   // FANCY
   import Rss from "$lib/components/Rss.svelte";
-  import type { PageData } from "./$types";
-  export let data: PageData;
-  let badImages = ["Gitea", "Gmail", "Handshake", "Homepage", "Paste", "Rss"];
+  let badImages = [
+    "Gitea",
+    "Gmail",
+    "Handshake",
+    "Homepage",
+    "Paste",
+    "Rss",
+    "Tailscale",
+    "Tutanota",
+  ];
   function get_image(url: string, id: string) {
     if (url.startsWith("/")) return `favicon-32.png`;
     if (badImages.includes(id)) return `/icons/${id}.png`;
     else return `/images/${url.slice(8, url.indexOf("/", 9))}`;
   }
-  // MINIMAL
-  import linkData from "/src/minimal_links.yml";
 </script>
 
-{#if $style === "Minimal"}
+{#if !user || user.fancy === false}
   <div class="minimal-body">
     <main>
-      <div class="settings">
-        <a href="/settings">⚙️</a>
-      </div>
       <div class="minimal-bar border">
         <div>
           <span class="blue">user</span>
@@ -38,7 +42,7 @@
         </div>
       </div>
       <div class="container">
-        {#each linkData as { title, list }}
+        {#each data.page as { title, list }}
           <div class="box border">
             <div style="display: flex">
               <span class="magenta space">~</span>
@@ -58,19 +62,29 @@
     </main>
   </div>
 {:else}
-  <div class="fancy-body background-img">
-    <div class="settings">
-      <a href="/settings">⚙️</a>
-    </div>
+  <div
+    class="fancy-body"
+    class:background-img={user.backgroundVisibility}
+    style="background-color: {user.backgroundColor}"
+  >
     <div class="content">
       <span class="moody-gray">
         <Searchbar placeholder="Search..." />
       </span>
       <div id="links">
-        {#if JSON.parse($rss) && data.valid}
-          <div class="link-box rss">
-            <Rss data={data.items} />
-          </div>
+        {#if user.rssVisibility}
+          {#if data.valid}
+            <div class="link-box rss">
+              <Rss data={data.items} />
+            </div>
+          {:else}
+            <div class="link-box rss">
+              <p>
+                Problem with rss config!
+                <br />Check your url and key.
+              </p>
+            </div>
+          {/if}
         {/if}
         {#each data.page as { title, list }}
           <div class="link-box">
@@ -122,11 +136,6 @@
       justify-content: center;
       gap: 0px;
       width: 75%;
-    }
-    .settings {
-      position: absolute;
-      top: 12px;
-      right: 12px;
     }
     #links {
       display: flex;
@@ -185,13 +194,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    .settings {
-      position: absolute;
-      font-size: 1.5em;
-      top: 12px;
-      right: 12px;
-    }
     main {
       display: flex;
       flex-direction: column;

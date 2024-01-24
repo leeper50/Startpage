@@ -6,7 +6,6 @@ export async function getNews(
   items?: NewsItem[];
 }> {
   if (!key || !url) {
-    console.log("No RSS_URL or RSS_API_KEY set!");
     return { valid: false };
   }
   let data: NewsItem[] = [{ title: "", url: "", site: "" }];

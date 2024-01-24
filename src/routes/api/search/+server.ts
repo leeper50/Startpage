@@ -1,10 +1,7 @@
 import { error } from "@sveltejs/kit";
-import { env } from "$env/dynamic/private";
-import { client } from "$lib/db.js";
-import crypto from "node:crypto";
-export const _API_KEY =
-  env.search_api_key || crypto.randomBytes(32).toString("hex");
-if (!env.search_api_key) console.log(_API_KEY);
+import { db } from "$lib/db.js";
+
+type MyUrl = { url: string; searchable: boolean };
 
 function isString(value: unknown): value is string {
   return typeof value == "string";
@@ -16,37 +13,6 @@ function isBooleanLike(value: unknown): boolean {
     return true;
   return false;
 }
-async function validateInput(
-  request: Request
-): Promise<{ keys: string[]; input: object }> {
-  const { message, valid } = checkApiKey(request);
-  if (!valid) error(400, message);
-  let input: object;
-  let keys: string[];
-  try {
-    input = await request.json();
-    keys = Object.keys(input);
-  } catch (_) {
-    error(400, "invalid json");
-  }
-  return { keys, input };
-}
-function checkApiKey(request: Request) {
-  if (!request.headers.get("api_key")) {
-    const message = "No api key in header";
-    console.log(message);
-    return { message: message, valid: false };
-  } else if (request.headers.get("api_key") != _API_KEY) {
-    const message = "Invalid api key";
-    console.log(message);
-    return { message: message, valid: false };
-  } else return { message: "Valid api check", valid: true };
-}
-function logResponse(message: string, request: string, status: number) {
-  if (request != "") request = " from " + request;
-  console.log(message);
-  return new Response(message, { status: status });
-}
 
 // default get
 export async function GET(): Promise<Response> {
@@ -55,100 +21,145 @@ export async function GET(): Promise<Response> {
 }
 
 // add commands
-export async function POST({ request }): Promise<Response> {
-  const { keys, input } = await validateInput(request);
-
-  const logAccum: string[] = [];
-  for (const i in keys) {
-    const k = keys[i];
-    // validate url and searchable
-    try {
-      const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
-      if (
-        !isString(input[k].url) ||
-        !isBooleanLike(input[k].searchable) ||
-        !isDashed
-      ) {
-        logAccum.push(`POST - ${k} was not added`);
-        continue;
-      }
-
-      const exists = client.exists(k);
-      const updatedData = {
-        url: input[k].url,
-        searchable: input[k].searchable.toString(),
-      };
-      if (!(await exists)) {
-        client.hSet(k, updatedData);
-        logAccum.push(`POST - Added: ${k}: ${JSON.stringify(updatedData)}`);
-      } else {
-        logAccum.push(`POST - Not Added: ${k}`);
-      }
-    } catch (_) {
-      logAccum.push(`Error - Input was ${k}`);
-    }
+export async function POST({ request, locals }): Promise<Response> {
+  const { user } = locals;
+  let obj;
+  try {
+    obj = await request.json();
+  } catch (_) {
+    error(400, "invalid json");
   }
-  return logResponse(logAccum.join("\n"), "", 200);
+  const k = Object.keys(obj)[0];
+  const v: MyUrl = obj[k];
+
+  let message = "";
+  let status = 200;
+  try {
+    const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
+    if (!isString(v.url) || !isBooleanLike(v.searchable) || !isDashed) {
+      return new Response(`POST - ${k} was not added`, { status: 400 });
+    }
+    const query = await db.search.findUnique({
+      where: {
+        key: k,
+        userId: user.id,
+      },
+    });
+    const data = {
+      key: k,
+      url: v.url,
+      searchable: v.searchable,
+    };
+    if (!query) {
+      await db.search.create({
+        data: {
+          ...data,
+          userId: user.id,
+        },
+      });
+      message = `POST - Added: ${JSON.stringify(obj)}`;
+    } else {
+      message = `POST - Not Added: ${k}`;
+    }
+  } catch (e) {
+    console.log(e);
+    message = e as string;
+    status = 500;
+  }
+  return new Response(message, { status: status });
 }
 
 // update commands
-export async function PUT({ request }): Promise<Response> {
-  const { keys, input } = await validateInput(request);
+export async function PUT({ request, locals }): Promise<Response> {
+  const { user } = locals;
+  let obj;
 
-  const logAccum: string[] = [];
-  for (const i in keys) {
-    const k = keys[i];
-    // validate url and searchable
-    try {
-      const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
-      if (
-        !isString(input[k].url) ||
-        !isBooleanLike(input[k].searchable) ||
-        !isDashed
-      ) {
-        logAccum.push(`PUT - ${k} was not added`);
-      }
-
-      const exists = await client.exists(k);
-      const updatedData = {
-        url: input[k].url,
-        searchable: input[k].searchable.toString(),
-      };
-      if (!exists) {
-        logAccum.push(`PUT - Not Present: ${k}`);
-        continue;
-      }
-      const presentData = await client.hGetAll(k);
-      if (JSON.stringify(presentData) === JSON.stringify(updatedData)) {
-        logAccum.push(`PUT - Unchanged: ${k}: ${JSON.stringify(updatedData)}`);
-        continue;
-      }
-      client.hSet(k, updatedData);
-      logAccum.push(`PUT - Changed: ${k}: ${JSON.stringify(updatedData)}`);
-    } catch (_) {
-      logAccum.push(`Error - Input was ${k}`);
-    }
+  let message = "";
+  let status = 200;
+  try {
+    obj = await request.json();
+  } catch (_) {
+    error(400, "invalid json");
   }
-  return logResponse(logAccum.join("\n"), "", 200);
+  const k = Object.keys(obj)[0];
+  const v: MyUrl = obj[k];
+
+  // validate url and searchable
+  try {
+    const isDashed = k.charAt(0) === "-" && k.charAt(1) !== "-";
+    if (!isString(v.url) || !isBooleanLike(v.searchable) || !isDashed) {
+      return new Response(`PUT - ${k} is not a command`, { status: 400 });
+    }
+
+    const query = await db.search.findUnique({
+      where: {
+        key: k,
+        userId: user.id,
+      },
+      select: {
+        key: true,
+        url: true,
+        searchable: true,
+      },
+    });
+    if (!query) {
+      return new Response(`PUT - ${k} is not a command`, { status: 400 });
+    }
+    const data = {
+      key: k,
+      url: v.url,
+      searchable: v.searchable,
+    };
+    if (JSON.stringify(data) === JSON.stringify(query)) {
+      return new Response(`PUT - Unchanged: ${JSON.stringify(obj)}`, {
+        status: 200,
+      });
+    }
+    await db.search.update({
+      where: {
+        key: k,
+        userId: user.id,
+      },
+      data: {
+        ...data,
+      },
+    });
+    message = `PUT - Changed: ${JSON.stringify(obj)}`;
+  } catch (_) {
+    message = `Error - Input was ${k}`;
+    status = 400;
+  }
+  return new Response(message, { status: status });
 }
 
 // delete commands
-export async function DELETE({ request }): Promise<Response> {
-  const { input } = await validateInput(request);
-  const logAccum: string[] = [];
-  for (const i in input["id"]) {
-    const key = input["id"][i];
-    // check if request is valid
-    if (!isString(key) || key.charAt(0) !== "-")
-      error(400, "invalid json");
-    // check if key exists
-    if (!(await client.exists(key))) {
-      logAccum.push(`DELETE - ${key} was not present`);
-      continue;
-    }
-    // ensure key/record is completely removed
-    client.del(key);
-    logAccum.push(`DELETE - ${key} was removed`);
+export async function DELETE({ request, locals }): Promise<Response> {
+  const { user } = locals;
+  let obj;
+  try {
+    obj = await request.json();
+  } catch (_) {
+    error(400, "invalid json");
   }
-  return logResponse(logAccum.join("\n"), "", 200);
+  const v = obj["id"];
+
+  // check if request is valid
+  if (!isString(v) || v.charAt(0) !== "-") error(400, "invalid json");
+  // check if key exists
+  const query = await db.search.findUnique({
+    where: {
+      key: v,
+      userId: user.id,
+    },
+  });
+  if (!query) {
+    return new Response(`DELETE - ${v} was not present`, { status: 400 });
+  }
+  await db.search.delete({
+    where: {
+      key: v,
+      userId: user.id,
+    },
+  });
+  return new Response(`DELETE - ${v} was removed`, { status: 200 });
 }

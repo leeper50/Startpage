@@ -1,7 +1,17 @@
 import * as Server from "../routes/api/search/+server";
 import * as SlugGet from "../routes/api/search/[...q]/+server";
 import { expect, test } from "vitest";
-type InputType = string | boolean | number | object;
+import { db } from "$lib/db";
+async function getUser(id?: string) {
+  const email = id ?? "0";
+  const query = await db.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (query) return query;
+  else return await db.user.create({ data: { email: email } });
+}
 
 test("Get with empty string", async () => {
   const res = await Server.GET();
@@ -27,155 +37,109 @@ test("Get", async () => {
     ["-NOTREALCOMMAND", ""],
   ]);
   queries.forEach(async (result, search) => {
-    const res = await SlugGet.GET({ params: { q: search } });
+    const res = await SlugGet.GET({ params: { q: search }, locals: {} });
     const url = await res.text();
     expect(url).toBe(result);
   });
 });
 
-test("Post", async () => {
-  const queries = new Map<string, { url?: InputType; searchable?: InputType }>([
-    [
-      "-test1",
-      {
-        url: "https://test.com",
-        searchable: "false",
-      },
-    ],
-    [
-      "test2",
-      {
-        url: "https://test.com",
-        searchable: "false",
-      },
-    ],
-    [
-      "-test3",
-      {
-        url: 5,
-        searchable: "false",
-      },
-    ],
-    [
-      "-test4",
-      {
-        url: "https://test.com",
-        searchable: 5,
-      },
-    ],
-    ["-test5", {}],
-    [
-      "-test6",
-      {
-        url: "",
-      },
-    ],
-    [
-      "-test7",
-      {
-        searchable: "true",
-      },
-    ],
-  ]);
-  const results = new Map<string, string>([
-    [
-      "-test1",
-      `POST - Added: -test1: ${JSON.stringify(queries.get("-test1"))}`,
-    ],
-    ["test2", `POST - test2 was not added`],
-    ["-test3", `POST - -test3 was not added`],
-    ["-test4", `POST - -test4 was not added`],
-    ["-test5", `POST - -test5 was not added`],
-    ["-test6", `POST - -test6 was not added`],
-    ["-test7", `POST - -test7 was not added`],
-  ]);
-  queries.forEach(async (value, key) => {
-    const res = await Server.POST({
-      request: {
-        headers: {
-          get: () => {
-            return Server._API_KEY;
-          },
-        },
-        json: () => {
-          return { [key]: value };
-        },
-      },
-    });
-    const url = await res.text();
-    expect(url).toBe(results.get(key));
+test("Post - Make valid command", async () => {
+  const user = await getUser("1");
+  const obj = {
+    "-test1": {
+      url: "https://example.org",
+      searchable: false,
+    },
+  };
+  const res = await Server.POST({
+    request: { json: () => obj },
+    locals: { user: user },
   });
+  expect(await res.text()).toBe(
+    `POST - Added: {"-test1":{"url":"https://example.org","searchable":false}}`
+  );
+  await db.search.delete({ where: { userId: user.id, key: "-test1" } });
+  await db.user.delete({ where: { id: user.id } });
 });
 
-test("Put", async () => {
-  const queries = new Map<string, { url?: InputType; searchable?: InputType }>([
-    [
-      "-g",
-      {
-        url: "https://duckduckgo.com",
-        searchable: "true",
-      },
-    ],
-    [
-      "-g",
-      {
-        url: "https://google.com",
-        searchable: "true",
-      },
-    ],
-    [
-      "-notacommand",
-      {
-        url: "https://test.com",
-        searchable: "false",
-      },
-    ],
-  ]);
-  const results = new Map<string, string>([
-    ["-g", `PUT - Changed: -g: ${JSON.stringify(queries.get("-g"))}`],
-    ["-d", `PUT - Changed: -d: ${JSON.stringify(queries.get("-d"))}`],
-    ["-notacommand", `PUT - Not Present: -notacommand`],
-  ]);
-  queries.forEach(async (value, key) => {
-    const res = await Server.PUT({
-      request: {
-        headers: {
-          get: () => {
-            return Server._API_KEY;
-          },
-        },
-        json: () => {
-          return { [key]: value };
-        },
-      },
-    });
-    const url = await res.text();
-    expect(url).toBe(results.get(key));
+test("Post - Make invalid command", async () => {
+  const user = await getUser("1");
+  const obj = {
+    test2: {
+      url: "https://example.org",
+      searchable: false,
+    },
+  };
+  const res = await Server.POST({
+    request: { json: () => obj },
+    locals: { user: user },
   });
+  expect(await res.text()).toBe(`POST - test2 was not added`);
+  await db.user.delete({ where: { id: user.id } });
 });
 
-test("Delete", async () => {
-  const queries = new Map<string, string>([
-    ["-pcp", "DELETE - -pcp was removed"],
-    ["-NOTAREALCOMMAND", "DELETE - -NOTAREALCOMMAND was not present"],
-    ["-", "DELETE - - was not present"],
-  ]);
-  queries.forEach(async (result, search) => {
-    const res = await Server.DELETE({
-      request: {
-        headers: {
-          get: () => {
-            return Server._API_KEY;
-          },
-        },
-        json: () => {
-          return {
-            id: [search],
-          };
-        },
-      },
-    });
-    const url = await res.text();
-    expect(url).toBe(result);
+test("Put - Update valid command", async () => {
+  const user = await getUser("1");
+  const startingObj = {
+    "-test1": {
+      url: "https://example.org",
+      searchable: false,
+    },
+  };
+  const updatedObj = {
+    "-test1": {
+      url: "https://google.com",
+      searchable: true,
+    },
+  };
+  await Server.POST({
+    request: { json: () => startingObj },
+    locals: { user: user },
   });
+  const res = await Server.PUT({
+    request: { json: () => updatedObj },
+    locals: { user: user },
+  });
+  expect(await res.text()).toBe(`PUT - Changed: ${JSON.stringify(updatedObj)}`);
+  await db.search.delete({ where: { userId: user.id, key: "-test1" } });
+  await db.user.delete({ where: { id: user.id } });
+});
+
+test("Put - Update invalid command", async () => {
+  const user = await getUser("1");
+  const updatedObj = {
+    "-test1": {
+      url: "https://google.com",
+      searchable: true,
+    },
+  };
+  const res = await Server.PUT({
+    request: { json: () => updatedObj },
+    locals: { user: user },
+  });
+  expect(await res.text()).toBe(`PUT - -test1 is not a command`);
+  await db.user.delete({ where: { id: user.id } });
+});
+
+test("Delete - Delete valid command", async () => {
+  const user = await getUser("1");
+  const startingObj = {
+    "-test1": {
+      url: "https://example.org",
+      searchable: false,
+    },
+  };
+  const deleteObj = {
+    id: "-test1",
+  };
+  await Server.POST({
+    request: { json: () => startingObj },
+    locals: { user: user },
+  });
+  const res = await Server.DELETE({
+    request: { json: () => deleteObj },
+    locals: { user: user },
+  });
+  expect(await res.text()).toBe(`DELETE - -test1 was removed`);
+  await db.user.delete({ where: { id: user.id } });
 });

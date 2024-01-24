@@ -12,6 +12,6 @@ yarn.lock
 pnpm-lock.yaml
 /coverage
 .vscode
-docker-compose.yml
+docker-compose*.yml
 *.sqlite
 *.db
