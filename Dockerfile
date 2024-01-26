@@ -12,11 +12,12 @@ RUN npm run build
 
 FROM node:lts-alpine as main
 WORKDIR /app
+VOLUME /app/prisma
 COPY package.json .
 COPY --from=build /app/build .
-COPY --from=build /app/prisma prisma
+COPY --from=build /app/prisma/schema.prisma .
+COPY run.sh .
 RUN npm i --omit dev
-RUN rm prisma/schema.prisma
 ARG JWT_ACCESS_SECRET
 EXPOSE 3000
-CMD ["node", "index.js"]
+CMD ["sh", "run.sh"]
