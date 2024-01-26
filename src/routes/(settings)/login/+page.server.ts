@@ -1,6 +1,31 @@
-import type { PageServerLoad, Actions } from "./$types";
-import { redirect, fail } from "@sveltejs/kit";
+import type { PageServerLoad, Actions, RouteParams } from "./$types";
+import { redirect, fail, type RequestEvent } from "@sveltejs/kit";
 import { createUser, loginUser } from "$lib/user.model";
+
+async function getToken(
+  event: RequestEvent<RouteParams, "/(settings)/login">,
+  email: string,
+  password: string
+) {
+  const { error, token } = await loginUser(email, password);
+
+  if (error) {
+    return fail(401, {
+      error,
+    });
+  }
+
+  // Set the cookie
+  event.cookies.set("AuthorizationToken", `Bearer ${token}`, {
+    httpOnly: true,
+    path: "/",
+    secure: true,
+    sameSite: "strict",
+    maxAge: 60 * 60 * 24, // 1 day
+  });
+
+  throw redirect(302, "/settings");
+}
 
 export const load: PageServerLoad = (event) => {
   const user = event.locals.user;
@@ -13,7 +38,7 @@ export const load: PageServerLoad = (event) => {
 export const actions: Actions = {
   signup: async (event) => {
     const formData = Object.fromEntries(await event.request.formData());
-    
+
     if (formData.signupPassword !== formData.signupPasswordConfirm) {
       return fail(400, {
         error: "Passwords do not match",
@@ -27,7 +52,10 @@ export const actions: Actions = {
       });
     }
 
-    const { signupEmail, signupPassword } = formData as { signupEmail: string; signupPassword: string };
+    const { signupEmail, signupPassword } = formData as {
+      signupEmail: string;
+      signupPassword: string;
+    };
 
     // Create a new user
     const { error } = await createUser(signupEmail, signupPassword);
@@ -39,12 +67,12 @@ export const actions: Actions = {
       });
     }
 
-    // Redirect to the login page
-    throw redirect(302, "/login");
+    // Login user
+    return await getToken(event, signupEmail, signupPassword);
   },
   login: async (event) => {
     const formData = Object.fromEntries(await event.request.formData());
-    
+
     if (formData.loginPassword !== formData.loginPasswordConfirm) {
       return fail(400, {
         error: "Passwords do not match",
@@ -57,25 +85,11 @@ export const actions: Actions = {
       });
     }
 
-    const { loginEmail, loginPassword } = formData as { loginEmail: string; loginPassword: string };
+    const { loginEmail, loginPassword } = formData as {
+      loginEmail: string;
+      loginPassword: string;
+    };
 
-    const { error, token } = await loginUser(loginEmail, loginPassword);
-
-    if (error) {
-      return fail(401, {
-        error,
-      });
-    }
-
-    // Set the cookie
-    event.cookies.set("AuthorizationToken", `Bearer ${token}`, {
-      httpOnly: true,
-      path: "/",
-      secure: true,
-      sameSite: "strict",
-      maxAge: 60 * 60 * 24, // 1 day
-    });
-
-    throw redirect(302, "/settings");
+    return await getToken(event, loginEmail, loginPassword);
   },
 };
