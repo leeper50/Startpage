@@ -70,7 +70,7 @@ export async function GET({ params, locals }): Promise<Response> {
   }
   if (keyText in default_search) {
     // Check default search
-    let { url, searchable } = default_search[keyText];
+    const { url, searchable } = default_search[keyText];
     return runSearch(url, searchable);
   } else {
     // Command not present

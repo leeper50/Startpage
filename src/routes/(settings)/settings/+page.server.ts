@@ -1,4 +1,4 @@
-import { error, redirect, type ServerLoadEvent } from "@sveltejs/kit";
+import { redirect, type ServerLoadEvent } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = (event: ServerLoadEvent) => {
