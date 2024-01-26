@@ -14,10 +14,11 @@
     .window {
         margin: 0 8 0 8;
         width: 100%;
-        height: auto;
+        height: 2vh;
         display: flex;
         flex-direction: column;
         font-family: "Fira Sans";
+        font-weight: 600;
     }
     .settings {
         top: 12px;

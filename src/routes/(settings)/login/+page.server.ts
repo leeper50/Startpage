@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from "./$types";
 import { redirect, fail } from "@sveltejs/kit";
-import { loginUser } from "$lib/user.model";
+import { createUser, loginUser } from "$lib/user.model";
 
 export const load: PageServerLoad = (event) => {
   const user = event.locals.user;
@@ -11,18 +11,55 @@ export const load: PageServerLoad = (event) => {
 };
 
 export const actions: Actions = {
-  default: async (event) => {
+  signup: async (event) => {
     const formData = Object.fromEntries(await event.request.formData());
+    
+    if (formData.signupPassword !== formData.signupPasswordConfirm) {
+      return fail(400, {
+        error: "Passwords do not match",
+      });
+    }
 
-    if (!formData.email || !formData.password) {
+    // Verify that we have an email and a password
+    if (!formData.signupEmail || !formData.signupPassword) {
       return fail(400, {
         error: "Missing email or password",
       });
     }
 
-    const { email, password } = formData as { email: string; password: string };
+    const { signupEmail, signupPassword } = formData as { signupEmail: string; signupPassword: string };
 
-    const { error, token } = await loginUser(email, password);
+    // Create a new user
+    const { error } = await createUser(signupEmail, signupPassword);
+
+    // If there was an error, return an invalid response
+    if (error) {
+      return fail(500, {
+        error,
+      });
+    }
+
+    // Redirect to the login page
+    throw redirect(302, "/login");
+  },
+  login: async (event) => {
+    const formData = Object.fromEntries(await event.request.formData());
+    
+    if (formData.loginPassword !== formData.loginPasswordConfirm) {
+      return fail(400, {
+        error: "Passwords do not match",
+      });
+    }
+
+    if (!formData.loginEmail || !formData.loginPassword) {
+      return fail(400, {
+        error: "Missing email or password",
+      });
+    }
+
+    const { loginEmail, loginPassword } = formData as { loginEmail: string; loginPassword: string };
+
+    const { error, token } = await loginUser(loginEmail, loginPassword);
 
     if (error) {
       return fail(401, {
