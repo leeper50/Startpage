@@ -2,7 +2,7 @@
   import type { PageData } from "./$types";
   export let data: PageData;
   let { user } = data;
-  let pageData = JSON.parse(user.pageData);
+  let pageData = data.page;
   import Linkbox from "$lib/components/Linkbox.svelte";
   import Rss from "$lib/components/Rss.svelte";
   import Searchbar from "$lib/components/Searchbar.svelte";

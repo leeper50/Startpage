@@ -16,7 +16,7 @@
         <TabAnchor href="/search">
           <span>Search</span>
         </TabAnchor>
-        {#if user.isAdmin}
+        {#if user && user.isAdmin}
         <TabAnchor href="/admin">
           <span>Admin</span>
         </TabAnchor>
