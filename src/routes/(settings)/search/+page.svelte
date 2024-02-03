@@ -65,7 +65,6 @@
   <div class="border-4 border-surface-400 text-error-500 self-center w-96 min-h-16 p-2">
     <code class="break-all">
       {response}
-      PUT - Changed: "-x":"url":"https://example.org","searchable":true
     </code>
   </div>
 </main>
