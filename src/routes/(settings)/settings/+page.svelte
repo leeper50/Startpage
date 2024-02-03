@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { FileDropzone, SlideToggle } from "@skeletonlabs/skeleton";
+  import { enhance } from "$app/forms";
   import type { PageData } from "./$types";
-  import { SlideToggle } from "@skeletonlabs/skeleton";
   export let data: PageData;
   let { user } = data;
   const default_user = {
@@ -13,10 +14,6 @@
     backgroundUrl: "",
     backgroundColor: "#081118",
   };
-  // MAIN
-  import "@fontsource/fira-sans/300.css";
-  // NEW SEARCH THINGS
-  import { enhance } from "$app/forms";
   let files: FileList;
   async function updateUser() {
     if (files) {
@@ -116,21 +113,14 @@
     - url: https://bing.com/
       id: Foobar
       </pre>
-      <div class="flex justify-between">
+      <div class="flex flex-col gap-4 items-end">
+        <FileDropzone name="files" accept=".yml, .yaml" padding="py-2" bind:files={files} required >
+          <svelte:fragment slot="message">Drop your file here</svelte:fragment>
+          <svelte:fragment slot="meta">Upload a .yml or .yaml file</svelte:fragment>
+        </FileDropzone>
         <a href="links.yml" download="links.yml">
           <button class="border-4 border-surface-400 p-1">Template</button>
         </a>
-        <label for="file" class="file-upload border-4 border-surface-400 p-1"
-          >Upload</label
-        >
-        <input
-          type="file"
-          id="file"
-          name="fileToUpload"
-          bind:files
-          accept=".yml, .yaml"
-          required
-        />
       </div>
     </div>
   </div>
@@ -155,28 +145,3 @@
     </form>
   </div>
 </div>
-
-<style lang="scss">
-  input[type="file"] {
-    display: none;
-  }
-  .input-field {
-    gap: 12px;
-    text-align: center;
-    padding: 0px;
-    margin: 12px 0 12px 0;
-    display: flex;
-    flex-direction: column;
-    > div {
-      text-align: left;
-      display: flex;
-      justify-content: space-between;
-      > input {
-        color: cyan;
-        background-color: #222;
-        font-size: inherit;
-        height: fit-content;
-      }
-    }
-  }
-</style>
