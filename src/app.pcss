@@ -2,3 +2,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+	/* Reference name */
+	font-family: 'Fira Sans';
+	/* For multiple files use commas, ex: url(), url(), ... */
+	src: url('/fonts/FiraSans-Light.ttf'),
+    url('/fonts/FiraSans-Medium.ttf'),
+    url('/fonts/FiraCode-Bold.ttf');
+}
+@font-face {
+	/* Reference name */
+	font-family: 'Fira Code';
+	/* For multiple files use commas, ex: url(), url(), ... */
+	src: url('/fonts/FiraCode-VariableFont_sght.ttf');
+}
+
+:root [data-theme='my-custom-theme'] {
+    --theme-font-family-base: 'Fira Sans', sans-serif;
+    --theme-font-family-heading: 'Fira Sans', sans-serif;
+    /* ... */
+}

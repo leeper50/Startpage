@@ -2,47 +2,14 @@
   export let data = [{ title: "", url: "", site: "" }];
 </script>
 
-<p>News</p>
+<p>NEWS</p>
 {#each data as { title, url, site }}
-  <a href={url} {title}>
-    <span class="image">
-      <img
-        alt=""
-        src={`/images/${site.slice(8, site.indexOf("/", 9))}`}
-      />
-    </span>
+  <a href={url} class="h-8 inline-block overflow-hidden whitespace-nowrap text-ellipsis hover:text-gray-400" {title}>
+    <img
+      alt=""
+      class="w-8 h-8 inline-block align-top grayscale-[60%] rounded"
+      src={`/images/${site.slice(8, site.indexOf("/", 9))}`}
+    />
     {title}
   </a>
 {/each}
-
-<style lang="scss">
-  p {
-    color: #939391;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-  }
-  a {
-    color: inherit;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    text-decoration: none;
-    margin: 0;
-    padding: 0;
-    &:hover {
-      color: #939391;
-    }
-  }
-  .image {
-    width: 32px;
-    height: 32px;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  img {
-    width: 32px;
-    height: 32px;
-    filter: grayscale(60%);
-    border-radius: 4px;
-  }
-</style>

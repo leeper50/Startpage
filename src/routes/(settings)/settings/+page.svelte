@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageData } from "./$types";
+  import { SlideToggle } from "@skeletonlabs/skeleton";
   export let data: PageData;
   let { user } = data;
   const default_user = {
@@ -10,19 +11,12 @@
     rssApiKey: "",
     backgroundVisibility: true,
     backgroundUrl: "",
-    backgroundColor: "#081118"
-  }
+    backgroundColor: "#081118",
+  };
   // MAIN
-  import "@fontsource/fira-sans/600.css";
-  import Radio from "$lib/components/Radio.svelte";
+  import "@fontsource/fira-sans/300.css";
   // NEW SEARCH THINGS
   import { enhance } from "$app/forms";
-  const method_options = ["Post", "Put", "Delete"];
-  let method = "Post";
-  let ident: string = "";
-  let url: string = "";
-  let searchable: boolean = true;
-  let response = "";
   let files: FileList;
   async function updateUser() {
     if (files) {
@@ -37,273 +31,134 @@
     });
   }
   async function resetUser() {
-    user = {...user, ...default_user};
+    user = { ...user, ...default_user };
     updateUser();
-  }
-  function submitHandler() {
-    let body = {};
-    if (method !== "Delete") body[ident] = { url: url, searchable: searchable };
-    else body = { id: ident };
-    if (ident !== "")
-      fetch("/api/search", {
-        method: method,
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-          api_key: user.api_key,
-        },
-      })
-        .then((res) => res.text())
-        .then((text) => (response = text));
   }
 </script>
 
-<body>
-  <main class="main-font blue">
-    <div class="border" style="padding: 4px;">
-      <div class="settings">
-        <div class="box border">
-          <h1 class="blue">Homepage Style</h1>
-          <p class="orange">Switch between a minimal or fancy layout</p>
-          <label class="switch" for="fancy" style="top: 4px">
-            <input
-              id="fancy"
-              name="fancy"
-              type="checkbox"
-              bind:checked={user.fancy}
-            />
-            <span class="slider" />
-          </label>
-          {#if user.fancy}
-            <p class="orange">Toggle RSS visibility</p>
-            <label class="switch" for="rssVisibility" style="top: 4px">
+<div class="flex flex-col h-full bg-surface-500 gap-2 text-primary-500 text-xl font-bold">
+  <div class="flex gap-4 justify-center">
+    <div class="border-4 p-4 border-surface-400">
+      <h1>Homepage Style</h1>
+      <p class="text-secondary-500">Switch between a minimal or fancy layout</p>
+      <SlideToggle name="fancy" bind:checked={user.fancy} />
+      {#if user.fancy}
+        <p class="text-secondary-500">Toggle RSS visibility</p>
+        <SlideToggle name="rssVisbility" bind:checked={user.rssVisibility} />
+        {#if user.rssVisibility}
+          <div class="input-field">
+            <div>
+              <label for="url">RSS Url:</label>
               <input
-                id="rssVisibility"
-                name="rssVisibility"
-                type="checkbox"
-                bind:checked={user.rssVisibility}
+                type="text"
+                bind:value={user.rssUrl}
+                class="border-4 border-surface-400"
               />
-              <span class="slider" />
-            </label>
-            {#if user.rssVisibility}
-              <div class="input-field">
-                <div>
-                  <label for="url">RSS Url:</label>
-                  <input type="text" bind:value={user.rssUrl} class="border" />
-                </div>
-                <div>
-                  <label for="url">RSS Key:</label>
-                  <input
-                    type="password"
-                    bind:value={user.rssApiKey}
-                    class="border"
-                  />
-                </div>
-              </div>
-            {/if}
-            <p class="orange">Toggle Background visibility</p>
-            <label class="switch" for="backgroundVisibility" style="top: 4px">
-              <input
-                id="backgroundVisibility"
-                name="backgroundVisibility"
-                type="checkbox"
-                bind:checked={user.backgroundVisibility}
-              />
-              <span class="slider" />
-            </label>
-            <div class="input-field">
-              <!-- GET WORKING (eventually) -->
-              <!-- <div>
-                  <label for="url">Background Url:</label>
-                  <input
-                    type="text"
-                    bind:value={user.backgroundUrl}
-                    class="border"
-                  />
-                </div> -->
-              {#if !user.backgroundVisibility}
-                <div>
-                  <label for="url">Background Color:</label>
-                  <input
-                    type="color"
-                    bind:value={user.backgroundColor}
-                    class="border"
-                    style="height: 36px;"
-                  />
-                </div>
-              {/if}
             </div>
-          {/if}
-        </div>
-        <div class="box border">
-          <h1 class="blue">Homepage content</h1>
-          <p class="orange">
-            Upload a valid yaml file to customize your landing page.
-          </p>
-          <p class="orange">Here is an example of a valid yaml file.</p>
-          <pre class="cyan">
-    - title: group1
-      list:
-        - url: https://www.example.com/
-          id: Example
-    - title: group2
-      list:
-        - url: https://google.com/
-          id: Foo
-        - url: https://duckduckgo.com/
-          id: Bar
-    - title: group3
-      list:
-        - url: https://bing.com/
-          id: Foobar
-          </pre>
-          <div style="display:flex; justify-content: space-between;">
-            <a class="blue" href="links.yml" download="links.yml">
-              <button class="border">Template</button>
-            </a>
-            <label for="file" class="file-upload border">Upload</label>
-            <input
-              type="file"
-              id="file"
-              name="fileToUpload"
-              bind:files
-              accept=".yml, .yaml"
-              required
-            />
+            <div>
+              <label for="url">RSS Key:</label>
+              <input
+                type="password"
+                bind:value={user.rssApiKey}
+                class="border-4 border-surface-400"
+              />
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="submit-bar">
-        <button type="submit" on:click={updateUser} class="border"
-          >Submit</button
-        >
-        <button type="submit" on:click={resetUser} class="border"
-          >Reset</button
-        >
-        <form method="POST" action="?/logout" use:enhance>
-          <button type="submit" name="logout" value="true" class="border"
-            >Logout</button
-          >
-        </form>
-      </div>
-    </div>
-    <div class="box border search">
-      <h1 class="blue">Search stuff</h1>
-      <content>
-        <header class="box blue">
-          <Radio
-            options={method_options}
-            legend="Select an operation"
-            fontSize={24}
-            bind:userSelected={method}
-          />
-          <button on:click={submitHandler} class="blue border">Submit</button>
-        </header>
-        <form class="box blue input-field">
-          {#if method !== "Delete"}
-            <p>{method}</p>
+        {/if}
+        <p class="text-secondary-500">Toggle Background visibility</p>
+        <SlideToggle
+          name="backgroundVisibility"
+          bind:checked={user.backgroundVisibility}
+        />
+        <div class="input-field">
+          <!-- GET WORKING (eventually) -->
+          <!-- <div>
+              <label for="url">Background Url:</label>
+              <input
+                type="text"
+                bind:value={user.backgroundUrl}
+                class="border-4 border-surface-400"
+              />
+            </div> -->
+          {#if !user.backgroundVisibility}
             <div>
-              <label for="url">Ident: </label>
-              <input type="text" bind:value={ident} class="border" />
-            </div>
-            <div>
-              <label for="ident">Url:</label>
-              <input type="text" bind:value={url} class="border" />
-            </div>
-            <div>
-              <label for="searchable">Searchable:</label>
-              <label class="switch" style="top: 4px">
-                <input type="checkbox" bind:checked={searchable} />
-                <span class="slider" />
-              </label>
-            </div>
-          {:else}
-            <p>Delete</p>
-            <div>
-              <label for="url">Ident:</label>
-              <input type="text" bind:value={ident} class="border" />
+              <label for="url">Background Color:</label>
+              <input
+                type="color"
+                bind:value={user.backgroundColor}
+                class="border-4 border-surface-400"
+                style="height: 36px;"
+              />
             </div>
           {/if}
-        </form>
-        <div class="box border response">
-          <code>
-            {response}
-          </code>
         </div>
-      </content>
+      {/if}
     </div>
-  </main>
-</body>
+    <div class="border-4 p-4 border-surface-400">
+      <h1>Homepage content</h1>
+      <p class="text-secondary-500">
+        Upload a valid yaml file to customize your landing page.
+      </p>
+      <p class="text-secondary-500">Here is an example of a valid yaml file.</p>
+      <pre class="text-primary-400">
+- title: group1
+  list:
+    - url: https://www.example.com/
+      id: Example
+- title: group2
+  list:
+    - url: https://google.com/
+      id: Foo
+    - url: https://duckduckgo.com/
+      id: Bar
+- title: group3
+  list:
+    - url: https://bing.com/
+      id: Foobar
+      </pre>
+      <div class="flex justify-between">
+        <a href="links.yml" download="links.yml">
+          <button class="border-4 border-surface-400 p-1">Template</button>
+        </a>
+        <label for="file" class="file-upload border-4 border-surface-400 p-1"
+          >Upload</label
+        >
+        <input
+          type="file"
+          id="file"
+          name="fileToUpload"
+          bind:files
+          accept=".yml, .yaml"
+          required
+        />
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-center gap-2">
+    <button
+      type="submit"
+      on:click={updateUser}
+      class="border-4 border-surface-400 h-fit p-1">Submit</button
+    >
+    <button
+      type="submit"
+      on:click={resetUser}
+      class="border-4 border-surface-400 h-fit p-1">Reset</button
+    >
+    <form method="POST" action="?/logout" use:enhance>
+      <button
+        type="submit"
+        name="logout"
+        value="true"
+        class="border-4 border-surface-400 h-fit w-full p-1">Logout</button
+      >
+    </form>
+  </div>
+</div>
 
 <style lang="scss">
-  main {
-    display: flex;
-    height: fit-content;
-    flex-wrap: wrap;
-    margin-top: 8px;
-    gap: 12px;
-    > div {
-      flex: 1 0 0;
-    }
-  }
-  h1,
-  p,
-  pre {
-    word-wrap: normal;
-    margin: 0;
-  }
-  .settings {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    > div {
-      min-width: 0;
-    }
-  }
-  .main-font {
-    font-family: "Fira Sans";
-    font-size: 1.25rem;
-    font-weight: normal;
-  }
-  .box {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 8px;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: 0;
-    padding: 0;
-  }
-  .file-upload,
-  button {
-    font-family: "Fira Sans";
-    font-size: 1em;
-    background-color: inherit;
-    max-width: fit-content;
-    color: inherit;
-    cursor: pointer;
-    padding: 2 4 2 4;
-  }
   input[type="file"] {
     display: none;
-  }
-  .submit-bar {
-    display: flex;
-    justify-content: center;
-    gap: 2em;
-    margin: 4 0 0 0;
-  }
-  content {
-    margin-top: 0.5em;
-    display: flexbox;
-    flex-direction: column;
-    align-items: center;
-    font-size: inherit;
   }
   .input-field {
     gap: 12px;
@@ -321,69 +176,6 @@
         background-color: #222;
         font-size: inherit;
         height: fit-content;
-      }
-    }
-  }
-  .search {
-    flex-grow: 0;
-  }
-  .response {
-    min-height: 4em;
-    width: 420px;
-    word-break: break-all;
-  }
-  /* All the slider stuff */
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-  }
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-    border-radius: 34px;
-    &:before {
-      position: absolute;
-      content: "";
-      border-radius: 50%;
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: 0.4s;
-      transition: 0.4s;
-    }
-  }
-  input[type="checkbox"] {
-    display: flex;
-    align-self: center;
-    &:checked {
-      + .slider {
-        background-color: #2196f3;
-      }
-      + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-      }
-    }
-    &:focus {
-      + .slider {
-        box-shadow: 0 0 1px #2196f3;
       }
     }
   }

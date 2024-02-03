@@ -16,7 +16,7 @@
   }
 </script>
 
-<form on:submit|preventDefault={submitHandler}>
+<form on:submit|preventDefault={submitHandler} class="flex gap-3 w-full m-0">
   <!-- svelte-ignore a11y-autofocus -->
   <input
     type="text"
@@ -24,25 +24,8 @@
     autocapitalize="off"
     autocorrect="off"
     spellcheck="false"
+    class="placeholder:text-gray-300 bg-transparent outline-none w-full"
     bind:value={search}
     {placeholder}
   />
 </form>
-
-<style lang="scss">
-  form {
-    display: flex;
-    gap: 12px;
-    margin: 0;
-    input[type="text"] {
-      background-color: transparent;
-      border: none;
-      outline: none;
-      color: inherit;
-      font-family: inherit;
-      font-size: inherit;
-      font-weight: inherit;
-      width: 100%;
-    }
-  }
-</style>
