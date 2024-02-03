@@ -2,6 +2,7 @@ FROM node:lts as build
 WORKDIR /app
 COPY package.json .
 COPY *config* .
+COPY my-custom-theme.ts .
 COPY prisma/ prisma/
 COPY src/ src/
 COPY static/ static/
