@@ -2,28 +2,16 @@
   import type { PageData } from "./$types";
   export let data: PageData;
   let { user } = data;
-  import Searchbar from "$lib/components/Searchbar.svelte";
-  // FANCY
+  let pageData = JSON.parse(user.pageData);
+  import Linkbox from "$lib/components/Linkbox.svelte";
   import Rss from "$lib/components/Rss.svelte";
-  let badImages = [
-    "Gitea",
-    "Gmail",
-    "Handshake",
-    "Homepage",
-    "Paste",
-    "Rss",
-    "Tailscale",
-    "Tutanota",
-  ];
-  function get_image(url: string, id: string) {
-    if (url.startsWith("/")) return `favicon-32.png`;
-    if (badImages.includes(id)) return `/icons/${id}.png`;
-    else return `/images/${url.slice(8, url.indexOf("/", 9))}`;
-  }
+  import Searchbar from "$lib/components/Searchbar.svelte";
 </script>
 
 {#if !user || user.fancy === false}
-  <div class="flex bg-surface-500 h-full overflow-auto justify-center lg:items-center font-bold">
+  <div
+    class="flex bg-surface-500 h-full overflow-auto justify-center lg:items-center font-bold"
+  >
     <div class="flex flex-col container text-2xl gap-4">
       <div class="flex gap-4 border-4 border-surface-400 items-center p-2">
         <div class="flex h-min">
@@ -39,24 +27,7 @@
         </div>
       </div>
       <div class="flex flex-wrap gap-4">
-        {#each data.page as { title, list }}
-          <div class="border-4 border-surface-400 p-2 grow">
-            <div>
-              <span class="text-error-500">~</span>
-              <span class="text-primary-500">$</span>
-              <span class="text-error-500">cd</span>
-              <span class="text-surface-300">~/</span>
-              <span class="text-success-500">{title}</span>
-            </div>
-            <div class="flex flex-col">
-              {#each list as { url, id }}
-                <a href={url} class="text-primary-400 hover:text-error-500"
-                  >{id.toLowerCase()}</a
-                >
-              {/each}
-            </div>
-          </div>
-        {/each}
+        <Linkbox linkList={pageData} />
       </div>
     </div>
   </div>
@@ -83,21 +54,7 @@
             {/if}
           </div>
         {/if}
-        {#each data.page as { title, list }}
-          <div class="flex flex-col gap-4 grow">
-            <div class="uppercase tracking-wider">{title}</div>
-            {#each list as { url, id }}
-              <a href={url} class="flex gap-1 hover:text-gray-400">
-                <img
-                  class="w-8 h-8 grayscale-[60%] rounded"
-                  alt="{id} icon"
-                  src={get_image(url, id)}
-                />
-                {id}
-              </a>
-            {/each}
-          </div>
-        {/each}
+        <Linkbox minimal={false} linkList={pageData} />
       </div>
     </div>
   </div>
