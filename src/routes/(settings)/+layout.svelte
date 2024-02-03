@@ -1,23 +1,31 @@
 <script lang="ts">
-  import { AppShell, Avatar } from "@skeletonlabs/skeleton";
+  import { AppShell, Avatar, TabGroup, TabAnchor } from "@skeletonlabs/skeleton";
   import type { PageData } from "./$types";
   export let data: PageData;
   let { user } = data;
-  function goToLogin() {
-    location.href = "/login";
-  }
 </script>
 
 <AppShell>
   <svelte:fragment slot="header">
-    <div class="flex align-middle justify-between bg-surface-500 font-bold">
+    <div class="flex justify-between items-center px-2 bg-surface-500 font-bold text-xl">
       <a class="text-4xl" href="/">Home</a>
+      <TabGroup>
+        <TabAnchor href="/settings">
+          <span>Settings</span>
+        </TabAnchor>
+        <TabAnchor href="/search">
+          <span>Search</span>
+        </TabAnchor>
+        {#if user.isAdmin}
+        <TabAnchor href="/admin">
+          <span>Admin</span>
+        </TabAnchor>
+        {/if}
+      </TabGroup>
       {#if user}
         <Avatar
           initials={user.email.slice(0, 2)}
           background="bg-surface-400"
-          cursor="cursor-pointer"
-          on:click={goToLogin}
         />
       {/if}
     </div>

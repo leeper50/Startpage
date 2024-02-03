@@ -2,35 +2,16 @@
   import "@fontsource/fira-sans/200.css";
 </script>
 
-<body class="blue">
-  <div class="main">
-    <h1>Da configs 😳</h1>
-    <hr />
-    <a href="files/Packages.zip" download>windows packages</a>
+<div
+  class="w-full h-full flex flex-col gap-4 bg-surface-600 text-primary-500 text-4xl text-center"
+>
+  <h1 class="text-6xl pt-4">Da configs 😳</h1>
+  <div>
+    <a href="files/Packages.zip" class="hover:text-error-500" download>windows packages</a>
     - this is a list of windows packages
-    <br />
-    <a href="files/MyMacros.ahk" download>autohotkey scripts</a>
+  </div>
+  <div>
+    <a href="files/MyMacros.ahk" class="hover:text-error-500" download>autohotkey scripts</a>
     - all my silly little shortcuts
   </div>
-</body>
-
-<style lang="scss">
-  a {
-    color: #268bd2;
-    &:hover {
-      color: #d33682;
-    }
-  }
-  hr {
-    border-radius: 4px;
-    border: 4px solid #444;
-    width: 100%;
-  }
-  .main {
-    font-family: "Fira Sans";
-    font-size: 2em;
-    padding: 16px;
-    text-align: center;
-    width: 75%;
-  }
-</style>
+</div>
