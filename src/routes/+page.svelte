@@ -72,7 +72,7 @@
       </div>
       <div class="flex flex-wrap w-full text-2xl text-gray-300 gap-2">
         {#if user.rssVisibility}
-          <div class="flex flex-col grow-[1] gap-4 overflow-hidden">
+          <div class="flex flex-col max-w-3xl grow gap-4 overflow-hidden">
             {#if data.valid}
               <Rss data={data.items} />
             {:else}
@@ -84,7 +84,7 @@
           </div>
         {/if}
         {#each data.page as { title, list }}
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-4 grow">
             <div class="uppercase tracking-wider">{title}</div>
             {#each list as { url, id }}
               <a href={url} class="flex gap-1 hover:text-gray-400">
