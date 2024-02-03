@@ -15,6 +15,7 @@ model User {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
   email                String   @unique
+  isAdmin              Boolean  @default(false)
   password             String   @default("")
   pageData             String   @default("")
   fancy                Boolean  @default(true)

@@ -19,11 +19,15 @@ const createUser = async (email: string, password: string) => {
     };
   }
 
+  const anyUser = await db.user.findFirst();
+  const firstUser = anyUser === null ? true : false;
+
   try {
     const user = await db.user.create({
       data: {
         email,
         password: await bcrypt.hash(password, 10),
+        isAdmin: firstUser,
       },
     });
 
