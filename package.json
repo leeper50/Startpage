@@ -13,7 +13,6 @@
     "prisma": "npx prisma generate && npx prisma db push"
   },
   "devDependencies": {
-    "@fontsource/fira-sans": "^4.5.10",
     "@rollup/plugin-yaml": "^4.1.1",
     "@skeletonlabs/skeleton": "^2.7.1",
     "@skeletonlabs/tw-plugin": "^0.3.1",
