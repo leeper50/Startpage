@@ -33,7 +33,9 @@
   }
 </script>
 
-<div class="flex flex-col h-full bg-surface-500 gap-2 text-primary-500 text-xl font-bold">
+<div
+  class="flex flex-col h-full bg-surface-500 gap-2 text-primary-500 text-xl font-bold"
+>
   <div class="flex gap-4 justify-center">
     <div class="border-4 p-4 border-surface-400">
       <h1>Homepage Style</h1>
@@ -49,7 +51,7 @@
               <input
                 type="text"
                 bind:value={user.rssUrl}
-                class="border-4 border-surface-400"
+                class="border-4 border-surface-400 bg-transparent"
               />
             </div>
             <div>
@@ -57,7 +59,7 @@
               <input
                 type="password"
                 bind:value={user.rssApiKey}
-                class="border-4 border-surface-400"
+                class="border-4 border-surface-400 bg-transparent"
               />
             </div>
           </div>
@@ -114,9 +116,17 @@
       id: Foobar
       </pre>
       <div class="flex flex-col gap-4 items-end">
-        <FileDropzone name="files" accept=".yml, .yaml" padding="py-2" bind:files={files} required >
+        <FileDropzone
+          name="files"
+          accept=".yml, .yaml"
+          padding="py-2"
+          bind:files
+          required
+        >
           <svelte:fragment slot="message">Drop your file here</svelte:fragment>
-          <svelte:fragment slot="meta">Upload a .yml or .yaml file</svelte:fragment>
+          <svelte:fragment slot="meta"
+            >Upload a .yml or .yaml file</svelte:fragment
+          >
         </FileDropzone>
         <a href="links.yml" download="links.yml">
           <button class="border-4 border-surface-400 p-1">Template</button>
