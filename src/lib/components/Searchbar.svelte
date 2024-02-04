@@ -24,7 +24,7 @@
     autocapitalize="off"
     autocorrect="off"
     spellcheck="false"
-    class="placeholder:text-gray-300 bg-transparent outline-none w-full"
+    class="placeholder:text-gray-400 bg-transparent outline-none w-full"
     bind:value={search}
     {placeholder}
   />

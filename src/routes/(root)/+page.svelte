@@ -33,12 +33,13 @@
   </div>
 {:else}
   <div
+    
     class="flex w-full h-full justify-center bg-[url('/background.webp')] bg-center bg-cover overflow-auto"
     class:background-img={user.backgroundVisibility}
     style="background-color: {user.backgroundColor}"
   >
     <div class="flex flex-col container 2xl:self-center">
-      <div class="w-full flex self-start text-4xl">
+      <div class="w-full flex self-start text-4xl text-gray-400">
         <Searchbar placeholder="Search..." />
       </div>
       <div class="flex flex-wrap w-full text-2xl text-gray-300 gap-2">
