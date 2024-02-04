@@ -1,7 +1,3 @@
-<script lang="ts">
-  import "@fontsource/fira-sans/200.css";
-</script>
-
 <div
   class="w-full h-full flex flex-col gap-4 bg-surface-600 text-primary-500 text-4xl text-center"
 >
