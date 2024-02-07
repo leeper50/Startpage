@@ -13,7 +13,7 @@
         type="email"
         name="{action}Email"
         id="{action}Email"
-        class="border-4 border-surface-400 text-secondary-500 bg-transparent"
+        class="border-4 border-surface-400 text-secondary-500 bg-surface-500 w-48 sm:w-96"
         required
       />
     </div>
@@ -23,7 +23,7 @@
         type="password"
         name="{action}Password"
         id="{action}Password"
-        class="border-4 border-surface-400 text-secondary-500 bg-transparent"
+        class="border-4 border-surface-400 text-secondary-500 bg-surface-500 w-48 sm:w-96"
         required
       />
     </div>
@@ -33,7 +33,7 @@
         type="password"
         name="{action}PasswordConfirm"
         id="{action}PasswordConfirm"
-        class="border-4 border-surface-400 text-secondary-500 bg-transparent"
+        class="border-4 border-surface-400 text-secondary-500 bg-surface-500 w-48 sm:w-96"
         required
       />
     </div>

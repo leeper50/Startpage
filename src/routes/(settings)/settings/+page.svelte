@@ -36,7 +36,7 @@
 <div
   class="flex flex-col h-full bg-surface-500 gap-2 text-primary-500 text-xl font-bold"
 >
-  <div class="flex gap-4 justify-center">
+  <div class="flex flex-wrap gap-4 justify-center">
     <div class="border-4 p-4 border-surface-400">
       <h1>Homepage Style</h1>
       <p class="text-secondary-500">Switch between a minimal or fancy layout</p>
@@ -93,7 +93,7 @@
         </div>
       {/if}
     </div>
-    <div class="border-4 p-4 border-surface-400">
+    <div class="border-4 p-4 border-surface-400 max-w-sm sm:max-w-fit overflow-hidden">
       <h1>Homepage content</h1>
       <p class="text-secondary-500">
         Upload a valid yaml file to customize your landing page.
