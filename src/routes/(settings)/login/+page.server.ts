@@ -21,7 +21,7 @@ async function getToken(
     path: "/",
     secure: true,
     sameSite: "strict",
-    maxAge: 60 * 60 * 24, // 1 day
+    maxAge: 60 * 60 * 24 * 7, // 7 days
   });
 
   throw redirect(302, "/settings");
