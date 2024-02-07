@@ -20,14 +20,12 @@
   list:
     - url: https://www.swisstransfer.com/en-us
       id: File
-    - url: https://sopuli.xyz/
+    - url: https://lemmy.world/
       id: Lemmy
     - url: https://mastodon.world/
       id: Mastodon
     - url: https://messages.google.com/web/conversations
       id: Messages
-    - url: https://bin.dellhplaptop.xyz/
-      id: Paste
     - url: https://rss.dellhplaptop.xyz/
       id: Rss
     - url: https://tech.lgbt/
