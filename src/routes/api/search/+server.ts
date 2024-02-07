@@ -16,14 +16,13 @@ function isBooleanLike(value: unknown): boolean {
 
 // default get
 export async function GET(): Promise<Response> {
-  console.log(`GET - Default get (empty string)`);
   return new Response("https://duckduckgo.com", { status: 200 });
 }
 
 // add commands
 export async function POST({ request, locals }): Promise<Response> {
   const { user } = locals;
-  let obj;
+  let obj: { string: [MyUrl] };
   try {
     obj = await request.json();
   } catch (_) {
@@ -72,7 +71,7 @@ export async function POST({ request, locals }): Promise<Response> {
 // update commands
 export async function PUT({ request, locals }): Promise<Response> {
   const { user } = locals;
-  let obj;
+  let obj: { string: [MyUrl] };
 
   let message = "";
   let status = 200;
@@ -135,7 +134,7 @@ export async function PUT({ request, locals }): Promise<Response> {
 // delete commands
 export async function DELETE({ request, locals }): Promise<Response> {
   const { user } = locals;
-  let obj;
+  let obj: { id: string };
   try {
     obj = await request.json();
   } catch (_) {
