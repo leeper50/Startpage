@@ -1,6 +1,8 @@
 <script lang="ts">
   import { FileDropzone, SlideToggle } from "@skeletonlabs/skeleton";
   import { enhance } from "$app/forms";
+  import YAML from "yaml";
+  import { saveAs } from "file-saver";
   import type { PageData } from "./$types";
   export let data: PageData;
   let { user } = data;
@@ -30,6 +32,23 @@
   async function resetUser() {
     user = { ...user, ...default_user };
     updateUser();
+  }
+  function getTemplate() {
+    const fileName = "links.yml";
+    if (user.pageData) {
+      const test = YAML.stringify(user.pageData).replace(/.*/, "").substring(1);
+      const fileToSave = new Blob([test], {
+        type: "application/yaml",
+      });
+      saveAs(fileToSave, fileName);
+    } else {
+      const a = document.createElement("a");
+      document.body.append(a);
+      a.download = "links.yml";
+      a.href = "links.yml";
+      a.click();
+      a.remove();
+    }
   }
 </script>
 
@@ -93,7 +112,9 @@
         </div>
       {/if}
     </div>
-    <div class="border-4 p-4 border-surface-400 max-w-sm sm:max-w-fit overflow-hidden">
+    <div
+      class="border-4 p-4 border-surface-400 max-w-sm sm:max-w-fit overflow-hidden"
+    >
       <h1>Homepage content</h1>
       <p class="text-secondary-500">
         Upload a valid yaml file to customize your landing page.
@@ -128,9 +149,9 @@
             >Upload a .yml or .yaml file</svelte:fragment
           >
         </FileDropzone>
-        <a href="links.yml" download="links.yml">
-          <button class="border-4 border-surface-400 p-1">Template</button>
-        </a>
+        <button on:click={getTemplate} class="border-4 border-surface-400 p-1"
+          >Template</button
+        >
       </div>
     </div>
   </div>
