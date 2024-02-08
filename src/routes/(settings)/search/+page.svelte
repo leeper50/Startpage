@@ -1,7 +1,4 @@
 <script lang="ts">
-  import type { PageData } from "./$types";
-  export let data: PageData;
-  let { user } = data;
   import { RadioGroup, RadioItem, SlideToggle } from "@skeletonlabs/skeleton";
   // NEW SEARCH THINGS
   let method = "Post";
@@ -19,7 +16,6 @@
         body: JSON.stringify(body),
         headers: {
           "Content-Type": "application/json",
-          api_key: user.api_key,
         },
       })
         .then((res) => res.text())
