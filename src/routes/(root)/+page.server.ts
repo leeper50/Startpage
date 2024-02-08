@@ -1,14 +1,20 @@
 import data from "/static/links.yml";
 import YAML from "yaml";
 import { getNews } from "$lib/rss";
+import { refreshToken } from "$lib/user.model.js";
 
 export async function load({ locals, cookies }) {
   if (!locals.user) return { page: data };
   const user = locals.user;
 
   // refresh cookie
-  const token = cookies.get("AuthorizationToken");
-  cookies.set("AuthorizationToken", token as string, {
+  let tokenCookie = cookies.get("AuthorizationToken");
+  tokenCookie = tokenCookie!.substring(tokenCookie!.indexOf(" ") + 1);
+
+  const { error, token } = await refreshToken(user.email, tokenCookie);
+  if (error) return { page: data };
+
+  cookies.set("AuthorizationToken", `Bearer ${token}`, {
     httpOnly: true,
     path: "/",
     secure: true,

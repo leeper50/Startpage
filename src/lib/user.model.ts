@@ -68,10 +68,45 @@ const loginUser = async (email: string, password: string) => {
   };
 
   const token = jwt.sign(jwtUser, secret, {
-    expiresIn: "1d",
+    expiresIn: "7d",
   });
 
   return { token };
 };
 
-export { createUser, loginUser };
+const refreshToken = async (email: string, userToken: string) => {
+  // Check if user exists
+  const user = await db.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    return {
+      error: "Invalid credentials",
+    };
+  }
+
+  // Verify the token
+  const tokenIsValid = jwt.verify(userToken, env.JWT_ACCESS_SECRET);
+
+  if (!tokenIsValid) {
+    return {
+      error: "Token Expired",
+    };
+  }
+
+  const jwtUser = {
+    id: user.id,
+    email: user.email,
+  };
+
+  const token = jwt.sign(jwtUser, secret, {
+    expiresIn: "7d",
+  });
+
+  return { token };
+}
+
+export { createUser, loginUser, refreshToken };
