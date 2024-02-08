@@ -2,7 +2,7 @@
   export let placeholder = "";
   let search = "";
   function submitHandler() {
-    fetch(`/api/search/${search}`, {
+    fetch(`/api/v1/searches/${search}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

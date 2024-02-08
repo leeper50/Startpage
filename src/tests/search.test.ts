@@ -1,5 +1,5 @@
-import * as Server from "../routes/api/search/+server";
-import * as SlugGet from "../routes/api/search/[...q]/+server";
+import * as Searches from "../routes/api/v1/searches/+server";
+import * as SlugGet from "../routes/api/v1/searches/[...q]/+server";
 import { expect, test } from "vitest";
 import { db } from "$lib/db";
 async function getUser(id?: string) {
@@ -14,7 +14,7 @@ async function getUser(id?: string) {
 }
 
 test("Get with empty string", async () => {
-  const res = await Server.GET();
+  const res = await Searches.GET();
   const url = await res.text();
   expect(url).toBe("https://duckduckgo.com");
 });
@@ -51,7 +51,7 @@ test("Post - Make valid command", async () => {
       searchable: false,
     },
   };
-  const res = await Server.POST({
+  const res = await Searches.POST({
     request: { json: () => obj },
     locals: { user: user },
   });
@@ -70,7 +70,7 @@ test("Post - Make invalid command", async () => {
       searchable: false,
     },
   };
-  const res = await Server.POST({
+  const res = await Searches.POST({
     request: { json: () => obj },
     locals: { user: user },
   });
@@ -92,11 +92,11 @@ test("Put - Update valid command", async () => {
       searchable: true,
     },
   };
-  await Server.POST({
+  await Searches.POST({
     request: { json: () => startingObj },
     locals: { user: user },
   });
-  const res = await Server.PUT({
+  const res = await Searches.PUT({
     request: { json: () => updatedObj },
     locals: { user: user },
   });
@@ -113,7 +113,7 @@ test("Put - Update invalid command", async () => {
       searchable: true,
     },
   };
-  const res = await Server.PUT({
+  const res = await Searches.PUT({
     request: { json: () => updatedObj },
     locals: { user: user },
   });
@@ -132,11 +132,11 @@ test("Delete - Delete valid command", async () => {
   const deleteObj = {
     id: "-test1",
   };
-  await Server.POST({
+  await Searches.POST({
     request: { json: () => startingObj },
     locals: { user: user },
   });
-  const res = await Server.DELETE({
+  const res = await Searches.DELETE({
     request: { json: () => deleteObj },
     locals: { user: user },
   });

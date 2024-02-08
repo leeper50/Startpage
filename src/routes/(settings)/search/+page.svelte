@@ -11,7 +11,7 @@
     if (method !== "Delete") body[ident] = { url: url, searchable: searchable };
     else body = { id: ident };
     if (ident !== "")
-      fetch("/api/search", {
+      fetch("/api/v1/searches", {
         method: method,
         body: JSON.stringify(body),
         headers: {
