@@ -31,12 +31,11 @@
 {#if minimal}
   {#each linkList as { title, list }}
     <div class="border-4 border-surface-400 p-2 grow">
-      <div>
-        <span class="text-error-500">~</span>
-        <span class="text-primary-500">$</span>
-        <span class="text-error-500">cd</span>
-        <span class="text-surface-300">~/</span>
-        <span class="text-success-500">{title}</span>
+      <div class="flex">
+        <span class="text-error-500 pr-2">~</span>
+        <span class="text-primary-500 pr-2">$</span>
+        <span class="text-surface-300 p-0">~/</span>
+        <span class="text-success-500 p-0">{title}</span>
       </div>
       <div class="flex flex-col">
         {#each list as { url, id }}

@@ -56,39 +56,43 @@
   class="flex flex-col h-full bg-surface-500 gap-2 text-primary-500 text-xl font-bold"
 >
   <div class="flex flex-wrap gap-4 justify-center">
-    <div class="border-4 p-4 border-surface-400">
+    <div class="w-xl border-4 p-4 border-surface-400">
       <h1>Homepage Style</h1>
-      <p class="text-secondary-500">Switch between a minimal or fancy layout</p>
-      <SlideToggle name="fancy" bind:checked={user.fancy} />
-      {#if user.fancy}
-        <p class="text-secondary-500">Toggle RSS visibility</p>
-        <SlideToggle name="rssVisbility" bind:checked={user.rssVisibility} />
+      <div class="flex justify-between gap-4 pb-2">
+        <p class="text-secondary-500">Switch between a minimal or fancy layout</p>
+        <SlideToggle name="fancy" bind:checked={user.fancy} />
+      </div>
+        <div class="flex justify-between pb-2">
+          <p class="text-secondary-500">Toggle RSS visibility</p>
+          <SlideToggle name="rssVisbility" bind:checked={user.rssVisibility} />
+        </div>
         {#if user.rssVisibility}
-          <div class="input-field">
-            <div>
-              <label for="url">RSS Url:</label>
-              <input
-                type="text"
-                bind:value={user.rssUrl}
-                class="border-4 border-surface-400 bg-transparent"
-              />
-            </div>
-            <div>
-              <label for="url">RSS Key:</label>
-              <input
-                type="password"
-                bind:value={user.rssApiKey}
-                class="border-4 border-surface-400 bg-transparent"
-              />
-            </div>
+          <div class="flex justify-between pb-2">
+            <label for="url">RSS Url:</label>
+            <input
+              type="text"
+              bind:value={user.rssUrl}
+              class="border-4 border-surface-400 bg-transparent"
+            />
+          </div>
+          <div class="flex justify-between pb-2">
+            <label for="url">RSS Key:</label>
+            <input
+              type="password"
+              bind:value={user.rssApiKey}
+              class="border-4 border-surface-400 bg-transparent"
+            />
           </div>
         {/if}
-        <p class="text-secondary-500">Toggle Background visibility</p>
-        <SlideToggle
-          name="backgroundVisibility"
-          bind:checked={user.backgroundVisibility}
-        />
-        <div class="input-field">
+        {#if user.fancy}
+        <div class="flex justify-between pb-2">
+          <p class="text-secondary-500">Toggle Background visibility</p>
+          <SlideToggle
+            name="backgroundVisibility"
+            bind:checked={user.backgroundVisibility}
+          />
+        </div>
+        <div>
           <!-- GET WORKING (eventually) -->
           <!-- <div>
               <label for="url">Background Url:</label>
@@ -99,7 +103,7 @@
               />
             </div> -->
           {#if !user.backgroundVisibility}
-            <div>
+            <div class="flex justify-between pb-2">
               <label for="url">Background Color:</label>
               <input
                 type="color"
