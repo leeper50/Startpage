@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="flex flex-wrap w-full text-2xl text-gray-300 gap-2">
-        {#if user.rssVisibility}
+        {#if user && user.rssVisibility}
           <div class="flex flex-col max-w-3xl grow gap-4 overflow-hidden">
             {#if data.valid}
               <Rss minimal={true} data={data.items} />
