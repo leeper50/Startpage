@@ -27,6 +27,22 @@ async function getToken(
   throw redirect(302, "/settings");
 }
 
+function validateFormData(formData: {
+  email?: string;
+  password?: string;
+  passwordConfirm?: string;
+}) {
+  const obj = { valid: true, msg: "" };
+  if (formData.password !== formData.passwordConfirm) {
+    obj.valid = false;
+    obj.msg = "Passwords do not match";
+  } else if (!formData.email || !formData.password) {
+    obj.valid = false;
+    obj.msg = "Missing email or password";
+  }
+  return obj;
+}
+
 export const load: PageServerLoad = (event) => {
   const user = event.locals.user;
 
@@ -39,26 +55,18 @@ export const actions: Actions = {
   signup: async (event) => {
     const formData = Object.fromEntries(await event.request.formData());
 
-    if (formData.signupPassword !== formData.signupPasswordConfirm) {
-      return fail(400, {
-        error: "Passwords do not match",
-      });
+    let { valid, msg } = validateFormData(formData);
+    if (!valid) {
+      return fail(400, { error: msg });
     }
 
-    // Verify that we have an email and a password
-    if (!formData.signupEmail || !formData.signupPassword) {
-      return fail(400, {
-        error: "Missing email or password",
-      });
-    }
-
-    const { signupEmail, signupPassword } = formData as {
-      signupEmail: string;
-      signupPassword: string;
+    const { email, password } = formData as {
+      email: string;
+      password: string;
     };
 
     // Create a new user
-    const { error } = await createUser(signupEmail, signupPassword);
+    const { error } = await createUser(email, password);
 
     // If there was an error, return an invalid response
     if (error) {
@@ -68,28 +76,28 @@ export const actions: Actions = {
     }
 
     // Login user
-    return await getToken(event, signupEmail, signupPassword);
+    return await getToken(event, email, password);
   },
   login: async (event) => {
     const formData = Object.fromEntries(await event.request.formData());
 
-    if (formData.loginPassword !== formData.loginPasswordConfirm) {
+    if (formData.password !== formData.passwordConfirm) {
       return fail(400, {
         error: "Passwords do not match",
       });
     }
 
-    if (!formData.loginEmail || !formData.loginPassword) {
+    if (!formData.email || !formData.password) {
       return fail(400, {
         error: "Missing email or password",
       });
     }
 
-    const { loginEmail, loginPassword } = formData as {
-      loginEmail: string;
-      loginPassword: string;
+    const { email, password } = formData as {
+      email: string;
+      password: string;
     };
 
-    return await getToken(event, loginEmail, loginPassword);
+    return await getToken(event, email, password);
   },
 };
