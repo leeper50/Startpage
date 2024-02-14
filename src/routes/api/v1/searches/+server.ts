@@ -26,7 +26,7 @@ export async function POST({ request, locals }): Promise<Response> {
   try {
     obj = await request.json();
   } catch (_) {
-    error(400, "invalid json");
+    error(400, "Invalid JSON");
   }
   const k = Object.keys(obj)[0];
   const v: MyUrl = obj[k];
@@ -78,7 +78,7 @@ export async function PUT({ request, locals }): Promise<Response> {
   try {
     obj = await request.json();
   } catch (_) {
-    error(400, "invalid json");
+    error(400, "Invalid JSON");
   }
   const k = Object.keys(obj)[0];
   const v: MyUrl = obj[k];
@@ -138,12 +138,12 @@ export async function DELETE({ request, locals }): Promise<Response> {
   try {
     obj = await request.json();
   } catch (_) {
-    error(400, "invalid json");
+    error(400, "Invalid JSON");
   }
   const v = obj["id"];
 
   // check if request is valid
-  if (!isString(v) || v.charAt(0) !== "-") error(400, "invalid json");
+  if (!isString(v) || v.charAt(0) !== "-") error(400, "Invalid JSON");
   // check if key exists
   const query = await db.search.findUnique({
     where: {

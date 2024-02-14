@@ -2,16 +2,7 @@ import * as Searches from "../routes/api/v1/searches/+server";
 import * as SlugGet from "../routes/api/v1/searches/[...q]/+server";
 import { expect, test } from "vitest";
 import { db } from "$lib/db";
-async function getUser(id?: string) {
-  const name = id ?? "0";
-  const query = await db.user.findUnique({
-    where: {
-      name,
-    },
-  });
-  if (query) return query;
-  else return await db.user.create({ data: { name } });
-}
+import { deleteUser, getUser } from "./helpers";
 
 test("Get with empty string", async () => {
   const res = await Searches.GET();
@@ -44,7 +35,7 @@ test("Get", async () => {
 });
 
 test("Post - Make valid command", async () => {
-  const user = await getUser("1");
+  const user = await getUser();
   const obj = {
     "-test1": {
       url: "https://example.org",
@@ -59,11 +50,11 @@ test("Post - Make valid command", async () => {
     `POST - Added: {"-test1":{"url":"https://example.org","searchable":false}}`
   );
   await db.search.delete({ where: { userId: user.id, key: "-test1" } });
-  await db.user.delete({ where: { id: user.id } });
+  await deleteUser(user);
 });
 
 test("Post - Make invalid command", async () => {
-  const user = await getUser("1");
+  const user = await getUser();
   const obj = {
     test2: {
       url: "https://example.org",
@@ -75,11 +66,11 @@ test("Post - Make invalid command", async () => {
     locals: { user: user },
   });
   expect(await res.text()).toBe(`POST - test2 was not added`);
-  await db.user.delete({ where: { id: user.id } });
+  await deleteUser(user);
 });
 
 test("Put - Update valid command", async () => {
-  const user = await getUser("1");
+  const user = await getUser();
   const startingObj = {
     "-test1": {
       url: "https://example.org",
@@ -102,11 +93,11 @@ test("Put - Update valid command", async () => {
   });
   expect(await res.text()).toBe(`PUT - Changed: ${JSON.stringify(updatedObj)}`);
   await db.search.delete({ where: { userId: user.id, key: "-test1" } });
-  await db.user.delete({ where: { id: user.id } });
+  await deleteUser(user);
 });
 
 test("Put - Update invalid command", async () => {
-  const user = await getUser("1");
+  const user = await getUser();
   const updatedObj = {
     "-test1": {
       url: "https://google.com",
@@ -118,11 +109,11 @@ test("Put - Update invalid command", async () => {
     locals: { user: user },
   });
   expect(await res.text()).toBe(`PUT - -test1 is not a command`);
-  await db.user.delete({ where: { id: user.id } });
+  await deleteUser(user);
 });
 
 test("Delete - Delete valid command", async () => {
-  const user = await getUser("1");
+  const user = await getUser();
   const startingObj = {
     "-test1": {
       url: "https://example.org",
@@ -141,5 +132,5 @@ test("Delete - Delete valid command", async () => {
     locals: { user: user },
   });
   expect(await res.text()).toBe(`DELETE - -test1 was removed`);
-  await db.user.delete({ where: { id: user.id } });
+  await deleteUser(user);
 });
