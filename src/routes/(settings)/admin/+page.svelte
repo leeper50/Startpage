@@ -4,8 +4,8 @@
   import { Table, tableMapperValues } from "@skeletonlabs/skeleton";
   import type { TableSource } from "@skeletonlabs/skeleton";
   const tableSimple: TableSource = {
-    head: ["Email", "Admin"],
-    body: tableMapperValues(users, ["email", "isAdmin"]),
+    head: ["Name", "Admin"],
+    body: tableMapperValues(users, ["name", "isAdmin"]),
   };
   /*
     TODO

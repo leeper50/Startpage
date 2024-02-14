@@ -5,11 +5,11 @@ import jwt from "jsonwebtoken";
 import { db } from "$lib/db";
 const secret = building ? "" : env.JWT_ACCESS_SECRET || "";
 
-const createUser = async (email: string, password: string) => {
+const createUser = async (name: string, password: string) => {
   // Check if user exists
   const user = await db.user.findUnique({
     where: {
-      email,
+      name,
     },
   });
 
@@ -25,7 +25,7 @@ const createUser = async (email: string, password: string) => {
   try {
     const user = await db.user.create({
       data: {
-        email,
+        name,
         password: await bcrypt.hash(password, 10),
         isAdmin: firstUser,
       },
@@ -39,11 +39,11 @@ const createUser = async (email: string, password: string) => {
   }
 };
 
-const loginUser = async (email: string, password: string) => {
+const loginUser = async (name: string, password: string) => {
   // Check if user exists
   const user = await db.user.findUnique({
     where: {
-      email,
+      name,
     },
   });
 
@@ -64,7 +64,7 @@ const loginUser = async (email: string, password: string) => {
 
   const jwtUser = {
     id: user.id,
-    email: user.email,
+    name: user.name,
   };
 
   const token = jwt.sign(jwtUser, secret, {
@@ -74,11 +74,11 @@ const loginUser = async (email: string, password: string) => {
   return { token };
 };
 
-const refreshToken = async (email: string, userToken: string) => {
+const refreshToken = async (name: string, userToken: string) => {
   // Check if user exists
   const user = await db.user.findUnique({
     where: {
-      email,
+      name,
     },
   });
 
@@ -99,7 +99,7 @@ const refreshToken = async (email: string, userToken: string) => {
 
   const jwtUser = {
     id: user.id,
-    email: user.email,
+    name: user.name,
   };
 
   const token = jwt.sign(jwtUser, secret, {

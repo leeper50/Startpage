@@ -3,14 +3,14 @@ import * as SlugGet from "../routes/api/v1/searches/[...q]/+server";
 import { expect, test } from "vitest";
 import { db } from "$lib/db";
 async function getUser(id?: string) {
-  const email = id ?? "0";
+  const name = id ?? "0";
   const query = await db.user.findUnique({
     where: {
-      email: email,
+      name,
     },
   });
   if (query) return query;
-  else return await db.user.create({ data: { email: email } });
+  else return await db.user.create({ data: { name } });
 }
 
 test("Get with empty string", async () => {

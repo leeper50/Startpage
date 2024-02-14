@@ -4,10 +4,10 @@ import { createUser, loginUser } from "$lib/user.model";
 
 async function getToken(
   event: RequestEvent<RouteParams, "/(settings)/login">,
-  email: string,
+  name: string,
   password: string
 ) {
-  const { error, token } = await loginUser(email, password);
+  const { error, token } = await loginUser(name, password);
 
   if (error) {
     return fail(401, {
@@ -28,7 +28,7 @@ async function getToken(
 }
 
 function validateFormData(formData: {
-  email?: string;
+  name?: string;
   password?: string;
   passwordConfirm?: string;
 }) {
@@ -36,9 +36,9 @@ function validateFormData(formData: {
   if (formData.password !== formData.passwordConfirm) {
     obj.valid = false;
     obj.msg = "Passwords do not match";
-  } else if (!formData.email || !formData.password) {
+  } else if (!formData.name || !formData.password) {
     obj.valid = false;
-    obj.msg = "Missing email or password";
+    obj.msg = "Missing name or password";
   }
   return obj;
 }
@@ -60,13 +60,13 @@ export const actions: Actions = {
       return fail(400, { error: msg });
     }
 
-    const { email, password } = formData as {
-      email: string;
+    const { name, password } = formData as {
+      name: string;
       password: string;
     };
 
     // Create a new user
-    const { error } = await createUser(email, password);
+    const { error } = await createUser(name, password);
 
     // If there was an error, return an invalid response
     if (error) {
@@ -76,7 +76,7 @@ export const actions: Actions = {
     }
 
     // Login user
-    return await getToken(event, email, password);
+    return await getToken(event, name, password);
   },
   login: async (event) => {
     const formData = Object.fromEntries(await event.request.formData());
@@ -87,17 +87,17 @@ export const actions: Actions = {
       });
     }
 
-    if (!formData.email || !formData.password) {
+    if (!formData.name || !formData.password) {
       return fail(400, {
-        error: "Missing email or password",
+        error: "Missing name or password",
       });
     }
 
-    const { email, password } = formData as {
-      email: string;
+    const { name, password } = formData as {
+      name: string;
       password: string;
     };
 
-    return await getToken(event, email, password);
+    return await getToken(event, name, password);
   },
 };

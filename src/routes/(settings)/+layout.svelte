@@ -24,7 +24,7 @@
       </TabGroup>
       {#if user}
         <Avatar
-          initials={user.email.slice(0, 2)}
+          initials={user.name.slice(0, 2)}
           background="bg-surface-400"
         />
       {/if}

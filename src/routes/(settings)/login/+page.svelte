@@ -11,11 +11,10 @@
   <h1>Login</h1>
   <form method="post" use:enhance>
     <div class="flex justify-between gap-4 py-2">
-      <label for="email" class="self-center">Email</label>
+      <label for="name" class="self-center">Name</label>
       <input
-        type="email"
-        name="email"
-        id="email"
+        name="name"
+        id="name"
         class="border-4 border-surface-400 text-secondary-500 bg-surface-500 w-48 sm:w-96"
         required
       />

@@ -3,7 +3,7 @@ import { db } from "$lib/db";
 import type { Search, User } from "@prisma/client";
 
 test("Create User", async () => {
-  const data = { email: "0" };
+  const data = { name: "0" };
   if (await db.user.findUnique({ where: data }))
     await db.user.delete({ where: data });
   const result = await db.user.create({ data });
@@ -12,7 +12,7 @@ test("Create User", async () => {
 });
 
 test("Create Search", async () => {
-  const user_data = { email: "0" };
+  const user_data = { name: "0" };
   const user_result = await db.user.create({ data: user_data });
   const search_data = {
     key: "",

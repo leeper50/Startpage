@@ -11,7 +11,7 @@ export async function load({ locals, cookies }) {
   let tokenCookie = cookies.get("AuthorizationToken");
   tokenCookie = tokenCookie!.substring(tokenCookie!.indexOf(" ") + 1);
 
-  const { error, token } = await refreshToken(user.email, tokenCookie);
+  const { error, token } = await refreshToken(user.name, tokenCookie);
   if (error) return { page: data };
 
   cookies.set("AuthorizationToken", `Bearer ${token}`, {
