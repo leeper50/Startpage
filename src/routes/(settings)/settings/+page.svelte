@@ -53,7 +53,7 @@
 </script>
 
 <div
-  class="flex flex-col h-full bg-surface-500 gap-2 text-primary-500 text-xl font-bold"
+  class="flex flex-col h-full bg-surface-600 pt-4 gap-2 text-primary-500 text-xl font-bold"
 >
   <div class="flex flex-wrap gap-4 justify-center">
     <div class="w-xl border-4 p-4 border-surface-400">

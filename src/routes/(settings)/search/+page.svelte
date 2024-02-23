@@ -23,7 +23,7 @@
   }
 </script>
 
-<main class="flex flex-col h-full text-primary-500 bg-surface-500 text-xl font-bold">
+<main class="flex flex-col h-full text-primary-500 bg-surface-600 pt-4 text-xl font-bold">
   <div class="flex flex-col border-4 border-surface-400 self-center w-96 mb-4 p-2">
     <content>
       <h1 class="text-2xl">Select a search operation</h1>
