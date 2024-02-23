@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { AppShell, Avatar, TabGroup, TabAnchor } from "@skeletonlabs/skeleton";
+  import { AppShell, Avatar, TabGroup, TabAnchor, Modal } from "@skeletonlabs/skeleton";
   import type { PageData } from "./$types";
   export let data: PageData;
   let { user } = data;
 </script>
 
+<Modal />
 <AppShell>
   <svelte:fragment slot="header">
     <div class="flex justify-between items-center px-2 bg-surface-500 font-bold text-xl">
@@ -23,10 +24,11 @@
         {/if}
       </TabGroup>
       {#if user}
+      <a class="" href="/user">
         <Avatar
           initials={user.name.slice(0, 2)}
           background="bg-surface-400"
-        />
+        /></a>
       {/if}
     </div>
   </svelte:fragment>

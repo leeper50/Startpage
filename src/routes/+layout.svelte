@@ -1,3 +1,10 @@
-<script>import "../app.pcss";</script>
+<script>
+  // Tailwind CSS
+  import "../app.pcss";
 
-<slot/>
+  // Initialize Modal
+  import { initializeStores } from "@skeletonlabs/skeleton";
+  initializeStores();
+</script>
+
+<slot />

@@ -4,22 +4,17 @@
   import { Table, tableMapperValues } from "@skeletonlabs/skeleton";
   import type { TableSource } from "@skeletonlabs/skeleton";
   const tableSimple: TableSource = {
-    head: ["Name", "Admin"],
-    body: tableMapperValues(users, ["name", "isAdmin"]),
+    head: ["Name", "Admin", "ID"],
+    body: tableMapperValues(users, ["name", "isAdmin", "id"]),
   };
-  /*
-    TODO
-    get and show all user accounts
-    only show minimal info
-    make thing to delete user
-    */
 </script>
 
-<div class="h-full w-full bg-surface-500">
+<div class="h-full w-full bg-surface-600 pt-4 flex justify-center">
   <div class="container">
-    <Table source={tableSimple} />
-    <p class="text-primary-500 break-words">
-      {JSON.stringify(users)}
-    </p>
+    <Table
+      source={tableSimple}
+      interactive={true}
+      on:selected={(e) => (window.location.href = `/admin/user/${e.detail[2]}`)}
+    />
   </div>
 </div>
