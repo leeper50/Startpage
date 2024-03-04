@@ -12,19 +12,19 @@ function migrate() {
 }
 
 if test -f "prisma/prisma.db"; then
-    echo "found prisma.db"
-    migration_needed="$(npx prisma migrate diff --from-schema-datasource prisma/prisma.db --to-migrations migrations)"
-    echo "$migration_needed"
+    echo "Found prisma.db"
+    migration_needed="$(npx prisma migrate diff --from-url 'file:./prisma/prisma.db' --to-migrations migrations)"
     if [ "$migration_needed" = "No difference detected." ]; then
-        echo "No migration needed."
+        echo "No migration needed"
     else
+        echo "Changes detected in database schema"
         echo "Backing up prisma.db"
         cp "prisma/prisma.db" "prisma/prisma.$(date -u +%Y-%m-%dT%H-%M-%S%Z).db"
-        echo "Beginning migration."
+        echo "Beginning migration"
         migrate
     fi
 else
-    echo "prisma.db not found"
+    echo "Generating prisma.db"
     migrate
 fi
 
