@@ -8,7 +8,6 @@ COPY src/ src/
 COPY static/ static/
 RUN npm install
 RUN npx prisma generate
-# RUN npx prisma db push
 RUN npm run build
 
 FROM node:lts-alpine as main
@@ -18,6 +17,7 @@ COPY package.json .
 COPY --from=build /app/build .
 COPY --from=build /app/prisma/schema.prisma .
 RUN npm i --omit dev
+COPY --from=build /app/prisma/migrations migrations
 COPY run.sh .
 ARG JWT_ACCESS_SECRET
 EXPOSE 3000
