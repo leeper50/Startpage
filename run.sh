@@ -21,6 +21,7 @@ if test -f "prisma/prisma.db"; then
     fi
 else
     echo "Generating prisma.db"
+    npx prisma migrate deploy
 fi
 npx prisma db push
 
