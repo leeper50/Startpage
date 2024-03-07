@@ -1,4 +1,6 @@
+type YamlLinks = [{ title: string; list: [{ url: string; id: string }] }];
+
 declare module "*.yml" {
-  const data: [{ title: string; list: [{ url: string; id: string }] }];
+  const data: YamlLinks;
   export default data;
 }

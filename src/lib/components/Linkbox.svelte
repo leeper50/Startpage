@@ -1,16 +1,6 @@
 <script lang="ts">
   export let minimal = true;
-  export let linkList: [
-    {
-      title: string;
-      list: [
-        {
-          url: string;
-          id: string;
-        },
-      ];
-    },
-  ];
+  export let linkList: YamlLinks
   let badImages = [
     "Gitea",
     "Gmail",
