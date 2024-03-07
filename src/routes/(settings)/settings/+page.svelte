@@ -30,9 +30,9 @@
   }
   async function updateUser() {
     // Check if YAML was changed
-    if (user.pageData !== unchangedUser.pageData) {
+    const userLinks = document.getElementById("pageData")!.innerHTML;
+    if (userLinks !== user.pageData) {
       // Test if yaml is valid
-      const userLinks = document.getElementById("pageData")!.innerHTML;
       let array: YamlLinks;
       try {
         array = YAML.parse(userLinks);
@@ -68,6 +68,7 @@
         "Content-Type": "application/json",
       },
     });
+    window.location.href = "";
   }
   async function hardResetUser() {
     const modal: ModalSettings = {
@@ -79,7 +80,6 @@
         if (r) {
           user = { ...user, ...default_user };
           await updateUser();
-          window.location.href = "";
         }
       },
     };
