@@ -46,9 +46,6 @@
         {/if}
         <Linkbox minimal={true} linkList={pageData} />
       </div>
-      <!-- <div class="flex flex-wrap gap-4">
-        <Linkbox linkList={pageData} />
-      </div> -->
     </div>
   </div>
 {:else}
