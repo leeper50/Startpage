@@ -30,7 +30,10 @@
       </div>
       <div class="flex flex-wrap w-full text-2xl text-gray-300 gap-2">
         {#if user && user.rssVisibility}
-          <div class="flex flex-col max-w-3xl grow gap-4 overflow-hidden">
+          <div
+            class="flex flex-col grow gap-4 overflow-hidden"
+            style="flex-basis: {(1 / Math.max(pageData.length - 1, 2)) * 100}%"
+          >
             {#if data.valid}
               <Rss minimal={true} data={data.items} />
             {:else}
@@ -60,7 +63,10 @@
       </div>
       <div class="flex flex-wrap w-full text-2xl text-gray-300 gap-2">
         {#if user.rssVisibility}
-          <div class="flex flex-col max-w-3xl grow gap-4 overflow-hidden">
+          <div
+            class="flex flex-col max-w-3xl grow gap-4 overflow-hidden"
+            style="flex-basis: {(1 / Math.max(pageData.length - 1, 2)) * 100}%"
+          >
             {#if data.valid}
               <Rss minimal={false} data={data.items} />
             {:else}
