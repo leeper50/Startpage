@@ -13,7 +13,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    forcePull: false
     steps:
       -
         name: Checkout
