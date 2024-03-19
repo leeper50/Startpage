@@ -3,12 +3,10 @@ name: Docker Image CI - Master
 on:
   push:
     branches: [ "master" ]
-    tags:
-      - 'v*'
+    tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "master" ]
-    tags:
-      - 'v*'
+    tags: [ 'v*.*.*' ]
 
 jobs:
   docker:
@@ -27,7 +25,6 @@ jobs:
           # generate Docker tags based on the following events/attributes
           tags: |
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
-            type=ref,event=branch
             type=pep440,pattern={{version}}
             type=pep440,pattern={{major}}.{{minor}}
             type=pep440,pattern={{major}}
