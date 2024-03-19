@@ -152,11 +152,12 @@
     >
       <div class="h-[512px]">
         <h1>Homepage content</h1>
-        <p class="text-secondary-500">
-          Upload a valid yaml file to customize your landing page.
+        <p class="text-secondary-500 text-wrap max-w-md">
+          You may change the layout of your homepage by
+          editing the textbox to the right.
         </p>
         <p class="text-secondary-500">
-          Here is an example of a valid yaml file.
+          Here is some example valid syntax.
         </p>
         <pre class="text-primary-400">
 - title: group1
