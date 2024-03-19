@@ -31,7 +31,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          image: dellhplaptop/my-startpage
-          tags: dev
+          tags: dellhplaptop/my-startpage:dev
           platforms: linux/amd64
           push: true
