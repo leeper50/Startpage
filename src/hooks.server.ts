@@ -3,6 +3,7 @@ import { env } from "$env/dynamic/private";
 import jwt from "jsonwebtoken";
 
 import { db } from "$lib/db";
+import { secret } from "$lib/user.model";
 
 const handle: Handle = async ({ event, resolve }) => {
   const authCookie = event.cookies.get("AuthorizationToken");
@@ -12,7 +13,7 @@ const handle: Handle = async ({ event, resolve }) => {
     const token = authCookie.split(" ")[1];
 
     try {
-      const jwtUser = jwt.verify(token, env.JWT_ACCESS_SECRET);
+      const jwtUser = jwt.verify(token, secret);
       if (typeof jwtUser === "string") {
         throw new Error("Something went wrong");
       }

@@ -3,7 +3,12 @@ import { env } from "$env/dynamic/private";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { db } from "$lib/db";
-const secret = building ? "" : env.JWT_ACCESS_SECRET || "";
+import { randomUUID } from "crypto";
+export const secret = building ? "" : env.JWT_ACCESS_SECRET || randomUUID();
+if (!building && !env.JWT_ACCESS_SECRET)
+  console.log(
+    `You should save this in the JWT_ACCESS_SECRET environment variable if you want to persist user auth tokens between container runs:\n${secret}`
+  );
 
 const createUser = async (name: string, password: string) => {
   // Check if user exists
@@ -89,7 +94,7 @@ const refreshToken = async (name: string, userToken: string) => {
   }
 
   // Verify the token
-  const tokenIsValid = jwt.verify(userToken, env.JWT_ACCESS_SECRET);
+  const tokenIsValid = jwt.verify(userToken, secret);
 
   if (!tokenIsValid) {
     return {
@@ -107,6 +112,6 @@ const refreshToken = async (name: string, userToken: string) => {
   });
 
   return { token };
-}
+};
 
 export { createUser, loginUser, refreshToken };
