@@ -3,14 +3,17 @@ name: Docker Image CI - Master
 on:
   push:
     branches: [ "master" ]
-    tags: [ '*' ]
+    tags: 
+      - "v*.*.*"
   pull_request:
     branches: [ "master" ]
-    tags: [ '*' ]
+    tags: 
+      - "v*.*.*"
 
 jobs:
   docker:
     runs-on: ubuntu-latest
+    forcePull: false
     steps:
       -
         name: Checkout
@@ -22,12 +25,13 @@ jobs:
           # list of Docker images to use as base name for tags
           images: |
             dellhplaptop/my-startpage
+          flavor: |
+            latest=true
           # generate Docker tags based on the following events/attributes
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=semver,pattern={{raw}}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3

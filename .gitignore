@@ -15,3 +15,5 @@ pnpm-lock.yaml
 docker-compose*.yml
 *.sqlite
 *.db
+.actrc
+.secrets
