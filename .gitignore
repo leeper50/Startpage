@@ -13,6 +13,7 @@ pnpm-lock.yaml
 /coverage
 .vscode
 docker-compose*.yml
+/database/
 *.sqlite
 *.db
 .actrc
