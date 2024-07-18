@@ -1,5 +1,6 @@
 import { error } from "@sveltejs/kit";
 import { db } from "$lib/db.js";
+import { engines } from "$lib/searchEngines";
 
 type MyUrl = { url: string; searchable: boolean };
 
@@ -15,8 +16,15 @@ function isBooleanLike(value: unknown): boolean {
 }
 
 // default get
-export async function GET(): Promise<Response> {
-  return new Response("https://duckduckgo.com", { status: 200 });
+export async function GET({ locals }): Promise<Response> {
+  const { user } = locals;
+  let engine: string;
+  if (user && user.searchEngine in engines) {
+    engine = engines[`${user.searchEngine}`];
+  } else {
+    engine = "https://duckduckgo.com/?t=ffab&q=";
+  }
+  return new Response(engine, { status: 200 });
 }
 
 // add commands

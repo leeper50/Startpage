@@ -4,6 +4,7 @@
   import YAML from "yaml";
   import type { PageData } from "./$types";
   import isEqual from "lodash/isEqual";
+  import { engines } from "$lib/searchEngines";
   export let data: PageData;
   let { user, default_links } = data;
   const unchangedUser = { ...user };
@@ -16,6 +17,7 @@
     backgroundVisibility: true,
     backgroundUrl: "",
     backgroundColor: "#081118",
+    searchEngine: "Duckduckgo",
   };
   // Alert Modal
   import { getModalStore, type ModalSettings } from "@skeletonlabs/skeleton";
@@ -146,6 +148,14 @@
           {/if}
         </div>
       {/if}
+      <div class="flex justify-between gap-4 pb-2">
+        <p class="text-secondary-500">Choose your search engine</p>
+        <select class="text-primary-500 bg-surface-500 border-surface-400 border-2 text-center rounded-xl" bind:value={user.searchEngine}>
+          {#each Object.keys(engines) as engine}
+            <option value={engine}>{engine}</option>
+          {/each}
+        </select>
+      </div>
     </div>
     <div
       class="border-4 p-4 flex flex-wrap gap-4 border-surface-400 max-w-sm sm:max-w-fit overflow-hidden"
@@ -153,12 +163,10 @@
       <div class="h-[512px]">
         <h1>Homepage content</h1>
         <p class="text-secondary-500 text-wrap max-w-md">
-          You may change the layout of your homepage by
-          editing the textbox to the right.
+          You may change the layout of your homepage by editing the textbox to
+          the right.
         </p>
-        <p class="text-secondary-500">
-          Here is some example valid syntax.
-        </p>
+        <p class="text-secondary-500">Here is some example valid syntax.</p>
         <pre class="text-primary-400">
 - title: group1
   list:

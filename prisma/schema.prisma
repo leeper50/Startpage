@@ -25,6 +25,7 @@ model User {
   backgroundVisibility Boolean  @default(true)
   backgroundUrl        String   @default("")
   backgroundColor      String   @default("#081118")
+  searchEngine         String   @default("Duckduckgo")
   searches             Search[]
 }
 

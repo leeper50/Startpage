@@ -1,10 +1,17 @@
 import { db } from "$lib/db";
 import { default_search } from "../default";
+import { engines } from "$lib/searchEngines";
 
 // perform a search
 export async function GET({ params, locals }): Promise<Response> {
   let text = params.q;
-  const engine = "https://duckduckgo.com/?t=ffab&q=";
+  const { user } = locals;
+  let engine: string;
+  if (user && user.searchEngine in engines) {
+    engine = engines[`${user.searchEngine}`];
+  } else {
+    engine = "https://duckduckgo.com/?t=ffab&q=";
+  }
   text = text.trim();
 
   // return regular search if no command provided
