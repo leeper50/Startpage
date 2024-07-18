@@ -5,7 +5,7 @@ import { db } from "$lib/db";
 import { deleteUser, getUser } from "./helpers";
 
 test("Get with empty string", async () => {
-  const res = await Searches.GET();
+  const res = await Searches.GET({ locals: {} });
   const url = await res.text();
   expect(url).toBe("https://duckduckgo.com");
 });

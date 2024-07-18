@@ -22,9 +22,10 @@ export async function GET({ locals }): Promise<Response> {
   if (user && user.searchEngine in engines) {
     engine = engines[`${user.searchEngine}`];
   } else {
-    engine = "https://duckduckgo.com/?t=ffab&q=";
+    engine = "https://duckduckgo.com/";
   }
-  return new Response(engine, { status: 200 });
+  const domainEnd = engine.substring(8).indexOf("/") + 8;
+  return new Response(engine.substring(0, domainEnd), { status: 200 });
 }
 
 // add commands
