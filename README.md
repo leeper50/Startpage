@@ -1,3 +1,6 @@
+# Deprecated
+Use this [project](https://fj.dellhplaptop.xyz/wleeper13/NewWebsite) instead.
+
 # Website
 
 This is the repo for a website that I use as a startpage.
